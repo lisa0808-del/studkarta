@@ -1,5 +1,6 @@
 // Данные организаций для карты.
-// Все скидки проверены по официальным сайтам организаций 3 октября 2026 года
+// Базовые скидки проверены по источникам проекта 3 октября 2026 года.
+// Дополненные места взяты из подборки «Афиша Daily» от 5 сентября 2026 года; перед визитом рекомендуется проверить условия у организации.
 // (ссылка на страницу-источник — в поле source у каждого места).
 // Условия меняются: перепроверяйте источники хотя бы раз в семестр.
 //
@@ -282,5 +283,289 @@ window.PLACES = [
     from: "2026-01-25", to: "2026-12-31",
     url: "https://www.cafemumu.ru",
     source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+
+  // ---------- Дополнено из подборки «Афиша Daily» ----------
+  {
+    name: "МУ-МУ на Комсомольском проспекте",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% студентам на основное меню по студенческому билету, зачётке или карте москвича. Не действует на специальные акции, завтраки и комплексные обеды.",
+    address: "Комсомольский просп., 26",
+    lat: 55.726882, lng: 37.579654,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Молодёжь",
+    category: "food",
+    discount: "−40%",
+    details: "Студенческая скидка 40% на бургеры с мраморной говядиной. Дополнительные предложения могут меняться вместе с афишей заведения.",
+    address: "Сущёвская ул., 21, стр. 8",
+    lat: 55.781914, lng: 37.599696,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Сыто-пьяно",
+    category: "food",
+    discount: "−25%",
+    details: "Студентам предоставляется скидка 25% на меню. Перед визитом рекомендуется уточнить актуальные условия.",
+    address: "Комсомольский просп., 28, МДМ",
+    lat: 55.726882, lng: 37.579654,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Met Tea",
+    category: "food",
+    discount: "−10%",
+    details: "Скидка 10% студентам при предъявлении студенческого на кассе.",
+    address: "ул. Никольская, 10/2, стр. 2Б",
+    lat: 55.7592, lng: 37.6255,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Ёрш",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% студентам по будням на меню, кроме ланчей и специальных предложений.",
+    address: "ул. Перерва, 58",
+    lat: 55.66317, lng: 37.76126,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Тануки",
+    category: "food",
+    discount: "−20%",
+    details: "По будням с открытия до 18:00 — скидка 20% при заказе от 990 ₽. Действует не во всех ресторанах сети; условия лучше уточнить заранее.",
+    address: "Каширское ш., 46, корп. 1",
+    lat: 55.647929, lng: 37.664833,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Farsh",
+    category: "food",
+    discount: "−20%",
+    details: "Постоянная скидка 20% для студентов. Условия участия в программе необходимо уточнить у сети.",
+    address: "Никольская, 12",
+    lat: 55.7589, lng: 37.6253,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Практика кофе",
+    category: "food",
+    discount: "−10%",
+    details: "Круглый год действует скидка 10% студентам.",
+    address: "Ломоносовский просп., 29, корп. 1, стр. 2",
+    lat: 55.7034, lng: 37.51583,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Ra’men",
+    category: "food",
+    discount: "−30%",
+    details: "Скидка 30% студентам по будням с 16:00 до 18:00.",
+    address: "Бауманская, 56/17, стр. 1",
+    lat: 55.76886, lng: 37.67912,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+
+  // ---------- Магазины ----------
+  {
+    name: "Читай-город",
+    category: "fun",
+    discount: "−15%",
+    details: "Постоянная скидка 15% студентам на большую часть книг, кроме новинок, и на канцелярию. Перед покупкой уточните условия в конкретном магазине.",
+    address: "Комсомольский просп., 28, МДМ",
+    lat: 55.726882, lng: 37.579654,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Леонардо",
+    category: "fun",
+    discount: "−10%",
+    details: "По понедельникам с 10:00 до 13:00 студенты могут получить скидку 10% на весь чек. Карта постоянного покупателя может давать отдельную скидку.",
+    address: "Ходынский б-р, 4, ТРЦ «Авиапарк»",
+    lat: 55.790231, lng: 37.531289,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Улыбка радуги",
+    category: "fun",
+    discount: "−10%",
+    details: "Скидка 10% студентам на средства гигиены, уходовую и декоративную косметику в розничных магазинах по будням после 15:00. Скидка может суммироваться с другими акциями.",
+    address: "Таганская, 31/22",
+    lat: 55.739748, lng: 37.670681,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "U Forma",
+    category: "fun",
+    discount: "−10%",
+    details: "Скидка 10% учащимся на все товары магазина медицинской формы.",
+    address: "ул. Вавилова, 6",
+    lat: 55.708, lng: 37.5879,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+
+  // ---------- Спорт ----------
+  {
+    name: "Фитнес-клуб «Мореон»",
+    category: "sport",
+    discount: "−30%",
+    details: "Студентам предоставляется скидка 30% на клубные карты. Итоговую стоимость нужно уточнять при оформлении.",
+    address: "Голубинская, 16",
+    lat: 55.597246, lng: 37.527184,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Spirit Fitness — Автозаводская",
+    category: "sport",
+    discount: "Льготный",
+    details: "В статье указана студенческая стоимость тарифа; актуальную цену и условия нужно уточнить у клуба. Клуб находится в ТРЦ «Глобал Молл».",
+    address: "Ленинская Слобода, 26, стр. 2, ТРЦ «Глобал Молл»",
+    lat: 55.7102, lng: 37.6635,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/avtozavodskaya/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "СпортЛэнд",
+    category: "sport",
+    discount: "−50%",
+    details: "Студенты получают скидку 50% на вступительный взнос. Условия абонемента и актуальную цену необходимо уточнить перед оформлением.",
+    address: "Кленовый б-р, 23",
+    lat: 55.6759, lng: 37.6815,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Студия йоги «Чакра»",
+    category: "sport",
+    discount: "−30%",
+    details: "Разовое посещение для студентов дешевле на 30%, абонемент — на 15%.",
+    address: "Мясницкая, 24/7, стр. 3",
+    lat: 55.7625, lng: 37.6355,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Студия танцев «ЛисоБорье»",
+    category: "sport",
+    discount: "−20%",
+    details: "Скидка 20% студентам на групповые абонементы.",
+    address: "Бауманская, 53, стр. 2",
+    lat: 55.7677, lng: 37.6799,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+
+  // ---------- Развлечения ----------
+  {
+    name: "Ква-ква-парк",
+    category: "fun",
+    discount: "2190 ₽",
+    details: "Студенческий тариф — 2190 ₽ за 4 часа вместо 3290 ₽. Льгота действует круглый год; нужен студенческий билет.",
+    address: "Мытищи, Коммунистическая, 1, ТРЦ XL",
+    lat: 55.891797, lng: 37.748833,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "YouPlay",
+    category: "fun",
+    discount: "499 ₽",
+    details: "Ночной студенческий тариф с 22:00 до 06:00: 7 часов на ПК, час на приставке и 30 минут VR за 499 ₽. Нужен студенческий.",
+    address: "Щелковское ш., 79, корп. 1",
+    lat: 55.81113, lng: 37.80769,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Квесты «Нелогика»",
+    category: "fun",
+    discount: "−20%",
+    details: "Скидка 20% студентам по будням при предварительном онлайн-бронировании. Студенческий предъявляется на месте.",
+    address: "Подсосенский пер., 3, корп. 1",
+    lat: 55.7589, lng: 37.6444,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Боулинг «The Би/Ба/Бо»",
+    category: "fun",
+    discount: "−50%",
+    details: "Скидка 50% студентам на боулинг по понедельникам–пятницам до 18:00; по воскресеньям — 25%. Бронирование обязательно.",
+    address: "Карманицкий пер., 9",
+    lat: 55.7483, lng: 37.5833,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Картинг Race Place",
+    category: "fun",
+    discount: "−20%",
+    details: "Скидка 20% студентам с 19:00 до 20:00 на стандартные 10-минутные заезды, мини-гонки и марафоны. День скидки зависит от площадки.",
+    address: "Алтуфьевское ш., 1 км, влад. 3, стр. 1, ТРЦ «Весна»",
+    lat: 55.905, lng: 37.588,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Бильярд на «Фабрике»",
+    category: "fun",
+    discount: "−40%",
+    details: "Скидка 40% студентам по будням до 18:00, по пятницам — до 16:00. Стол рекомендуется бронировать заранее.",
+    address: "Ткацкая, 5, стр. 7",
+    lat: 55.7833, lng: 37.7416,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Парк аттракционов «Остров мечты»",
+    category: "fun",
+    discount: "2000 ₽",
+    details: "По средам и четвергам студенческий билет стоит 2000 ₽ вместо 2800 ₽.",
+    address: "просп. Андропова, 1",
+    lat: 55.695063, lng: 37.678959,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+
+  // ---------- Кино ----------
+  {
+    name: "Киномакс — Мозаика",
+    category: "cinema",
+    discount: "−30%",
+    details: "Студенческая скидка 30% по будням с понедельника по четверг и до 16:00 в пятницу. Не действует на премьеры, VIP-залы и специальные показы. Оформляется в кассе.",
+    address: "7-я Кожуховская, 9, ТРЦ «Мозаика», 3 этаж",
+    lat: 55.710693, lng: 37.675109,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Синема Парк — Метрополис",
+    category: "cinema",
+    discount: "−20%",
+    details: "Студентам предоставляется скидка 20% при покупке билета в кассе. Не действует на мультфильмы и VIP-залы.",
+    address: "Ленинградское ш., 16А, стр. 4, ТЦ «Метрополис»",
+    lat: 55.823217, lng: 37.497468,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
   }
+
 ];
