@@ -1,0 +1,942 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Студкарта Москвы</title>
+<meta name="description" content="Карта студенческих скидок в Москве: музеи, театры, кино, еда, спорт.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&family=PT+Mono&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css">
+<style>
+/* Схема: слева панель с поиском и списком мест как перечень станций, справа серая карта с метками-станциями в цветах линий метро.
+   Карточка места — билет с отрывной линией и печатью скидки. На телефоне панель становится нижней шторкой. */
+:root {
+  --paper: #f4f4f1;
+  --surface: #ffffff;
+  --ink: #17181a;
+  --muted: #676a72;
+  --line: #e2e2dd;
+  --stamp: #3341a6;      /* синие чернила печати */
+  --fav: #d6336c;
+  --ok: #1d7f37;
+  --warn: #b85600;
+  --off: #9a9ca3;
+  --tiles: grayscale(1) contrast(.88) brightness(1.06);
+  --shadow: 0 1px 0 rgba(0,0,0,.04), 0 18px 40px -12px rgba(23,24,26,.28);
+  --f-display: "Alumni Sans", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --f-body: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "PT Mono", ui-monospace, Menlo, monospace;
+  --panel-w: 400px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #121314; --surface: #1b1c1e; --ink: #ecece8; --muted: #9b9ea6; --line: #2d2f33;
+    --stamp: #9aa6ff; --fav: #ff6b9a; --ok: #5fd07c; --warn: #ffa356; --off: #6e7178;
+    --tiles: grayscale(1) invert(1) brightness(.82) contrast(.9);
+    --shadow: 0 18px 40px -12px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #121314; --surface: #1b1c1e; --ink: #ecece8; --muted: #9b9ea6; --line: #2d2f33;
+  --stamp: #9aa6ff; --fav: #ff6b9a; --ok: #5fd07c; --warn: #ffa356; --off: #6e7178;
+  --tiles: grayscale(1) invert(1) brightness(.82) contrast(.9);
+  --shadow: 0 18px 40px -12px rgba(0,0,0,.7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--paper); color: var(--ink);
+  font: 15px/1.45 var(--f-body);
+  display: grid; grid-template-columns: var(--panel-w) minmax(0, 1fr);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--stamp); outline-offset: 2px; }
+.label { font: 600 11px/1 var(--f-body); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+
+/* ================= Панель ================= */
+.panel {
+  display: flex; flex-direction: column; min-height: 0; min-width: 0;
+  background: var(--surface); border-right: 1px solid var(--line); z-index: 2;
+}
+.head { padding: 22px 24px 16px; display: grid; gap: 14px; }
+.handle { display: none; }
+.brand { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.brand h1 { margin: 0; font: 800 46px/.82 var(--f-display); text-transform: uppercase; letter-spacing: .005em; }
+.brand h1 small {
+  display: block; font: 500 13px/1.3 var(--f-body); text-transform: none; letter-spacing: 0;
+  color: var(--muted); margin-top: 8px;
+}
+.city {
+  font: 700 12px/1 var(--f-mono); color: var(--stamp); border: 1.5px solid var(--stamp);
+  padding: 5px 7px 4px; border-radius: 3px; transform: rotate(-4deg); white-space: nowrap; margin-bottom: 4px;
+}
+
+.search { position: relative; display: block; }
+.search input {
+  width: 100%; padding: 12px 40px 12px 42px; border-radius: 10px;
+  border: 1.5px solid var(--line); background: var(--paper); font-size: 15px; transition: border-color .15s;
+  -webkit-appearance: none; appearance: none;
+}
+.search input::-webkit-search-cancel-button { display: none; }
+.search input:focus { outline: none; border-color: var(--ink); }
+.search input::placeholder { color: var(--muted); }
+.search > svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.search .clear {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px;
+  border: 0; border-radius: 50%; background: var(--line); display: grid; place-items: center; color: var(--ink);
+}
+
+/* Категории — как значки линий */
+.lines { display: flex; flex-wrap: wrap; gap: 6px; }
+.ln {
+  display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px 6px 8px; flex: none;
+  border: 1.5px solid var(--line); border-radius: 999px; background: none; font-size: 13px; font-weight: 600;
+  transition: background .12s, border-color .12s;
+}
+.ln i {
+  width: 12px; height: 12px; border-radius: 50%; background: var(--c);
+  box-shadow: inset 0 0 0 3px var(--c), inset 0 0 0 5px var(--surface);
+}
+.ln[data-cat=""] i { background: conic-gradient(#0078BE 0 14%, #943E90 0 28%, #DA2128 0 43%, #F07E24 0 57%, #2DBE2C 0 71%, #8D5B2D 0 86%, #00A0E3 0); box-shadow: none; }
+.ln:hover { border-color: var(--muted); }
+.ln[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--surface); }
+.ln[aria-pressed="true"] i { box-shadow: inset 0 0 0 3px var(--c), inset 0 0 0 5px var(--ink); }
+
+/* Быстрые кнопки */
+.quick { display: flex; flex-wrap: wrap; gap: 6px; }
+.qb {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 8px;
+  border: 1.5px solid var(--line); background: none; font-size: 13px; font-weight: 600;
+}
+.qb:hover { border-color: var(--muted); }
+.qb[aria-pressed="true"], .qb[aria-expanded="true"] { border-color: var(--ink); }
+.qb em {
+  font-style: normal; background: var(--ink); color: var(--surface); border-radius: 9px; min-width: 18px;
+  padding: 0 5px; font-size: 11px; line-height: 18px; text-align: center;
+}
+.qb em:empty { display: none; }
+.qb.fav[aria-pressed="true"] { border-color: var(--fav); color: var(--fav); }
+.qb.fav[aria-pressed="true"] em { background: var(--fav); }
+.qb.near[aria-pressed="true"] { border-color: var(--stamp); color: var(--stamp); }
+.qb .spin { display: none; width: 12px; height: 12px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: spin .7s linear infinite; }
+.qb.loading .spin { display: inline-block; }
+.qb.loading svg { display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Расширенные фильтры */
+.filters { display: grid; gap: 14px; padding: 14px; border-radius: 12px; background: var(--paper); }
+.frow { display: grid; gap: 7px; }
+.seg { display: flex; border: 1.5px solid var(--line); border-radius: 10px; padding: 3px; gap: 3px; background: var(--surface); }
+.seg button {
+  flex: 1 1 0; min-width: 0; border: 0; background: none; border-radius: 7px; padding: 7px 6px;
+  font-size: 13px; font-weight: 600; color: var(--muted);
+}
+.seg button:hover { color: var(--ink); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 14px; font-weight: 500; cursor: pointer; }
+.switch small { display: block; color: var(--muted); font-size: 12px; font-weight: 400; }
+.switch input { position: absolute; opacity: 0; pointer-events: none; }
+.switch b { width: 38px; height: 22px; border-radius: 11px; background: var(--line); position: relative; flex: none; transition: background .15s; }
+.switch b::after {
+  content: ""; position: absolute; left: 3px; top: 3px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--surface); box-shadow: 0 1px 2px rgba(0,0,0,.25); transition: transform .15s;
+}
+.switch input:checked + b { background: var(--ok); }
+.switch input:checked + b::after { transform: translateX(16px); }
+.switch input:focus-visible + b { outline: 2px solid var(--stamp); outline-offset: 2px; }
+.freset { justify-self: start; border: 0; background: none; padding: 0; font-size: 13px; font-weight: 600; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+.freset:hover { color: var(--ink); }
+
+.bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 9px 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--paper);
+}
+.bar .count {
+  font: 700 12px/1 var(--f-mono); color: var(--ink); border: 0; background: none; padding: 4px 0;
+  display: inline-flex; align-items: center; gap: 6px; cursor: default; white-space: nowrap;
+}
+.bar .count .chev { display: none; transition: transform .15s; }
+.sortwrap { position: relative; display: inline-flex; align-items: center; min-width: 0; }
+.sortwrap select {
+  -webkit-appearance: none; appearance: none; border: 0; background: none; font-size: 13px; font-weight: 600;
+  color: var(--muted); padding: 4px 18px 4px 4px; cursor: pointer; text-align: right; min-width: 0; max-width: 100%;
+}
+.sortwrap select:hover { color: var(--ink); }
+.sortwrap svg { position: absolute; right: 2px; pointer-events: none; color: var(--muted); }
+
+/* Список — как перечень станций на линии */
+.list { list-style: none; margin: 0; padding: 6px 0 12px; overflow-y: auto; flex: 1; min-height: 0; overscroll-behavior: contain; }
+.item {
+  width: 100%; display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; column-gap: 12px; align-items: center;
+  padding: 11px 24px; border: 0; background: none; text-align: left; position: relative;
+}
+.item::before { content: ""; position: absolute; left: 33px; top: 0; bottom: 0; width: 4px; background: var(--line); }
+li:first-child .item::before { top: 50%; }
+li:last-child .item::before { bottom: 50%; }
+.item .dot {
+  width: 16px; height: 16px; border-radius: 50%; background: var(--surface); border: 4px solid var(--c);
+  position: relative; justify-self: center; transition: transform .15s;
+}
+.item .name { font-weight: 600; font-size: 15px; line-height: 1.25; min-width: 0; overflow-wrap: anywhere; }
+.item .name .heart { color: var(--fav); font-size: 12px; margin-left: 4px; vertical-align: 1px; }
+.item .meta { display: block; font-size: 12.5px; color: var(--muted); margin-top: 3px; font-weight: 400; }
+.item .meta .warn { color: var(--warn); font-weight: 600; }
+.item .meta .dist { color: var(--stamp); font-weight: 600; }
+.item .val { font: 800 26px/1 var(--f-display); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.item .val.word { font-size: 19px; text-transform: uppercase; }
+.item:hover, .item.active { background: var(--paper); }
+.item.active .dot { transform: scale(1.25); }
+.item.past .dot { border-color: var(--off); }
+.item.past .name, .item.past .val { color: var(--off); }
+.empty { padding: 36px 24px; color: var(--muted); text-align: center; }
+.empty strong { display: block; color: var(--ink); font-size: 16px; margin-bottom: 4px; }
+.empty button { margin-top: 14px; border: 1.5px solid var(--ink); background: none; border-radius: 8px; padding: 8px 14px; font-weight: 600; }
+.note { padding: 12px 24px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); }
+
+/* ================= Карта ================= */
+.mapwrap { position: relative; min-width: 0; }
+#map { position: absolute; inset: 0; background: var(--paper); }
+.leaflet-container { font-family: var(--f-body); background: var(--paper); }
+.leaflet-tile-pane { filter: var(--tiles); }
+.maplibregl-map { font-family: var(--f-body); }
+.maplibregl-canvas { filter: var(--tiles); }
+.leaflet-control-attribution { background: color-mix(in srgb, var(--surface) 80%, transparent) !important; color: var(--muted); font-size: 10px; }
+.leaflet-control-attribution a { color: var(--muted); }
+.leaflet-bar { border: 0 !important; box-shadow: var(--shadow) !important; border-radius: 10px !important; overflow: hidden; }
+.leaflet-bar a, .leaflet-bar button {
+  background: var(--surface) !important; color: var(--ink) !important; border-bottom: 1px solid var(--line) !important;
+  width: 38px !important; height: 38px !important; line-height: 38px !important; font-size: 20px !important;
+  display: grid !important; place-items: center; padding: 0; border-top: 0; border-left: 0; border-right: 0;
+}
+.leaflet-bar > :last-child { border-bottom: 0 !important; }
+
+/* Метка-станция */
+.st-icon { background: none; border: 0; }
+.st { position: absolute; left: 0; top: 0; display: flex; align-items: center; transform: translate(-9px, -50%); }
+.st i {
+  width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 5px solid var(--c); flex: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,.35); transition: transform .15s;
+}
+.st span {
+  margin-left: 5px; background: #fff; color: #17181a; border-radius: 4px; padding: 2px 6px 1px;
+  font: 800 17px/1 var(--f-display); white-space: nowrap; box-shadow: 0 1px 4px rgba(0,0,0,.25);
+  border-left: 3px solid var(--c);
+}
+.st span.hide { visibility: hidden; }
+.st.left { flex-direction: row-reverse; transform: translate(calc(-100% + 9px), -50%); }
+.st.left span { margin: 0 5px 0 0; border-left: 0; border-right: 3px solid var(--c); }
+.st.past.left span { border-right-color: #9a9ca3; }
+.st.past i { border-color: #9a9ca3; }
+.st.past span { color: #8a8c93; border-left-color: #9a9ca3; }
+.st.sel i { transform: scale(1.45); }
+.st.sel span { visibility: visible; background: #17181a; color: #fff; }
+.leaflet-marker-icon:hover .st span { visibility: visible; }
+.me { width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #2f6bff; border: 3px solid #fff; box-shadow: 0 0 0 6px rgba(47,107,255,.25), 0 1px 4px rgba(0,0,0,.4); }
+
+/* Подсказка для первого визита */
+.hint {
+  position: absolute; z-index: 999; left: 50%; top: 20px; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 16px; border-radius: 12px;
+  background: var(--ink); color: var(--surface); box-shadow: var(--shadow); font-size: 14px; font-weight: 500;
+  width: max-content; max-width: calc(100% - 120px);
+}
+.hint i { width: 14px; height: 14px; border-radius: 50%; border: 4px solid #0078BE; background: #fff; flex: none; }
+.hint button { border: 0; border-radius: 8px; background: color-mix(in srgb, var(--surface) 18%, transparent); color: var(--surface); padding: 6px 10px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+
+/* ================= Билет ================= */
+.ticket {
+  position: absolute; z-index: 1000; left: 24px; top: 24px; width: min(380px, calc(100% - 48px));
+  max-height: calc(100% - 48px); overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
+  background: var(--surface); border-radius: 14px; box-shadow: var(--shadow);
+  animation: rise .2s cubic-bezier(.2,.8,.3,1);
+}
+@keyframes rise { from { transform: translateY(10px); opacity: .3; } }
+.t-head { padding: 16px 22px 14px; border-top: 6px solid var(--c); border-radius: 14px 14px 0 0; }
+.t-top { display: flex; align-items: center; gap: 8px; }
+.t-cat { display: inline-flex; align-items: center; gap: 7px; margin-right: auto; }
+.t-cat i { width: 12px; height: 12px; border-radius: 50%; border: 3.5px solid var(--c); }
+.t-no { font: 12px/1 var(--f-mono); color: var(--muted); margin-right: 4px; }
+.icon-btn {
+  width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface);
+  display: grid; place-items: center; flex: none; color: var(--ink);
+}
+.icon-btn:hover { border-color: var(--ink); }
+.icon-btn.faved { color: var(--fav); border-color: var(--fav); }
+.icon-btn.faved svg path { fill: currentColor; }
+.t-head h2 { margin: 12px 0 8px; font: 800 36px/.92 var(--f-display); text-transform: uppercase; text-wrap: balance; overflow-wrap: anywhere; }
+.t-addr { display: flex; gap: 6px; align-items: flex-start; color: var(--muted); font-size: 14px; }
+.t-addr svg { flex: none; margin-top: 2px; }
+.t-addr b { color: var(--stamp); font-weight: 600; white-space: nowrap; }
+
+.perf { position: relative; height: 14px; }
+.perf::before { content: ""; position: absolute; left: 22px; right: 22px; top: 50%; border-top: 2px dashed var(--line); }
+
+.t-body { padding: 10px 22px 22px; display: grid; gap: 20px; }
+.deal { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px; align-items: center; }
+.stamp { width: 120px; height: 120px; color: var(--stamp); transform: rotate(-9deg); display: block; overflow: visible; }
+.stamp text { fill: currentColor; }
+.stamp .big { font-family: var(--f-display); font-weight: 800; }
+.stamp .arc { font: 700 9.5px var(--f-body); letter-spacing: 2.2px; }
+.past .stamp { color: var(--off); }
+.deal .label { display: block; margin-bottom: 6px; }
+.deal p { margin: 0; font-size: 14.5px; }
+.who { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.who span { font-size: 12px; font-weight: 600; border: 1.5px solid var(--line); border-radius: 6px; padding: 3px 7px; }
+
+.bring {
+  display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 10px; background: var(--paper);
+  font-size: 13.5px;
+}
+.bring svg { flex: none; color: var(--stamp); }
+
+/* Срок действия — перегон между двумя станциями */
+.term { display: grid; gap: 8px; }
+.term-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.status { font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px; border: 1.5px solid currentColor; }
+.status.ok { color: var(--ok); } .status.warn { color: var(--warn); } .status.off { color: var(--off); }
+.track { position: relative; height: 18px; margin: 2px 7px 0; }
+.track .rail { position: absolute; left: 0; right: 0; top: 7px; height: 4px; background: var(--line); border-radius: 2px; }
+.track .done { position: absolute; left: 0; top: 7px; height: 4px; background: var(--c); border-radius: 2px; }
+.track .stop { position: absolute; top: 2px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: var(--surface); border: 3.5px solid var(--c); }
+.track .now { position: absolute; top: 0; width: 3px; height: 18px; margin-left: -1.5px; background: var(--ink); border-radius: 2px; }
+.past .track { --c: var(--off); }
+.dates { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: end; font: 13px/1.3 var(--f-mono); font-variant-numeric: tabular-nums; }
+.dates span:last-child { text-align: right; }
+.dates small { display: block; font: 600 10px/1 var(--f-body); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-bottom: 4px; }
+.dates .today { text-align: center; font: 600 12px/1.3 var(--f-body); color: var(--muted); white-space: nowrap; }
+
+.perm { margin: 0; font-size: 14px; font-weight: 500; }
+.source { margin: -6px 0 0; font-size: 12.5px; color: var(--muted); }
+.source a { color: var(--muted); text-underline-offset: 2px; }
+.source a:hover { color: var(--ink); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.actions .btn { flex: 1 1 auto; }
+.actions .btn.primary { flex: 1 1 100%; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px; text-decoration: none;
+  padding: 11px 14px; border-radius: 10px; font-weight: 600; font-size: 14px;
+  border: 1.5px solid var(--line); color: var(--ink); background: var(--surface); white-space: nowrap;
+}
+.btn:hover { border-color: var(--ink); }
+.btn.primary { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.btn.primary:hover { opacity: .9; }
+
+.toast {
+  position: absolute; z-index: 1100; left: 50%; bottom: 28px; transform: translateX(-50%);
+  background: var(--ink); color: var(--surface); padding: 10px 16px; border-radius: 10px; font-size: 14px; font-weight: 600;
+  box-shadow: var(--shadow); max-width: calc(100% - 32px); text-align: center;
+}
+
+/* ================= Телефон ================= */
+@media (max-width: 780px) {
+  body { grid-template-columns: minmax(0, 1fr); }
+  .mapwrap, .panel { grid-row: 1; grid-column: 1; }
+  .panel {
+    align-self: end; z-index: 1001; max-height: 84%; border-right: 0; border-radius: 18px 18px 0 0;
+    box-shadow: 0 -10px 30px -10px rgba(0,0,0,.3); padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .handle { display: block; width: 40px; height: 4px; border-radius: 2px; background: var(--line); margin: 0 auto -4px; }
+  .head { padding: 10px 16px 12px; gap: 10px; }
+  .brand { display: none; }
+  .lines, .quick { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 0 16px 2px; scrollbar-width: none; }
+  .lines::-webkit-scrollbar, .quick::-webkit-scrollbar { display: none; }
+  .qb { flex: none; }
+  .bar { padding: 8px 16px; }
+  .bar .count { cursor: pointer; font-size: 13px; }
+  .bar .count .chev { display: block; }
+  .panel:not(.collapsed) .count .chev { transform: rotate(180deg); }
+  .item { padding: 10px 16px; }
+  .item::before { left: 25px; }
+  .note { padding: 10px 16px; }
+  .panel.collapsed .list, .panel.collapsed .note { display: none; }
+  .panel.collapsed .bar { border-bottom: 0; }
+  .ticket {
+    left: 0; top: auto; bottom: 0; width: 100%; max-height: 74%; border-radius: 18px 18px 0 0; z-index: 1002;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .t-head { border-radius: 18px 18px 0 0; }
+  .t-head h2 { font-size: 30px; margin: 10px 0 6px; }
+  .t-head { padding: 14px 18px 12px; }
+  .t-body { padding: 8px 18px 18px; gap: 16px; }
+  .perf::before { left: 18px; right: 18px; }
+  .actions .btn.primary { flex: 1 1 auto; }
+  .hint { top: 12px; left: 12px; right: 64px; transform: none; max-width: none; width: auto; }
+  .leaflet-top.leaflet-right { top: env(safe-area-inset-top, 0px); }
+}
+@media (max-width: 380px) {
+  .deal { grid-template-columns: 96px minmax(0, 1fr); }
+  .stamp { width: 96px; height: 96px; }
+}
+@media (prefers-reduced-motion: reduce) { .ticket { animation: none; } .st i, .item .dot { transition: none; } }
+</style>
+</head>
+<body>
+
+<aside class="panel collapsed" id="panel" aria-label="Поиск и список мест">
+  <div class="head">
+    <div class="handle" aria-hidden="true"></div>
+    <div class="brand">
+      <h1>Студкарта<small>Где студенческий билет работает как скидка</small></h1>
+      <span class="city" id="city">МОСКВА</span>
+    </div>
+    <label class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Музей, кино, улица…" aria-label="Поиск по названию, адресу или категории" autocomplete="off" enterkeyhint="search">
+      <button class="clear" id="qclear" type="button" aria-label="Очистить поиск" hidden><svg width="10" height="10" viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.8"><path d="M1 1l8 8M9 1 1 9"/></svg></button>
+    </label>
+    <div class="lines" id="cats" role="group" aria-label="Категории"></div>
+    <div class="quick">
+      <button class="qb" id="ftoggle" type="button" aria-expanded="false" aria-controls="filters">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 6h18M7 12h10M10 18h4"/></svg>Фильтры <em id="fcount"></em></button>
+      <button class="qb near" id="near" type="button" aria-pressed="false" title="Показать места рядом со мной">
+        <span class="spin" aria-hidden="true"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg>Рядом</button>
+      <button class="qb fav" id="favonly" type="button" aria-pressed="false">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>Избранное <em id="favcount"></em></button>
+    </div>
+    <div class="filters" id="filters" hidden>
+      <div class="frow">
+        <span class="label">Где вы учитесь</span>
+        <div class="seg" id="who" role="group" aria-label="Где вы учитесь">
+          <button type="button" data-v="" aria-pressed="true">Не важно</button>
+          <button type="button" data-v="vuz" aria-pressed="false">Вуз</button>
+          <button type="button" data-v="college" aria-pressed="false">Колледж</button>
+        </div>
+      </div>
+      <div class="frow">
+        <span class="label">Размер скидки</span>
+        <div class="seg" id="size" role="group" aria-label="Размер скидки">
+          <button type="button" data-v="0" aria-pressed="true">Любая</button>
+          <button type="button" data-v="30" aria-pressed="false">От 30%</button>
+          <button type="button" data-v="100" aria-pressed="false">Бесплатно</button>
+        </div>
+      </div>
+      <label class="switch" for="activeOnly"><span>Только действующие сегодня<small>Скрыть закончившиеся и ещё не начавшиеся</small></span><input type="checkbox" id="activeOnly" checked><b aria-hidden="true"></b></label>
+      <button class="freset" id="freset" type="button">Сбросить все фильтры</button>
+    </div>
+  </div>
+
+  <div class="bar">
+    <button class="count" id="countbtn" type="button" aria-expanded="false" aria-controls="list"><span id="count"></span><svg class="chev" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8l4-4 4 4"/></svg></button>
+    <label class="sortwrap"><span class="label" hidden>Сортировка</span>
+      <select id="sort" aria-label="Сортировка">
+        <option value="size">Сначала большие скидки</option>
+        <option value="end">Сначала скоро закончатся</option>
+        <option value="near">Сначала ближайшие</option>
+        <option value="name">По алфавиту</option>
+      </select>
+      <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg>
+    </label>
+  </div>
+  <ul class="list" id="list"></ul>
+  <div class="note" id="note"></div>
+</aside>
+
+<main class="mapwrap">
+  <div id="map" aria-label="Карта организаций со студенческими скидками"></div>
+  <div class="hint" id="hint" hidden><i aria-hidden="true"></i><span>Нажмите на точку, чтобы узнать скидку, адрес и срок</span><button type="button" id="hintok">Понятно</button></div>
+  <article class="ticket" id="ticket" hidden aria-live="polite"></article>
+  <div class="toast" id="toast" hidden role="status"></div>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.20/leaflet-maplibre-gl.js"></script>
+<script src="data.js"></script>
+<script>
+(function () {
+  "use strict";
+  const CATS = window.CATEGORIES;
+  const CFG = Object.assign({ city: "Москва", center: [55.7558, 37.6173], zoom: 12, endingSoonDays: 14, routeMode: "mt", note: "" }, window.SETTINGS);
+  const PLACES = window.PLACES.map((p, i) => ({ ...p, id: i, who: p.who || ["vuz", "college"] }));
+  const DAY = 86400000;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const mobile = matchMedia("(max-width: 780px)");
+  const $ = id => document.getElementById(id);
+
+  $("city").textContent = CFG.city.toUpperCase();
+  $("note").textContent = CFG.note; $("note").hidden = !CFG.note;
+
+  // ---------- Утилиты ----------
+  const parse = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+  const dmy = d => d.toLocaleDateString("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric" });
+  const dm = d => d.toLocaleDateString("ru-RU", { day: "numeric", month: "long" });
+  const plural = (n, a, b, c) => { const t = n % 10, h = n % 100;
+    return t === 1 && h !== 11 ? a : t >= 2 && t <= 4 && (h < 10 || h >= 20) ? b : c; };
+  const days = n => `${n} ${plural(n, "день", "дня", "дней")}`;
+  const esc = s => String(s).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+  // «−50%» → 50, «Бесплатно» → 100, рубли → null
+  const percent = p => /беспл/i.test(p.discount) ? 100 : (m => m ? +m[1] : null)(p.discount.match(/(\d+)\s*%/));
+  const isWord = p => !/\d/.test(p.discount);
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function distKm(a, b) {
+    const R = 6371, r = x => x * Math.PI / 180;
+    const dLat = r(b.lat - a.lat), dLng = r(b.lng - a.lng);
+    const h = Math.sin(dLat / 2) ** 2 + Math.cos(r(a.lat)) * Math.cos(r(b.lat)) * Math.sin(dLng / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(h));
+  }
+  const fmtDist = km => km < 1 ? `${Math.max(50, Math.round(km * 1000 / 50) * 50)} м` : `${km.toFixed(km < 10 ? 1 : 0).replace(".", ",")} км`;
+
+  function status(p) {
+    const from = p.from ? parse(p.from) : null, to = p.to ? parse(p.to) : null;
+    if (from && today < from) { const d = Math.round((from - today) / DAY); return { live: false, past: false, cls: "warn", text: `Начнётся через ${days(d)}`, short: `начнётся ${dm(from)}`, flag: true }; }
+    if (!to) return { live: true, past: false, cls: "ok", text: "Действует", short: "постоянно", perm: true };
+    if (today > to) return { live: false, past: true, cls: "off", text: "Закончилась", short: `закончилась ${dm(to)}` };
+    const left = Math.round((to - today) / DAY);
+    if (left <= CFG.endingSoonDays) return { live: true, past: false, cls: "warn", text: left === 0 ? "Последний день" : `Осталось ${days(left)}`, short: left === 0 ? "последний день" : `осталось ${days(left)}`, flag: true };
+    return { live: true, past: false, cls: "ok", text: "Действует", short: `до ${dm(to)}` };
+  }
+
+  // ---------- Состояние ----------
+  const state = { q: "", cats: new Set(), who: "", size: 0, live: true, favOnly: false, sort: "size", sel: null, me: null };
+  const favs = new Set(store.get("studmap:favs", []));
+  const isFav = p => favs.has(p.name);
+  const distOf = p => state.me ? distKm(state.me, p) : null;
+
+  // ---------- Карта ----------
+  const map = L.map("map", { zoomControl: false }).setView(CFG.center, CFG.zoom);
+  L.control.zoom({ position: "topright", zoomInTitle: "Приблизить", zoomOutTitle: "Отдалить" }).addTo(map);
+  // Бесплатная векторная подложка OpenFreeMap на данных OpenStreetMap.
+  // API-ключ, регистрация и платный тариф не нужны.
+  // Leaflet продолжает управлять картой и маркерами, а MapLibre рисует подложку.
+  L.maplibreGL({
+    style: "https://tiles.openfreemap.org/styles/liberty"
+  }).addTo(map);
+  map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
+  map.attributionControl.addAttribution('<a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>');
+
+  const FitControl = L.Control.extend({
+    options: { position: "topright" },
+    onAdd() {
+      const box = L.DomUtil.create("div", "leaflet-bar");
+      box.innerHTML = '<button type="button" title="Показать все найденные места" aria-label="Показать все найденные места"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>';
+      L.DomEvent.disableClickPropagation(box);
+      box.firstChild.addEventListener("click", () => fitVisible(true));
+      return box;
+    }
+  });
+  map.addControl(new FitControl());
+
+  const markers = {};
+  PLACES.forEach(p => {
+    const st = status(p);
+    const icon = L.divIcon({
+      className: "st-icon", iconSize: [0, 0],
+      html: `<div class="st ${st.past ? "past" : ""}" style="--c:${CATS[p.category].color}"><i></i><span>${esc(p.discount)}</span></div>`
+    });
+    markers[p.id] = L.marker([p.lat, p.lng], { icon, title: `${p.name}: ${p.discount}`, alt: p.name, riseOnHover: true })
+      .on("click", () => open(p.id, false));
+  });
+  let meMarker = null;
+
+  // Подписи со скидками: показываем все, что не налезают друг на друга (большие скидки в приоритете)
+  let labelRaf = 0;
+  function layoutLabels() {
+    cancelAnimationFrame(labelRaf);
+    labelRaf = requestAnimationFrame(() => {
+      // точки всех меток — препятствия для подписей
+      const placed = [];
+      // кнопки карты и подсказка тоже не должны закрывать подписи
+      document.querySelectorAll(".leaflet-top .leaflet-control, #hint:not([hidden])").forEach(el => placed.push({ id: -1, r: el.getBoundingClientRect() }));
+      visibleList.forEach(p => { const d = markers[p.id].getElement()?.querySelector(".st i"); if (d) placed.push({ id: p.id, r: d.getBoundingClientRect() }); });
+      const order = visibleList.slice().sort((a, b) =>
+        (b.id === state.sel) - (a.id === state.sel) || (percent(b) ?? 15) - (percent(a) ?? 15));
+      order.forEach(p => {
+        const span = markers[p.id].getElement()?.querySelector(".st span");
+        if (!span) return;
+        const st = span.parentNode;
+        const box = map.getContainer().getBoundingClientRect();
+        const hits = r => r.left < box.left + 4 || r.right > box.right - 4 || r.top < box.top || placed.some(({ id, r: o }) => id !== p.id && r.left < o.right + 3 && r.right + 3 > o.left && r.top < o.bottom + 2 && r.bottom + 2 > o.top);
+        span.classList.remove("hide");
+        for (const side of ["right", "left"]) {
+          st.classList.toggle("left", side === "left");
+          const r = span.getBoundingClientRect();
+          if (!hits(r)) { placed.push({ id: p.id, r }); return; }
+        }
+        st.classList.remove("left");
+        span.classList.add("hide");
+      });
+    });
+  }
+  map.on("zoomend", layoutLabels);
+
+  // ---------- Фильтры ----------
+  const catsEl = $("cats");
+  catsEl.innerHTML = `<button class="ln" type="button" data-cat="" aria-pressed="true"><i></i>Все</button>` +
+    Object.entries(CATS).map(([k, c]) => `<button class="ln" type="button" data-cat="${k}" aria-pressed="false" style="--c:${c.color}"><i></i>${c.label}</button>`).join("");
+  catsEl.addEventListener("click", e => {
+    const b = e.target.closest(".ln"); if (!b) return;
+    const k = b.dataset.cat;
+    if (!k) state.cats.clear(); else state.cats.has(k) ? state.cats.delete(k) : state.cats.add(k);
+    syncControls(); render(true);
+  });
+
+  function segment(id, key, cast) {
+    $(id).addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      state[key] = cast(b.dataset.v); syncControls(); render(true);
+    });
+  }
+  segment("who", "who", String);
+  segment("size", "size", Number);
+
+  const qEl = $("q");
+  qEl.addEventListener("input", () => { state.q = qEl.value.trim().toLowerCase(); $("qclear").hidden = !qEl.value; render(true); });
+  qEl.addEventListener("keydown", e => { if (e.key === "Enter" && visibleList.length) { qEl.blur(); open(visibleList[0].id, true); } });
+  $("qclear").addEventListener("click", () => { qEl.value = ""; state.q = ""; $("qclear").hidden = true; qEl.focus(); render(true); });
+  $("activeOnly").addEventListener("change", e => { state.live = e.target.checked; syncControls(); render(true); });
+  $("freset").addEventListener("click", resetAll);
+
+  $("ftoggle").addEventListener("click", () => {
+    const f = $("filters"), openF = f.hidden;
+    f.hidden = !openF; $("ftoggle").setAttribute("aria-expanded", openF);
+    if (openF && mobile.matches) expand(true);
+  });
+  $("favonly").addEventListener("click", () => {
+    if (!favs.size && !state.favOnly) { toast("Пока пусто. Нажмите ♡ в карточке места, чтобы сохранить его"); return; }
+    state.favOnly = !state.favOnly; syncControls(); render(true);
+  });
+  $("near").addEventListener("click", () => {
+    if (state.me) { state.me = null; meMarker?.remove(); if (state.sort === "near") state.sort = "size"; syncControls(); render(true); return; }
+    locate(() => { state.sort = "near"; syncControls(); render(false); fitNear(); });
+  });
+  $("sort").addEventListener("change", e => {
+    const v = e.target.value;
+    if (v === "near" && !state.me) { locate(() => { state.sort = "near"; syncControls(); render(false); fitNear(); }, () => { e.target.value = state.sort; }); return; }
+    state.sort = v; render(false);
+    $("list").scrollTop = 0;
+  });
+
+  function locate(onOk, onFail) {
+    const btn = $("near");
+    const fail = msg => { btn.classList.remove("loading"); toast(msg); onFail && onFail(); };
+    if (!navigator.geolocation) return fail("Браузер не умеет определять местоположение");
+    btn.classList.add("loading");
+    navigator.geolocation.getCurrentPosition(pos => {
+      btn.classList.remove("loading");
+      state.me = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      if (distKm(state.me, { lat: CFG.center[0], lng: CFG.center[1] }) > 60) toast("Вы далеко от города на карте — расстояния будут большими");
+      meMarker?.remove();
+      meMarker = L.marker([state.me.lat, state.me.lng], { icon: L.divIcon({ className: "", html: '<div class="me"></div>', iconSize: [0, 0] }), interactive: false, keyboard: false, zIndexOffset: -100 }).addTo(map);
+      onOk();
+    }, err => fail(err.code === 1 ? "Разрешите доступ к геопозиции в настройках браузера" : "Не получилось определить, где вы. Попробуйте ещё раз"),
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+  }
+  function fitNear() {
+    if (!state.me) return;
+    const near = visibleList.slice(0, 3).map(p => [p.lat, p.lng]);
+    map.fitBounds(L.latLngBounds([[state.me.lat, state.me.lng], ...near]), { padding: [60, 60], maxZoom: 15 });
+  }
+
+  function syncControls() {
+    catsEl.querySelectorAll(".ln").forEach(x => x.setAttribute("aria-pressed", x.dataset.cat ? state.cats.has(x.dataset.cat) : state.cats.size === 0));
+    $("who").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x.dataset.v === state.who));
+    $("size").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", +x.dataset.v === state.size));
+    $("activeOnly").checked = state.live;
+    $("favonly").setAttribute("aria-pressed", state.favOnly);
+    $("favcount").textContent = favs.size || "";
+    $("near").setAttribute("aria-pressed", !!state.me);
+    $("sort").value = state.sort;
+    const nf = (state.who ? 1 : 0) + (state.size ? 1 : 0) + (state.live ? 0 : 1);
+    $("fcount").textContent = nf || "";
+  }
+
+  // На телефоне: шторка со списком
+  function expand(on) {
+    $("panel").classList.toggle("collapsed", !on);
+    $("countbtn").setAttribute("aria-expanded", on);
+  }
+  $("countbtn").addEventListener("click", () => {
+    if (!mobile.matches) return;
+    const on = $("panel").classList.contains("collapsed");
+    expand(on); if (on) close();
+  });
+  qEl.addEventListener("focus", () => { if (mobile.matches) { expand(true); close(); } });
+
+  function matches(p) {
+    if (state.favOnly && !isFav(p)) return false;
+    if (state.cats.size && !state.cats.has(p.category)) return false;
+    if (state.who && !p.who.includes(state.who)) return false;
+    if (state.size) { const v = percent(p); if (v === null || v < state.size) return false; }
+    if (state.live && !status(p).live) return false;
+    if (state.q) {
+      const hay = `${p.name} ${p.address} ${p.details} ${CATS[p.category].label}`.toLowerCase().replace(/ё/g, "е");
+      if (!state.q.replace(/ё/g, "е").split(/\s+/).every(w => hay.includes(w))) return false;
+    }
+    return true;
+  }
+
+  function sorted(list) {
+    const byName = (a, b) => a.name.localeCompare(b.name, "ru");
+    return list.slice().sort((a, b) => {
+      const pa = status(a).past, pb = status(b).past;
+      if (pa !== pb) return pa ? 1 : -1;
+      if (state.sort === "size") return ((percent(b) ?? 15) - (percent(a) ?? 15)) || byName(a, b);
+      if (state.sort === "end") return ((a.to ? parse(a.to) : Infinity) - (b.to ? parse(b.to) : Infinity)) || byName(a, b);
+      if (state.sort === "near" && state.me) return distOf(a) - distOf(b);
+      return byName(a, b);
+    });
+  }
+
+  let visibleList = [];
+  function render(refit) {
+    visibleList = sorted(PLACES.filter(matches));
+    const ids = new Set(visibleList.map(p => p.id));
+    PLACES.forEach(p => ids.has(p.id) ? markers[p.id].addTo(map) : markers[p.id].remove());
+
+    const n = visibleList.length;
+    $("count").textContent = `${n} ${plural(n, "место", "места", "мест")}`;
+    syncControls();
+
+    $("list").innerHTML = n ? visibleList.map(p => {
+      const st = status(p), d = distOf(p);
+      return `<li><button class="item ${st.past ? "past" : ""} ${state.sel === p.id ? "active" : ""}" type="button" data-id="${p.id}" style="--c:${CATS[p.category].color}">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="name">${esc(p.name)}${isFav(p) ? '<span class="heart" aria-label="в избранном">♥</span>' : ""}<span class="meta">${d !== null ? `<span class="dist">${fmtDist(d)}</span> · ` : ""}${esc(CATS[p.category].label)} · <span class="${st.flag ? "warn" : ""}">${st.short}</span></span></span>
+        <span class="val ${isWord(p) ? "word" : ""}">${esc(p.discount)}</span></button></li>`;
+    }).join("") : emptyState();
+    $("reset")?.addEventListener("click", resetAll);
+
+    if (state.sel !== null) {
+      if (!ids.has(state.sel)) close();
+      else markers[state.sel].getElement()?.querySelector(".st")?.classList.add("sel");
+    }
+    if (refit) fitVisible(false);
+    layoutLabels();
+  }
+
+  function emptyState() {
+    const why = state.favOnly ? "В избранном нет мест под эти условия."
+      : state.q ? `По запросу «${esc(qEl.value)}» ничего не нашлось.`
+      : "Под выбранные фильтры ничего не подходит.";
+    const tip = state.live ? "Попробуйте показать и закончившиеся скидки или сбросить фильтры." : "Попробуйте сбросить фильтры.";
+    return `<li class="empty"><strong>Пусто</strong>${why}<br>${tip}<br><button type="button" id="reset">Сбросить фильтры</button></li>`;
+  }
+
+  const sized = () => { const z = map.getSize(); return z.x > 0 && z.y > 0; };
+  let pendingFit = false;
+  function fitVisible(animate) {
+    if (!visibleList.length) return;
+    if (!sized()) { pendingFit = true; return; }
+    const b = L.latLngBounds(visibleList.map(p => [p.lat, p.lng]));
+    const pad = mobile.matches ? { paddingTopLeft: [30, 40], paddingBottomRight: [60, 200] } : { padding: [60, 60] };
+    if (visibleList.length === 1) map.setView(b.getCenter(), 15, { animate });
+    else map.fitBounds(b, { ...pad, maxZoom: 15, animate });
+  }
+
+  function resetAll() {
+    state.q = ""; state.cats.clear(); state.who = ""; state.size = 0; state.live = true; state.favOnly = false;
+    qEl.value = ""; $("qclear").hidden = true;
+    render(true);
+  }
+
+  $("list").addEventListener("click", e => {
+    const b = e.target.closest(".item"); if (b) open(+b.dataset.id, true);
+  });
+
+  // ---------- Билет ----------
+  const ticket = $("ticket");
+  const WHO = { vuz: "Студентам вузов", college: "Студентам колледжей" };
+
+  function stamp(p) {
+    // Верхняя дуга идёт по часовой (текст снаружи линии), нижняя — против (текст внутри), чтобы обе читались слева направо
+    return `<svg class="stamp" viewBox="0 0 120 120" role="img" aria-label="Скидка ${esc(p.discount)}">
+      <defs>
+        <path id="arcT${p.id}" d="M 17,60 A 43,43 0 0 1 103,60"/>
+        <path id="arcB${p.id}" d="M 11,60 A 49,49 0 0 0 109,60"/>
+      </defs>
+      <circle cx="60" cy="60" r="57" fill="none" stroke="currentColor" stroke-width="2.6"/>
+      <circle cx="60" cy="60" r="38" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <text class="arc" text-anchor="middle"><textPath href="#arcT${p.id}" startOffset="50%">СТУДЕНТАМ</textPath></text>
+      <text class="arc" text-anchor="middle"><textPath href="#arcB${p.id}" startOffset="50%">${esc(CFG.city.toUpperCase())}</textPath></text>
+      <text x="13.5" y="63.5" font-size="10" text-anchor="middle">★</text>
+      <text x="106.5" y="63.5" font-size="10" text-anchor="middle">★</text>
+      <text class="big" x="60" y="61" text-anchor="middle" dominant-baseline="central" font-size="34">${esc(p.discount)}</text>
+    </svg>`;
+  }
+  // Подгоняем размер числа в печати под внутренний круг
+  function fitStamp() {
+    const t = ticket.querySelector(".stamp .big"); if (!t) return;
+    let fs = 34; t.setAttribute("font-size", fs);
+    while (fs > 10 && t.getComputedTextLength() > 62) { fs -= 1; t.setAttribute("font-size", fs); }
+  }
+  document.fonts?.ready.then(fitStamp);
+
+  function open(id, fly) {
+    const p = PLACES[id], c = CATS[p.category], st = status(p), d = distOf(p);
+    const from = p.from ? parse(p.from) : null, to = p.to ? parse(p.to) : null;
+    const prog = from && to ? Math.max(0, Math.min(100, (today - from) / (to - from) * 100)) : 0;
+    state.sel = id;
+    hideHint();
+    document.querySelectorAll(".st.sel").forEach(el => el.classList.remove("sel"));
+    markers[id].getElement()?.querySelector(".st")?.classList.add("sel");
+    document.querySelectorAll(".item").forEach(el => el.classList.toggle("active", +el.dataset.id === id));
+
+    ticket.style.setProperty("--c", c.color);
+    ticket.classList.toggle("past", st.past);
+    ticket.innerHTML = `
+      <div class="t-head">
+        <div class="t-top">
+          <span class="t-cat label"><i></i>${esc(c.label)}</span>
+          <span class="t-no">№ ${String(id + 1).padStart(4, "0")}</span>
+          <button class="icon-btn favbtn ${isFav(p) ? "faved" : ""}" type="button" aria-pressed="${isFav(p)}" aria-label="${isFav(p) ? "Убрать из избранного" : "Сохранить в избранное"}" title="${isFav(p) ? "Убрать из избранного" : "Сохранить в избранное"}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></button>
+          <button class="icon-btn close" type="button" aria-label="Закрыть" title="Закрыть"><svg width="13" height="13" viewBox="0 0 14 14" stroke="currentColor" stroke-width="2"><path d="M2 2l10 10M12 2 2 12"/></svg></button>
+        </div>
+        <h2>${esc(p.name)}</h2>
+        <div class="t-addr"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg><span>${esc(p.address)}${d !== null ? ` · <b>${fmtDist(d)} от вас</b>` : ""}</span></div>
+      </div>
+      <div class="perf" aria-hidden="true"></div>
+      <div class="t-body">
+        <div class="deal">
+          ${stamp(p)}
+          <div>
+            <span class="label">Условия</span>
+            <p>${esc(p.details)}</p>
+            <div class="who">${p.who.map(w => `<span>${WHO[w]}</span>`).join("")}</div>
+          </div>
+        </div>
+        <div class="bring">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.6-1.5 1.7-2 3-2s2.4.5 3 2M14 10h4M14 13h3"/></svg>
+          <span>Покажите на кассе студенческий билет. Без него скидку могут не дать.</span>
+        </div>
+        <div class="term">
+          <div class="term-head"><span class="label">Срок действия</span><span class="status ${st.cls}">${st.text}</span></div>
+          ${to ? `<div class="track" aria-hidden="true">
+            <span class="rail"></span><span class="done" style="width:${prog}%"></span>
+            <span class="stop" style="left:0"></span><span class="stop" style="left:100%"></span>
+            ${st.live ? `<span class="now" style="left:${prog}%"></span>` : ""}
+          </div>
+          <div class="dates">
+            <span><small>с</small>${from ? dmy(from) : "—"}</span>
+            <span class="today">${st.live ? `сегодня ${dm(today)}` : ""}</span>
+            <span><small>по</small>${dmy(to)}</span>
+          </div>` : `<p class="perm">Постоянная скидка, без даты окончания${from ? ` · действует с ${dmy(from)}` : ""}</p>`}
+        </div>
+        ${p.source ? `<p class="source">Источник: <a href="${esc(p.source)}" target="_blank" rel="noopener">${esc(new URL(p.source).hostname.replace(/^www\./, ""))}</a>${CFG.checked ? ` · проверено ${dmy(parse(CFG.checked))}` : ""}</p>` : ""}
+        <div class="actions">
+          <a class="btn primary" href="https://yandex.ru/maps/?rtext=${state.me ? `${state.me.lat},${state.me.lng}` : ""}~${p.lat},${p.lng}&rtt=${CFG.routeMode}" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg>Как добраться</a>
+          ${p.url ? `<a class="btn" href="${esc(p.url)}" target="_blank" rel="noopener">Сайт</a>` : ""}
+          <button class="btn share" type="button">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 3v13M7 8l5-5 5 5"/></svg>Поделиться</button>
+        </div>
+      </div>`;
+    ticket.hidden = false;
+    ticket.scrollTop = 0;
+    fitStamp();
+    ticket.querySelector(".close").addEventListener("click", close);
+    ticket.querySelector(".share").addEventListener("click", () => share(p));
+    ticket.querySelector(".favbtn").addEventListener("click", () => toggleFav(p));
+    try { history.replaceState(null, "", "#p" + (id + 1)); } catch (e) {}
+
+    if (mobile.matches) { expand(false); $("filters").hidden = true; $("ftoggle").setAttribute("aria-expanded", false); }
+    if (!fly && mobile.matches) {
+      // на телефоне поднимаем метку над билетом
+      const pt = map.latLngToContainerPoint([p.lat, p.lng]);
+      const top = map.getSize().y - ticket.offsetHeight - 40;
+      if (pt.y > top) map.panBy([0, pt.y - top]);
+    }
+    if (!fly && !mobile.matches) {
+      // если метку закрывает билет — сдвигаем карту
+      const pt = map.latLngToContainerPoint([p.lat, p.lng]);
+      const edge = ticket.offsetLeft + ticket.offsetWidth + 40;
+      if (pt.x < edge) map.panBy([pt.x - edge, 0]);
+    }
+    if (fly && !sized()) { map.setView([p.lat, p.lng], 15, { animate: false }); pendingFit = false; }
+    else if (fly) {
+      const z = Math.max(map.getZoom(), 15);
+      const shift = mobile.matches ? L.point(0, Math.round(ticket.offsetHeight / 2)) : L.point(-Math.min(200, map.getSize().x / 4), 0);
+      map.flyTo(map.unproject(map.project([p.lat, p.lng], z).add(shift), z), z, { duration: .6 });
+    }
+    layoutLabels();
+  }
+
+  function close() {
+    if (ticket.hidden) return;
+    ticket.hidden = true; state.sel = null;
+    document.querySelectorAll(".st.sel").forEach(el => el.classList.remove("sel"));
+    document.querySelectorAll(".item.active").forEach(el => el.classList.remove("active"));
+    try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    layoutLabels();
+  }
+
+  function toggleFav(p) {
+    if (isFav(p)) { favs.delete(p.name); toast("Убрано из избранного"); }
+    else { favs.add(p.name); toast("Сохранено в избранное"); }
+    store.set("studmap:favs", [...favs]);
+    if (state.favOnly && !favs.size) state.favOnly = false;
+    const sel = state.sel;
+    render(false);
+    if (sel !== null && !ticket.hidden) {
+      const b = ticket.querySelector(".favbtn"), on = isFav(p);
+      b.classList.toggle("faved", on); b.setAttribute("aria-pressed", on);
+      b.setAttribute("aria-label", on ? "Убрать из избранного" : "Сохранить в избранное"); b.title = b.getAttribute("aria-label");
+    }
+  }
+
+  let toastTimer;
+  function toast(msg) {
+    const t = $("toast"); t.textContent = msg; t.hidden = false;
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 2600);
+  }
+  function share(p) {
+    const url = location.href.split("#")[0] + "#p" + (p.id + 1);
+    const text = `${p.name}: студенческая скидка ${p.discount}`;
+    if (mobile.matches && navigator.share) { navigator.share({ title: text, text, url }).catch(() => {}); return; }
+    const fallback = () => {
+      const ta = document.createElement("textarea"); ta.value = url; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      let ok = false; try { ok = document.execCommand("copy"); } catch (e) {}
+      ta.remove(); toast(ok ? "Ссылка скопирована" : url);
+    };
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(url).then(() => toast("Ссылка скопирована — отправьте её другу"), fallback);
+    else fallback();
+  }
+
+  // ---------- Подсказка ----------
+  function hideHint() { if (!$("hint").hidden) { $("hint").hidden = true; store.set("studmap:hint", 1); } }
+  if (!store.get("studmap:hint", 0)) $("hint").hidden = false;
+  $("hintok").addEventListener("click", hideHint);
+
+  map.on("click", close);
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") close();
+    if (e.key === "/" && document.activeElement !== qEl) { e.preventDefault(); qEl.focus(); }
+  });
+
+  // Окно могло открыться свёрнутым (нулевого размера) — подстраиваем карту, когда оно появится
+  new ResizeObserver(() => {
+    if (!sized()) return;
+    map.invalidateSize();
+    if (pendingFit) { pendingFit = false; state.sel !== null ? map.setView([PLACES[state.sel].lat, PLACES[state.sel].lng], 15) : fitVisible(false); }
+    layoutLabels();
+  }).observe($("map"));
+
+  // ---------- Старт ----------
+  render(false);
+  fitVisible(false);
+  function fromHash() {
+    const m = location.hash.match(/^#p(\d+)$/);
+    const p = m && PLACES[+m[1] - 1];
+    if (!p) return;
+    if (!matches(p)) { resetAll(); if (!status(p).live) { state.live = false; render(false); } }
+    open(p.id, true);
+  }
+  window.addEventListener("hashchange", fromHash);
+  fromHash();
+})();
+</script>
+</body>
+</html>
