@@ -433,17 +433,6 @@ window.PLACES = [
     source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
   },
   {
-    name: "Spirit Fitness — Автозаводская",
-    category: "sport",
-    discount: "Льготный",
-    details: "В статье указана студенческая стоимость тарифа; актуальную цену и условия нужно уточнить у клуба. Клуб находится в ТРЦ «Глобал Молл».",
-    address: "Ленинская Слобода, 26, стр. 2, ТРЦ «Глобал Молл»",
-    lat: 55.7102, lng: 37.6635,
-    who: ["vuz", "college"],
-    url: "https://spiritfit.ru/clubs/avtozavodskaya/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
-  },
-  {
     name: "СпортЛэнд",
     category: "sport",
     discount: "−50%",
@@ -566,6 +555,520 @@ window.PLACES = [
     lat: 55.823217, lng: 37.497468,
     who: ["vuz", "college"],
     source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
-  }
+  },
 
+  // ---------- Расширение сетевых организаций ----------
+  {
+    name: "Tanuki — Пятницкая",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка по условиям сети; перед посещением проверьте актуальные условия для студентов.",
+    address: "ул. Пятницкая, 53",
+    lat: 55.74150, lng: 37.62690,
+    who: ["vuz", "college"],
+    url: "https://tanukifamily.ru/",
+    source: "https://tanukifamily.ru/"
+  },
+  {
+    name: "Tanuki — Большая Якиманка",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка по условиям сети; перед посещением проверьте актуальные условия для студентов.",
+    address: "ул. Большая Якиманка, 58/2",
+    lat: 55.73330, lng: 37.59650,
+    who: ["vuz", "college"],
+    url: "https://tanukifamily.ru/",
+    source: "https://tanukifamily.ru/"
+  },
+  {
+    name: "FARШ — Комсомольский",
+    category: "food",
+    discount: "−20%",
+    details: "Постоянная студенческая скидка из подборки «Афиша Daily»; актуальные условия уточняйте у сети.",
+    address: "Комсомольский просп., 24, стр. 1",
+    lat: 55.72740, lng: 37.58150,
+    who: ["vuz", "college"],
+    url: "https://farshburger.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "FARШ — Никольская",
+    category: "food",
+    discount: "−20%",
+    details: "Постоянная студенческая скидка из подборки «Афиша Daily»; актуальные условия уточняйте у сети.",
+    address: "Никольская ул., 12",
+    lat: 55.75950, lng: 37.62530,
+    who: ["vuz", "college"],
+    url: "https://farshburger.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Читай-город — Охотный Ряд",
+    category: "fun",
+    discount: "−15%",
+    details: "Студенческая скидка; условия могут отличаться для отдельных товаров.",
+    address: "Манежная пл., 1, стр. 2, ТЦ «Охотный Ряд»",
+    lat: 55.75520, lng: 37.61330,
+    who: ["vuz", "college"],
+    url: "https://www.chitai-gorod.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Читай-город — Европейский",
+    category: "fun",
+    discount: "−15%",
+    details: "Студенческая скидка; условия могут отличаться для отдельных товаров.",
+    address: "пл. Киевского Вокзала, 2, ТРЦ «Европейский»",
+    lat: 55.74450, lng: 37.56630,
+    who: ["vuz", "college"],
+    url: "https://www.chitai-gorod.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Леонардо — Европейский",
+    category: "fun",
+    discount: "−10%",
+    details: "Студенческая скидка по условиям акции сети.",
+    address: "пл. Киевского Вокзала, 2, ТРЦ «Европейский»",
+    lat: 55.74450, lng: 37.56630,
+    who: ["vuz", "college"],
+    url: "https://leonardo.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Леонардо — Авиапарк",
+    category: "fun",
+    discount: "−10%",
+    details: "Студенческая скидка по условиям акции сети.",
+    address: "Ходынский б-р, 4, ТЦ «Авиапарк»",
+    lat: 55.78990, lng: 37.53100,
+    who: ["vuz", "college"],
+    url: "https://leonardo.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Улыбка радуги — проспект Мира",
+    category: "fun",
+    discount: "−10%",
+    details: "Студенческая скидка по условиям акции сети.",
+    address: "пр-т Мира, 78А",
+    lat: 55.78200, lng: 37.62580,
+    who: ["vuz", "college"],
+    url: "https://www.r-ulybka.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Улыбка радуги — Дубнинская",
+    category: "fun",
+    discount: "−10%",
+    details: "Студенческая скидка по условиям акции сети.",
+    address: "Дубнинская ул., 10, корп. 1",
+    lat: 55.87500, lng: 37.57450,
+    who: ["vuz", "college"],
+    url: "https://www.r-ulybka.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Киномакс — Кожуховская",
+    category: "cinema",
+    discount: "−30%",
+    details: "Студенческая скидка по условиям сети/подборки; перед покупкой уточните ограничения на конкретный сеанс.",
+    address: "7-я Кожуховская ул., 9, ТРЦ «Мозаика»",
+    lat: 55.71070, lng: 37.67510,
+    who: ["vuz", "college"],
+    url: "https://kinomax.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Киномакс — Пражская",
+    category: "cinema",
+    discount: "−30%",
+    details: "Студенческая скидка по условиям сети/подборки; перед покупкой уточните ограничения на конкретный сеанс.",
+    address: "Кировоградская ул., 13А",
+    lat: 55.61270, lng: 37.60500,
+    who: ["vuz", "college"],
+    url: "https://kinomax.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Синема Парк — Филион",
+    category: "cinema",
+    discount: "−20%",
+    details: "Студенческая скидка по условиям сети; актуальные ограничения уточняйте перед покупкой.",
+    address: "Багратионовский пр., 5, ТРЦ «Филион»",
+    lat: 55.74080, lng: 37.50340,
+    who: ["vuz", "college"],
+    url: "https://kinoteatr.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Синема Парк — МЕГА Тёплый Стан",
+    category: "cinema",
+    discount: "−20%",
+    details: "Студенческая скидка по условиям сети; актуальные ограничения уточняйте перед покупкой.",
+    address: "Калужское ш., 21, МЕГА Тёплый Стан",
+    lat: 55.61920, lng: 37.49200,
+    who: ["vuz", "college"],
+    url: "https://kinoteatr.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Ёрш — Космонавтов",
+    category: "food",
+    discount: "−20%",
+    details: "Студенческая скидка по условиям подборки «Афиша Daily»; перед визитом уточните, действует ли акция в конкретном ресторане.",
+    address: "ул. Космонавтов, 15",
+    lat: 55.81780, lng: 37.63980,
+    who: ["vuz", "college"],
+    url: "https://yersh.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+
+
+  // ---------- Сетевые точки: Spirit Fitness (Москва) ----------
+  // Адреса взяты с официального списка клубов Spirit Fitness.
+  // Координаты ниже — привязка к зданиям/участкам улиц; при необходимости сайт
+  // дополнительно может уточнить адрес через геокодирование.
+
+  {
+    name: "Spirit Fitness — Савёловская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Двинцев, вл. 3, БЦ Stone Савеловская",
+    lat: 55.81290, lng: 37.58840,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Юго-Восточная",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Ферганская ул., 17, ТЦ «Ассортида»",
+    lat: 55.70890, lng: 37.81900,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Нижегородская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Рязанский просп., 2, к. 2",
+    lat: 55.73270, lng: 37.74250,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Автозаводская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Ленинская Слобода, 26, стр. 2, ТРЦ «Глобал Молл»",
+    lat: 55.72880, lng: 37.66090,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Аминьевская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Очаковское ш., 3А/8, ТЦ ОМА",
+    lat: 55.70080, lng: 37.47390,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Технопарк",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "просп. Андропова, 8, ТРЦ «Мегаполис»",
+    lat: 55.69590, lng: 37.66480,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Алтуфьево",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Алтуфьевское ш., 24, к. 1, ТЦ «Улей»",
+    lat: 55.86250, lng: 37.58780,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Прокшино",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "ул. Николо-Хованская, 7с1, ТЦ «Сиеста»",
+    lat: 55.58980, lng: 37.44650,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Гагаринский",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "ул. Вавилова, 3, ТРЦ «Гагаринский»",
+    lat: 55.70670, lng: 37.58720,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Рассказовка",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "ул. Корнея Чуковского, 2, ТЦ «Сказка»",
+    lat: 55.63350, lng: 37.34350,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Севастопольский",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Севастопольский пр-т, 28, корп. 2",
+    lat: 55.66470, lng: 37.57830,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Федерация",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Пресненская наб., 12, Москва-Сити, башня «Федерация»",
+    lat: 55.74980, lng: 37.53970,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Войковская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Старопетровский пр., 1, стр. 2, ТЦ Baby Store",
+    lat: 55.82650, lng: 37.50040,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Марьина Роща",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Шереметьевская ул., 6, корп. 1",
+    lat: 55.79680, lng: 37.61620,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Беляево",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "ул. Миклухо-Маклая, 18, к. 2, ТЦ «Беляево»",
+    lat: 55.64490, lng: 37.51940,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Юго-Западная",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "просп. Вернадского, 86А, ТЦ Avenue Southwest",
+    lat: 55.66390, lng: 37.48300,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Каширское шоссе",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Каширское ш., 80, ТЦ «Борисовский»",
+    lat: 55.63280, lng: 37.72910,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Ясенево",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Ясногорская ул., 7А, ТЦ «Этажи»",
+    lat: 55.60090, lng: 37.53380,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Рогожский вал",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Рогожский вал, 10",
+    lat: 55.74640, lng: 37.67850,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Щукинская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "ул. Авиационная, 66",
+    lat: 55.82470, lng: 37.46650,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Крылатское",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Осенний б-р, 12, ТЦ «Крылатский»",
+    lat: 55.75680, lng: 37.41180,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Рязанский проспект",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Рязанский просп., 30, к. 2",
+    lat: 55.72590, lng: 37.77740,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Дежнёва",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "пр-д Дежнёва, 23, ТЦ «Вавилон-92»",
+    lat: 55.87900, lng: 37.63570,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Крымская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Большая Черёмушкинская ул., 1, ТРЦ «РИО»",
+    lat: 55.70070, lng: 37.58480,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Марьино",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Люблинская ул., 169, к. 2, ТРЦ «Мариэль»",
+    lat: 55.65250, lng: 37.74870,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Некрасовка",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Рождественская ул., 20, ТРЦ «Краски»",
+    lat: 55.70330, lng: 37.93300,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Селигерская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Дмитровское ш., 85",
+    lat: 55.86280, lng: 37.54770,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Раменки",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Мичуринский просп., 27, ТЦ «Тиара»",
+    lat: 55.69450, lng: 37.50090,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Семёновская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Семёновская пл., 1, ТЦ «Семёновский»",
+    lat: 55.78250, lng: 37.71800,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Чертановская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "пр-т Балаклавский, 16А",
+    lat: 55.64170, lng: 37.60380,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Строгино",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Строгинский б-р, 1, ТЦ «Дарья»",
+    lat: 55.80460, lng: 37.40170,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  }
 ];
