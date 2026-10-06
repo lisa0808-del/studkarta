@@ -51,6 +51,7 @@
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html, body { height: 100%; margin: 0; }
+body { min-height: 100dvh; }
 body {
   background: var(--paper); color: var(--ink);
   font: 15px/1.45 var(--f-body);
@@ -337,6 +338,31 @@ li:last-child .item::before { bottom: 50%; }
   box-shadow: var(--shadow); max-width: calc(100% - 32px); text-align: center;
 }
 
+/* ================= Метро на карте ================= */
+.metro-map-layer { pointer-events: none; }
+.metro-map-marker {
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  transform: translate(-50%, -50%); white-space:nowrap;
+  pointer-events:none;
+}
+.metro-map-marker .m-badge {
+  width:28px; height:28px; border-radius:50%; display:grid; place-items:center;
+  background:#fff; color:#111; border:3px solid #d52b1e;
+  box-shadow:0 2px 8px rgba(0,0,0,.28);
+  font:800 15px/1 Arial,sans-serif;
+}
+.metro-map-marker .m-name {
+  display:none; max-width:150px; padding:3px 7px; border-radius:7px;
+  background:rgba(255,255,255,.96); color:#111;
+  box-shadow:0 2px 8px rgba(0,0,0,.22);
+  font:700 11px/1.15 var(--f-body); text-align:center;
+}
+.metro-map-marker.metro-label .m-name { display:block; }
+@media (max-width:780px) {
+  .metro-map-marker .m-badge { width:30px; height:30px; font-size:16px; }
+  .metro-map-marker .m-name { max-width:135px; font-size:10px; }
+}
+
 /* ================= Телефон ================= */
 @media (max-width: 780px) {
   body { grid-template-columns: minmax(0, 1fr); }
@@ -349,10 +375,10 @@ li:last-child .item::before { bottom: 50%; }
   }
   .handle {
     display: block; width: 48px; height: 5px; border-radius: 999px; background: var(--line);
-    margin: 6px auto 2px; cursor: pointer; touch-action: manipulation;
+    margin: 8px auto 6px; cursor: pointer; touch-action: manipulation;
   }
   .panel.collapsed {
-    transform: translateY(calc(100% - 18px));
+    transform: translateY(calc(100% - 66px));
     box-shadow: none;
   }
   .panel.collapsed .head { pointer-events: none; }
@@ -375,7 +401,10 @@ li:last-child .item::before { bottom: 50%; }
     left: 0; top: auto; bottom: 0; width: 100%; max-height: 74%; border-radius: 18px 18px 0 0; z-index: 1002;
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
-  .t-head { border-radius: 18px 18px 0 0; }
+  .t-metro { display: flex; align-items: center; gap: 7px; margin-top: 7px; font-size: 13px; color: var(--muted); }
+.t-metro b { color: var(--ink); font-weight: 700; }
+.t-metro .metro-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--metro-color, #999); flex: 0 0 auto; box-shadow: 0 0 0 2px var(--surface); }
+.t-head { border-radius: 18px 18px 0 0; }
   .t-head h2 { font-size: 30px; margin: 10px 0 6px; }
   .t-head { padding: 14px 18px 12px; }
   .t-body { padding: 8px 18px 18px; gap: 16px; }
@@ -463,6 +492,13 @@ li:last-child .item::before { bottom: 50%; }
 <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
 <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.20/leaflet-maplibre-gl.js"></script>
 <script src="data.js"></script>
+<script type="module">
+  window.metroReady = import("https://cdn.jsdelivr.net/npm/@riaskov/metro-ru@1.0.21/+esm")
+    .then(({ City, getClosestStation }) => {
+      window.getNearestMetro = (lat, lng) => getClosestStation(City.Moscow, lat, lng);
+    })
+    .catch(() => { window.getNearestMetro = () => null; });
+</script>
 <script>
 (function () {
   "use strict";
@@ -526,7 +562,7 @@ li:last-child .item::before { bottom: 50%; }
     style: "https://tiles.openfreemap.org/styles/liberty"
   }).addTo(map);
   map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
-  map.attributionControl.addAttribution('<a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>');
+  map.attributionControl.addAttribution('<a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>');\n\n  // ---------- Яркие станции метро на карте (без API-ключа) ----------\n  const metroLayer = L.layerGroup().addTo(map);\n  const metroStations = new Map();\n  let metroLoaded = false;\n  async function loadMetroStations() {\n    if (metroLoaded) return;\n    metroLoaded = true;\n    try {\n      const q = `[out:json][timeout:20];area["name"="Москва"][boundary=administrative]->.m;(` +\n        `node[railway=subway](area.m);node[railway=station][station=subway](area.m);node[public_transport=station][subway=yes](area.m);` +\n        `);out tags center;`;\n      const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(q);\n      const res = await fetch(url, { mode: 'cors' });\n      if (!res.ok) throw new Error('metro fetch');\n      const data = await res.json();\n      data.elements.forEach(el => {\n        const lat = el.lat ?? el.center?.lat, lng = el.lon ?? el.center?.lon;\n        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;\n        const name = el.tags?.['name:ru'] || el.tags?.name;\n        if (!name) return;\n        const key = name + ':' + lat.toFixed(5) + ':' + lng.toFixed(5);\n        if (metroStations.has(key)) return;\n        const icon = L.divIcon({ className:'metro-map-layer', iconSize:[0,0], html:`<div class="metro-map-marker"><span class="m-badge">M</span><span class="m-name">${esc(name)}</span></div>` });\n        const m = L.marker([lat,lng], { icon, interactive:false, keyboard:false, zIndexOffset:300 });\n        m._metroName = name; m._metroLat = lat; m._metroLng = lng;\n        metroStations.set(key,m); metroLayer.addLayer(m);\n      });\n      updateMetroLabels();\n    } catch (e) {\n      metroLoaded = false;\n      console.warn('Не удалось загрузить станции метро', e);\n    }\n  }\n  function updateMetroLabels() {\n    const z = map.getZoom();\n    metroStations.forEach(m => {\n      const el = m.getElement()?.querySelector('.metro-map-marker');\n      if (el) el.classList.toggle('metro-label', z >= 13);\n    });\n  }\n  map.on('zoomend', updateMetroLabels);\n  loadMetroStations();\n
 
   const FitControl = L.Control.extend({
     options: { position: "topright" },
@@ -816,6 +852,7 @@ li:last-child .item::before { bottom: 50%; }
         </div>
         <h2>${esc(p.name)}</h2>
         <div class="t-addr"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg><span>${esc(p.address)}${d !== null ? ` · <b>${fmtDist(d)} от вас</b>` : ""}</span></div>
+       <div class="t-metro" id="ticketMetro"><span class="metro-dot"></span><span>Ближайшее метро: <b>определяем…</b></span></div>
       </div>
       <div class="perf" aria-hidden="true"></div>
       <div class="t-body">
@@ -854,6 +891,16 @@ li:last-child .item::before { bottom: 50%; }
         </div>
       </div>`;
     ticket.hidden = false;
+    const metroEl = ticket.querySelector("#ticketMetro");
+    const setMetro = () => {
+      const nearest = window.getNearestMetro ? window.getNearestMetro(p.lat, p.lng) : null;
+      if (!metroEl) return;
+      if (!nearest) { metroEl.querySelector("b").textContent = "не удалось определить"; return; }
+      const [st, meters] = nearest;
+      metroEl.style.setProperty("--metro-color", st.lineColor || "#999");
+      metroEl.querySelector("b").textContent = `${st.name} · ${meters >= 1000 ? (meters / 1000).toFixed(1).replace(".", ",") + " км" : Math.round(meters) + " м"}`;
+    };
+    if (window.getNearestMetro) setMetro(); else if (window.metroReady) window.metroReady.then(setMetro);
     ticket.scrollTop = 0;
     fitStamp();
     ticket.querySelector(".close").addEventListener("click", close);
