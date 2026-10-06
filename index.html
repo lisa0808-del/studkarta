@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&family=PT+Mono&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-/* Схема: слева панель с поиском и списком мест как перечень станций, справа серая карта с метками-станциями в цветах линий метро.
+/* Схема: слева панель с поиском и списком мест, справа карта с метками организаций.
    Карточка места — билет с отрывной линией и печатью скидки. На телефоне панель становится нижней шторкой. */
 :root {
   --paper: #f4f4f1;
@@ -337,12 +337,6 @@ li:last-child .item::before { bottom: 50%; }
   box-shadow: var(--shadow); max-width: calc(100% - 32px); text-align: center;
 }
 
-/* ================= Метро на карте ================= */
-.metro-map-layer { pointer-events:none; }
-.metro-map-marker { display:flex; flex-direction:row; align-items:center; gap:4px; transform:translate(-50%,-50%); white-space:nowrap; pointer-events:none; }
-.metro-map-marker .m-badge { width:18px; height:18px; border-radius:50%; display:grid; place-items:center; background:#e31e24; color:#fff; border:2px solid #fff; box-shadow:0 0 0 1px #e31e24, 0 1px 5px rgba(0,0,0,.25); font:900 9px/1 Arial,sans-serif; flex:0 0 auto; }
-.metro-map-marker .m-name { display:block; max-width:125px; padding:2px 5px; border-radius:5px; background:rgba(255,255,255,.94); color:#111; box-shadow:0 1px 5px rgba(0,0,0,.18); font:700 9px/1.1 var(--f-body); text-align:left; }
-@media (max-width:780px) { .metro-map-marker .m-badge { width:17px; height:17px; font-size:8px; } .metro-map-marker .m-name { max-width:105px; font-size:8px; } }
 /* ================= Телефон ================= */
 @media (max-width: 780px) {
   body { grid-template-columns: minmax(0, 1fr); }
@@ -470,13 +464,6 @@ li:last-child .item::before { bottom: 50%; }
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="data.js"></script>
-<script type="module">
-  window.metroReady = import("https://cdn.jsdelivr.net/npm/@riaskov/metro-ru@1.0.21/+esm")
-    .then(({ City, getClosestStation }) => {
-      window.getNearestMetro = (lat, lng) => getClosestStation(City.Moscow, lat, lng);
-    })
-    .catch(() => { window.getNearestMetro = () => null; });
-</script>
 <script>
 (function () {
   "use strict";
@@ -541,60 +528,6 @@ li:last-child .item::before { bottom: 50%; }
   }).addTo(map);
   map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
   map.attributionControl.addAttribution('<a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>');
-
-  // ---------- Неброские, но хорошо заметные станции метро ----------
-  const metroLayer = L.layerGroup().addTo(map);
-  const metroStations = new Set();
-  const fallbackMetro = [
-    ['Свиблово',55.8556,37.6533], ['Ботанический сад',55.8451,37.6388],
-    ['Бабушкинская',55.8698,37.6642], ['Отрадное',55.8646,37.6047],
-    ['ВДНХ',55.8212,37.6411], ['Алексеевская',55.8078,37.6389],
-    ['Рижская',55.7937,37.6361], ['Аэропорт',55.8004,37.5348],
-    ['Динамо',55.7894,37.5597], ['Белорусская',55.7772,37.5824],
-    ['Маяковская',55.766,37.5967], ['Тверская',55.7648,37.6053],
-    ['Охотный Ряд',55.7577,37.6156], ['Кузнецкий Мост',55.7615,37.6244],
-    ['Китай-город',55.7567,37.633], ['Таганская',55.7423,37.6534],
-    ['Курская',55.7585,37.6597], ['Семёновская',55.783,37.7191],
-    ['Фрунзенская',55.7275,37.5803], ['Парк культуры',55.7358,37.593],
-    ['Университет',55.6933,37.5344], ['Киевская',55.7437,37.5658],
-    ['Арбатская',55.7522,37.6046], ['Смоленская',55.747,37.583],
-    ['Парк Победы',55.7362,37.516], ['Сокол',55.805,37.5158],
-    ['Полежаевская',55.7772,37.5172], ['Фили',55.7469,37.4847],
-    ['Крылатское',55.7567,37.475], ['Щукинская',55.8086,37.4647],
-    ['Тёплый Стан',55.6182,37.5077]
-  ];
-  function addMetro(name, lat, lng) {
-    const key = name + ':' + lat.toFixed(4) + ':' + lng.toFixed(4);
-    if (metroStations.has(key)) return;
-    metroStations.add(key);
-    const icon = L.divIcon({ className:'metro-map-layer', iconSize:[0,0], iconAnchor:[0,0],
-      html:`<div class="metro-map-marker"><span class="m-badge">M</span><span class="m-name">${esc(name)}</span></div>` });
-    metroLayer.addLayer(L.marker([lat,lng], { icon, interactive:false, keyboard:false, zIndexOffset:900 }));
-  }
-  function showMetroLabels() {
-    const z = map.getZoom();
-    metroLayer.eachLayer(m => {
-      const el = m.getElement()?.querySelector('.metro-map-marker');
-      if (el) el.querySelector('.m-name').style.display = z >= 11 ? 'block' : 'none';
-    });
-  }
-  async function loadMetroStations() {
-    let loaded = false;
-    try {
-      const q = `[out:json][timeout:12];area["name"="Москва"][boundary=administrative]->.m;(node[railway=subway](area.m);node[railway=station][station=subway](area.m);node[public_transport=station][subway=yes](area.m););out tags;`;
-      const res = await fetch('https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(q), { mode:'cors' });
-      if (res.ok) {
-        const data = await res.json();
-        (data.elements || []).forEach(x => { const name=x.tags?.name; if(name && x.lat && x.lon) { addMetro(name,x.lat,x.lon); loaded=true; } });
-      }
-    } catch(e) { console.warn('Metro API unavailable'); }
-    if (!loaded || metroStations.size < 20) fallbackMetro.forEach(x => addMetro(...x));
-    showMetroLabels();
-  }
-  map.on('zoomend', showMetroLabels);
-  loadMetroStations();
-
-
   const FitControl = L.Control.extend({
     options: { position: "topright" },
     onAdd() {
@@ -883,7 +816,6 @@ li:last-child .item::before { bottom: 50%; }
         </div>
         <h2>${esc(p.name)}</h2>
         <div class="t-addr"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg><span>${esc(p.address)}${d !== null ? ` · <b>${fmtDist(d)} от вас</b>` : ""}</span></div>
-       <div class="t-metro" id="ticketMetro"><span class="metro-dot"></span><span>Ближайшее метро: <b>определяем…</b></span></div>
       </div>
       <div class="perf" aria-hidden="true"></div>
       <div class="t-body">
@@ -922,17 +854,7 @@ li:last-child .item::before { bottom: 50%; }
         </div>
       </div>`;
     ticket.hidden = false;
-    const metroEl = ticket.querySelector("#ticketMetro");
-    const setMetro = () => {
-      const nearest = window.getNearestMetro ? window.getNearestMetro(p.lat, p.lng) : null;
-      if (!metroEl) return;
-      if (!nearest) { metroEl.querySelector("b").textContent = "не удалось определить"; return; }
-      const [st, meters] = nearest;
-      metroEl.style.setProperty("--metro-color", st.lineColor || "#999");
-      metroEl.querySelector("b").textContent = `${st.name} · ${meters >= 1000 ? (meters / 1000).toFixed(1).replace(".", ",") + " км" : Math.round(meters) + " м"}`;
-    };
-    if (window.getNearestMetro) setMetro(); else if (window.metroReady) window.metroReady.then(setMetro);
-    ticket.scrollTop = 0;
+ticket.scrollTop = 0;
     fitStamp();
     ticket.querySelector(".close").addEventListener("click", close);
     ticket.querySelector(".share").addEventListener("click", () => share(p));

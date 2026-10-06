@@ -1,6 +1,7 @@
 // Данные организаций для карты.
 // Базовые скидки проверены по источникам проекта 3 октября 2026 года.
 // Дополненные места взяты из подборки «Афиша Daily» от 5 сентября 2026 года; перед визитом рекомендуется проверить условия у организации.
+// Дубли филиалов удалены: одинаковая организация на одном адресе хранится только один раз.
 // (ссылка на страницу-источник — в поле source у каждого места).
 // Условия меняются: перепроверяйте источники хотя бы раз в семестр.
 //
@@ -336,17 +337,7 @@ window.PLACES = [
     who: ["vuz", "college"],
     source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
   },
-  {
-    name: "Farsh",
-    category: "food",
-    discount: "−20%",
-    details: "Постоянная скидка 20% для студентов. Условия участия в программе необходимо уточнить у сети.",
-    address: "Никольская, 12",
-    lat: 55.7589, lng: 37.6253,
-    who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
-  },
-  {
+    {
     name: "Практика кофе",
     category: "food",
     discount: "−10%",
@@ -568,18 +559,7 @@ window.PLACES = [
     url: "https://tanukifamily.ru/",
     source: "https://tanukifamily.ru/"
   },
-  {
-    name: "FARШ — Комсомольский",
-    category: "food",
-    discount: "−20%",
-    details: "Постоянная студенческая скидка 20%. Для участия нужно отправить фото первой страницы студенческого билета и свой номер телефона на student_farsh@farshburger.ru. Скидка действует в ресторанах сети; детали программы могут меняться.",
-    address: "Комсомольский просп., 24, стр. 1",
-    lat: 55.72740, lng: 37.58150,
-    who: ["vuz", "college"],
-    url: "https://farshburger.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
-  },
-  {
+    {
     name: "FARШ — Никольская",
     category: "food",
     discount: "−20%",
