@@ -25,6 +25,7 @@ window.SETTINGS = {
   endingSoonDays: 14,                   // за сколько дней до конца помечать «Осталось N дней»
   routeMode: "mt",                      // маршрут в Яндекс.Картах: "mt" транспорт, "pd" пешком, "auto" машина
   checked: "2026-10-03",                // когда последний раз проверяли источники (показывается в карточке)
+  snapToBuildings: true,               // true — метки сами «садятся» на ближайшее здание (по данным OpenStreetMap); false — отключить
   note: "Скидки проверены по сайтам организаций 3 октября 2026. Перед походом уточняйте условия по ссылке в карточке." // текст под списком; "" — скрыть
 };
 
@@ -349,16 +350,6 @@ window.PLACES = [
     source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
   },
   {
-    name: "Farsh",
-    category: "food",
-    discount: "−20%",
-    details: "Постоянная скидка 20% для студентов. Условия участия в программе необходимо уточнить у сети.",
-    address: "Никольская, 12",
-    lat: 55.7589, lng: 37.6253,
-    who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
-  },
-  {
     name: "Практика кофе",
     category: "food",
     discount: "−10%",
@@ -636,17 +627,6 @@ window.PLACES = [
     source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
   },
   {
-    name: "Леонардо — Авиапарк",
-    category: "fun",
-    discount: "−10%",
-    details: "Студенческая скидка по условиям акции сети.",
-    address: "Ходынский б-р, 4, ТЦ «Авиапарк»",
-    lat: 55.78990, lng: 37.53100,
-    who: ["vuz", "college"],
-    url: "https://leonardo.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
-  },
-  {
     name: "Улыбка радуги — проспект Мира",
     category: "fun",
     discount: "−10%",
@@ -666,17 +646,6 @@ window.PLACES = [
     lat: 55.87500, lng: 37.57450,
     who: ["vuz", "college"],
     url: "https://www.r-ulybka.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
-  },
-  {
-    name: "Киномакс — Кожуховская",
-    category: "cinema",
-    discount: "−30%",
-    details: "Студенческая скидка по условиям сети/подборки; перед покупкой уточните ограничения на конкретный сеанс.",
-    address: "7-я Кожуховская ул., 9, ТРЦ «Мозаика»",
-    lat: 55.71070, lng: 37.67510,
-    who: ["vuz", "college"],
-    url: "https://kinomax.ru/",
     source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
   },
   {
