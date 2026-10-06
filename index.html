@@ -338,30 +338,11 @@ li:last-child .item::before { bottom: 50%; }
 }
 
 /* ================= Метро на карте ================= */
-.metro-map-layer { pointer-events: none; }
-.metro-map-marker {
-  display:flex; flex-direction:column; align-items:center; gap:3px;
-  transform: translate(-50%, -50%); white-space:nowrap;
-  pointer-events:none;
-}
-.metro-map-marker .m-badge {
-  width:28px; height:28px; border-radius:50%; display:grid; place-items:center;
-  background:#fff; color:#111; border:3px solid #d52b1e;
-  box-shadow:0 2px 8px rgba(0,0,0,.28);
-  font:800 15px/1 Arial,sans-serif;
-}
-.metro-map-marker .m-name {
-  display:none; max-width:150px; padding:3px 7px; border-radius:7px;
-  background:rgba(255,255,255,.96); color:#111;
-  box-shadow:0 2px 8px rgba(0,0,0,.22);
-  font:700 11px/1.15 var(--f-body); text-align:center;
-}
-.metro-map-marker.metro-label .m-name { display:block; }
-@media (max-width:780px) {
-  .metro-map-marker .m-badge { width:30px; height:30px; font-size:16px; }
-  .metro-map-marker .m-name { max-width:135px; font-size:10px; }
-}
-
+.metro-map-layer { pointer-events:none; }
+.metro-map-marker { display:flex; flex-direction:row; align-items:center; gap:4px; transform:translate(-50%,-50%); white-space:nowrap; pointer-events:none; }
+.metro-map-marker .m-badge { width:18px; height:18px; border-radius:50%; display:grid; place-items:center; background:#e31e24; color:#fff; border:2px solid #fff; box-shadow:0 0 0 1px #e31e24, 0 1px 5px rgba(0,0,0,.25); font:900 9px/1 Arial,sans-serif; flex:0 0 auto; }
+.metro-map-marker .m-name { display:block; max-width:125px; padding:2px 5px; border-radius:5px; background:rgba(255,255,255,.94); color:#111; box-shadow:0 1px 5px rgba(0,0,0,.18); font:700 9px/1.1 var(--f-body); text-align:left; }
+@media (max-width:780px) { .metro-map-marker .m-badge { width:17px; height:17px; font-size:8px; } .metro-map-marker .m-name { max-width:105px; font-size:8px; } }
 /* ================= Телефон ================= */
 @media (max-width: 780px) {
   body { grid-template-columns: minmax(0, 1fr); }
@@ -552,69 +533,66 @@ li:last-child .item::before { bottom: 50%; }
   // ---------- Карта ----------
   const map = L.map("map", { zoomControl: false }).setView(CFG.center, CFG.zoom);
   L.control.zoom({ position: "topright", zoomInTitle: "Приблизить", zoomOutTitle: "Отдалить" }).addTo(map);
-  // Надёжная растровая подложка OpenStreetMap.
-  // Она не требует API-ключа и работает напрямую через Leaflet.
-  const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
-    crossOrigin: true
+  // Бесплатная векторная подложка OpenFreeMap на данных OpenStreetMap.
+  // API-ключ, регистрация и платный тариф не нужны.
+  // Leaflet продолжает управлять картой и маркерами, а MapLibre рисует подложку.
+  L.maplibreGL({
+    style: "https://tiles.openfreemap.org/styles/liberty"
   }).addTo(map);
-  tiles.on('tileerror', () => {
-    // Запасная подложка, если основной сервер временно недоступен.
-    if (!map._fallbackTiles) {
-      map._fallbackTiles = true;
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        maxZoom: 20, subdomains: 'abcd',
-        attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
-      }).addTo(map);
-    }
-  });
+  map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
+  map.attributionControl.addAttribution('<a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>');
 
-  // ---------- Яркие станции метро на карте (без API-ключа) ----------
+  // ---------- Неброские, но хорошо заметные станции метро ----------
   const metroLayer = L.layerGroup().addTo(map);
-  const metroStations = new Map();
-  let metroLoaded = false;
-  async function loadMetroStations() {
-    if (metroLoaded) return;
-    metroLoaded = true;
-    try {
-      const q = `[out:json][timeout:20];area["name"="Москва"][boundary=administrative]->.m;(` +
-        `node[railway=subway](area.m);node[railway=station][station=subway](area.m);node[public_transport=station][subway=yes](area.m);` +
-        `);out tags center;`;
-      const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(q);
-      const res = await fetch(url, { mode: 'cors' });
-      if (!res.ok) throw new Error('metro fetch');
-      const data = await res.json();
-      data.elements.forEach(el => {
-        const lat = el.lat ?? el.center?.lat, lng = el.lon ?? el.center?.lon;
-        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
-        const name = el.tags?.['name:ru'] || el.tags?.name;
-        if (!name) return;
-        const key = name + ':' + lat.toFixed(5) + ':' + lng.toFixed(5);
-        if (metroStations.has(key)) return;
-        const icon = L.divIcon({ className:'metro-map-layer', iconSize:[0,0], html:`<div class="metro-map-marker"><span class="m-badge">M</span><span class="m-name">${esc(name)}</span></div>` });
-        const m = L.marker([lat,lng], { icon, interactive:false, keyboard:false, zIndexOffset:300 });
-        m._metroName = name; m._metroLat = lat; m._metroLng = lng;
-        metroStations.set(key,m); metroLayer.addLayer(m);
-      });
-      updateMetroLabels();
-    } catch (e) {
-      metroLoaded = false;
-      console.warn('Не удалось загрузить станции метро', e);
-    }
+  const metroStations = new Set();
+  const fallbackMetro = [
+    ['Свиблово',55.8556,37.6533], ['Ботанический сад',55.8451,37.6388],
+    ['Бабушкинская',55.8698,37.6642], ['Отрадное',55.8646,37.6047],
+    ['ВДНХ',55.8212,37.6411], ['Алексеевская',55.8078,37.6389],
+    ['Рижская',55.7937,37.6361], ['Аэропорт',55.8004,37.5348],
+    ['Динамо',55.7894,37.5597], ['Белорусская',55.7772,37.5824],
+    ['Маяковская',55.766,37.5967], ['Тверская',55.7648,37.6053],
+    ['Охотный Ряд',55.7577,37.6156], ['Кузнецкий Мост',55.7615,37.6244],
+    ['Китай-город',55.7567,37.633], ['Таганская',55.7423,37.6534],
+    ['Курская',55.7585,37.6597], ['Семёновская',55.783,37.7191],
+    ['Фрунзенская',55.7275,37.5803], ['Парк культуры',55.7358,37.593],
+    ['Университет',55.6933,37.5344], ['Киевская',55.7437,37.5658],
+    ['Арбатская',55.7522,37.6046], ['Смоленская',55.747,37.583],
+    ['Парк Победы',55.7362,37.516], ['Сокол',55.805,37.5158],
+    ['Полежаевская',55.7772,37.5172], ['Фили',55.7469,37.4847],
+    ['Крылатское',55.7567,37.475], ['Щукинская',55.8086,37.4647],
+    ['Тёплый Стан',55.6182,37.5077]
+  ];
+  function addMetro(name, lat, lng) {
+    const key = name + ':' + lat.toFixed(4) + ':' + lng.toFixed(4);
+    if (metroStations.has(key)) return;
+    metroStations.add(key);
+    const icon = L.divIcon({ className:'metro-map-layer', iconSize:[0,0], iconAnchor:[0,0],
+      html:`<div class="metro-map-marker"><span class="m-badge">M</span><span class="m-name">${esc(name)}</span></div>` });
+    metroLayer.addLayer(L.marker([lat,lng], { icon, interactive:false, keyboard:false, zIndexOffset:900 }));
   }
-  function updateMetroLabels() {
+  function showMetroLabels() {
     const z = map.getZoom();
-    metroStations.forEach(m => {
+    metroLayer.eachLayer(m => {
       const el = m.getElement()?.querySelector('.metro-map-marker');
-      if (el) el.classList.toggle('metro-label', z >= 13);
+      if (el) el.querySelector('.m-name').style.display = z >= 11 ? 'block' : 'none';
     });
   }
-  map.on('zoomend', updateMetroLabels);
+  async function loadMetroStations() {
+    let loaded = false;
+    try {
+      const q = `[out:json][timeout:12];area["name"="Москва"][boundary=administrative]->.m;(node[railway=subway](area.m);node[railway=station][station=subway](area.m);node[public_transport=station][subway=yes](area.m););out tags;`;
+      const res = await fetch('https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(q), { mode:'cors' });
+      if (res.ok) {
+        const data = await res.json();
+        (data.elements || []).forEach(x => { const name=x.tags?.name; if(name && x.lat && x.lon) { addMetro(name,x.lat,x.lon); loaded=true; } });
+      }
+    } catch(e) { console.warn('Metro API unavailable'); }
+    if (!loaded || metroStations.size < 20) fallbackMetro.forEach(x => addMetro(...x));
+    showMetroLabels();
+  }
+  map.on('zoomend', showMetroLabels);
   loadMetroStations();
-  // Восстанавливаем корректный размер карты после загрузки страницы/шрифтов.
-  requestAnimationFrame(() => map.invalidateSize(false));
-  setTimeout(() => map.invalidateSize(false), 300);
 
 
   const FitControl = L.Control.extend({
