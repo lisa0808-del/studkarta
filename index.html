@@ -9,7 +9,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&family=PT+Mono&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css">
 <style>
 /* Схема: слева панель с поиском и списком мест как перечень станций, справа серая карта с метками-станциями в цветах линий метро.
    Карточка места — билет с отрывной линией и печатью скидки. На телефоне панель становится нижней шторкой. */
@@ -24,7 +23,7 @@
   --ok: #1d7f37;
   --warn: #b85600;
   --off: #9a9ca3;
-  --tiles: grayscale(1) contrast(.88) brightness(1.06);
+  --tiles: none;
   --shadow: 0 1px 0 rgba(0,0,0,.04), 0 18px 40px -12px rgba(23,24,26,.28);
   --f-display: "Alumni Sans", "Arial Narrow", "Roboto Condensed", sans-serif;
   --f-body: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -35,7 +34,7 @@
   :root:not([data-theme="light"]) {
     --paper: #121314; --surface: #1b1c1e; --ink: #ecece8; --muted: #9b9ea6; --line: #2d2f33;
     --stamp: #9aa6ff; --fav: #ff6b9a; --ok: #5fd07c; --warn: #ffa356; --off: #6e7178;
-    --tiles: grayscale(1) invert(1) brightness(.82) contrast(.9);
+    --tiles: none;
     --shadow: 0 18px 40px -12px rgba(0,0,0,.7);
     color-scheme: dark;
   }
@@ -43,7 +42,7 @@
 :root[data-theme="dark"] {
   --paper: #121314; --surface: #1b1c1e; --ink: #ecece8; --muted: #9b9ea6; --line: #2d2f33;
   --stamp: #9aa6ff; --fav: #ff6b9a; --ok: #5fd07c; --warn: #ffa356; --off: #6e7178;
-  --tiles: grayscale(1) invert(1) brightness(.82) contrast(.9);
+  --tiles: none;
   --shadow: 0 18px 40px -12px rgba(0,0,0,.7);
   color-scheme: dark;
 }
@@ -489,8 +488,6 @@ li:last-child .item::before { bottom: 50%; }
 </main>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
-<script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.20/leaflet-maplibre-gl.js"></script>
 <script src="data.js"></script>
 <script type="module">
   window.metroReady = import("https://cdn.jsdelivr.net/npm/@riaskov/metro-ru@1.0.21/+esm")
@@ -555,14 +552,23 @@ li:last-child .item::before { bottom: 50%; }
   // ---------- Карта ----------
   const map = L.map("map", { zoomControl: false }).setView(CFG.center, CFG.zoom);
   L.control.zoom({ position: "topright", zoomInTitle: "Приблизить", zoomOutTitle: "Отдалить" }).addTo(map);
-  // Бесплатная векторная подложка OpenFreeMap на данных OpenStreetMap.
-  // API-ключ, регистрация и платный тариф не нужны.
-  // Leaflet продолжает управлять картой и маркерами, а MapLibre рисует подложку.
-  L.maplibreGL({
-    style: "https://tiles.openfreemap.org/styles/liberty"
+  // Надёжная растровая подложка OpenStreetMap.
+  // Она не требует API-ключа и работает напрямую через Leaflet.
+  const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
+    crossOrigin: true
   }).addTo(map);
-  map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
-  map.attributionControl.addAttribution('<a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>');
+  tiles.on('tileerror', () => {
+    // Запасная подложка, если основной сервер временно недоступен.
+    if (!map._fallbackTiles) {
+      map._fallbackTiles = true;
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 20, subdomains: 'abcd',
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+      }).addTo(map);
+    }
+  });
 
   // ---------- Яркие станции метро на карте (без API-ключа) ----------
   const metroLayer = L.layerGroup().addTo(map);
@@ -606,6 +612,9 @@ li:last-child .item::before { bottom: 50%; }
   }
   map.on('zoomend', updateMetroLabels);
   loadMetroStations();
+  // Восстанавливаем корректный размер карты после загрузки страницы/шрифтов.
+  requestAnimationFrame(() => map.invalidateSize(false));
+  setTimeout(() => map.invalidateSize(false), 300);
 
 
   const FitControl = L.Control.extend({
