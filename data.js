@@ -1,6 +1,4 @@
-// Данные организаций для карты.
-// Базовые скидки проверены по источникам проекта.
-// Условия меняются: перепроверяйте источники хотя бы раз в семестр.
+
 
 window.SETTINGS = {
   city: "Москва",
@@ -9,8 +7,8 @@ window.SETTINGS = {
   endingSoonDays: 14,
   routeMode: "mt",
   checked: "2026-10-25",
-  snapToBuildings: true,
-  suggestTg: "@predlojkaMestbot", // <-- СЮДА ВПИШИ СВОЙ ЮЗЕРНЕЙМ В ТГ
+  snapToBuildings: false,
+  suggestTg: "@predlojkaMestbot",
   note: "Скидки проверены по сайтам организаций. Перед походом уточняйте условия по ссылке в карточке."
 };
 
@@ -604,7 +602,7 @@ window.PLACES = [
     source: "https://mdcnrg.ru/"
   },
   {
-    name: "DDX Fitness",
+    name: "DDX Fitness — Атриум",
     category: "sport",
     discount: "Льготный",
     details: "Специальные условия и акции на вступительный взнос для студентов и молодёжи.",
@@ -613,6 +611,26 @@ window.PLACES = [
     who: ["vuz", "college"],
     url: "https://ddxfitness.ru",
     source: "https://ddxfitness.ru/"
+  },
+  {
+    name: "DDX Fitness — Савёловская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Специальные молодёжные условия при предъявлении студенческого билета.",
+    address: "Сущёвский Вал, 5, стр. 1",
+    lat: 55.7938, lng: 37.5924,
+    who: ["vuz", "college"],
+    url: "https://ddxfitness.ru"
+  },
+  {
+    name: "DDX Fitness — Щука",
+    category: "sport",
+    discount: "Льготный",
+    details: "Скидки на абонементы и регистрацию в фитнес-клуб.",
+    address: "ул. Щукинская, 42, ТРК «Щука»",
+    lat: 55.8095, lng: 37.4645,
+    who: ["vuz", "college"],
+    url: "https://ddxfitness.ru"
   },
   {
     name: "HOT STUDIO",
@@ -1027,6 +1045,76 @@ window.PLACES = [
 
   // ---------- Магазины (Категория shop) ----------
   {
+    name: "EUROSPAR на Менжинского",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка по студенческой социальной карте москвича, а также выгодные комбо и перекусы в отделе кулинарии.",
+    address: "ул. Менжинского, 27",
+    lat: 55.86988, lng: 37.65712,
+    who: ["vuz", "college"],
+    url: "https://myspar.ru"
+  },
+  {
+    name: "SPAR на Изумрудной",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка по карте москвича студента на готовую кулинарию, выпечку и кофе.",
+    address: "Изумрудная ул., 3, стр. 1",
+    lat: 55.86985, lng: 37.67881,
+    who: ["vuz", "college"],
+    url: "https://myspar.ru"
+  },
+  {
+    name: "SPAR — Земляной Вал",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка по социальной карте студента и специальные студенческие комбо на готовую еду и кофе в кулинарии.",
+    address: "ул. Земляной Вал, 27, стр. 1",
+    lat: 55.7592, lng: 37.6578,
+    who: ["vuz", "college"],
+    url: "https://myspar.ru"
+  },
+  {
+    name: "SPAR — Тверская",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка по социальной карте москвича и комбо-обеды для учащихся.",
+    address: "ул. Тверская, 15",
+    lat: 55.7629, lng: 37.6068,
+    who: ["vuz", "college"],
+    url: "https://myspar.ru"
+  },
+  {
+    name: "SPAR — Проспект Мира",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка по карте москвича, выгодные перекусы и кофе со скидкой.",
+    address: "просп. Мира, 40",
+    lat: 55.7801, lng: 37.6338,
+    who: ["vuz", "college"],
+    url: "https://myspar.ru"
+  },
+  {
+    name: "SPAR — Бауманская",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка по студенческой карте москвича на продукцию кафе и кулинарии.",
+    address: "ул. Бауманская, 32, стр. 2",
+    lat: 55.7725, lng: 37.6782,
+    who: ["vuz", "college"],
+    url: "https://myspar.ru"
+  },
+  {
+    name: "SPAR — Ленинский проспект",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка по студенческой социальной карте в утренние и дневные часы.",
+    address: "Ленинский просп., 34/1",
+    lat: 55.7121, lng: 37.5852,
+    who: ["vuz", "college"],
+    url: "https://myspar.ru"
+  },
+  {
     name: "Леонардо — Авиапарк",
     category: "shop",
     discount: "−10%",
@@ -1136,7 +1224,7 @@ window.PLACES = [
     source: "https://mdk-arbat.ru/"
   },
   {
-    name: "Копи.ру (Копирка)",
+    name: "Копи.ру (Копирка) — Покровка",
     category: "shop",
     discount: "−10%",
     details: "Скидка 10% студентам на распечатку, копирование, брошюровку курсовых и дипломных работ по студенческому билету.",
@@ -1145,6 +1233,16 @@ window.PLACES = [
     who: ["vuz", "college"],
     url: "https://kopirka.ru",
     source: "https://kopirka.ru/"
+  },
+  {
+    name: "Копи.ру (Копирка) — Бауманская",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка студентам 10% на распечатку и переплёт.",
+    address: "ул. Бауманская, 33/2, стр. 1",
+    lat: 55.7721, lng: 37.6788,
+    who: ["vuz", "college"],
+    url: "https://kopirka.ru"
   },
   {
     name: "Аптеки Столицы",
@@ -1156,7 +1254,7 @@ window.PLACES = [
     who: ["vuz", "college"]
   },
   {
-    name: "Дикси",
+    name: "Дикси — Большая Полянка",
     category: "shop",
     discount: "−5%",
     details: "Социальная скидка при предъявлении социальной карты студента / карты москвича в утренние и дневные часы по условиям сети.",
@@ -1166,7 +1264,17 @@ window.PLACES = [
     url: "https://dixy.ru"
   },
   {
-    name: "Мясницкий ряд",
+    name: "Дикси — Мясницкая",
+    category: "shop",
+    discount: "−5%",
+    details: "Скидка 5% студентам по будням в первой половине дня при предъявлении карты москвича.",
+    address: "ул. Мясницкая, 22, стр. 1",
+    lat: 55.7628, lng: 37.6358,
+    who: ["vuz", "college"],
+    url: "https://dixy.ru"
+  },
+  {
+    name: "Мясницкий ряд — Маросейка",
     category: "shop",
     discount: "−7%",
     details: "Скидка студентам по социальной карте москвича в фирменных магазинах сети.",
@@ -1176,7 +1284,17 @@ window.PLACES = [
     url: "https://kolbasa.ru"
   },
   {
-    name: "Магнолия",
+    name: "Мясницкий ряд — Таганская",
+    category: "shop",
+    discount: "−7%",
+    details: "Скидка 7% студентам по карте москвича.",
+    address: "ул. Таганская, 1, стр. 1",
+    lat: 55.7411, lng: 37.6542,
+    who: ["vuz", "college"],
+    url: "https://kolbasa.ru"
+  },
+  {
+    name: "Магнолия — Пятницкая",
     category: "shop",
     discount: "−10%",
     details: "Скидка по карте москвича (социальной карте студента) в дневные часы на основной ассортимент.",
@@ -1186,55 +1304,24 @@ window.PLACES = [
     url: "https://mgnl.ru"
   },
   {
-    name: "SPAR (Евроспар)",
+    name: "Магнолия — Новослободская",
     category: "shop",
     discount: "−10%",
-    details: "Скидка по социальной карте студента и специальные студенческие комбо на готовую еду и кофе в кулинарии.",
-    address: "ул. Земляной Вал, 27, стр. 1",
-    lat: 55.7592, lng: 37.6578,
+    details: "Скидка по студенческой социальной карте москвича.",
+    address: "ул. Новослободская, 36/1",
+    lat: 55.7842, lng: 37.5985,
     who: ["vuz", "college"],
-    url: "https://myspar.ru"
-  },
-  // ---------- Магазины SPAR ----------
-  {
-    name: "EUROSPAR на Менжинского",
-    category: "shop",
-    discount: "−10%",
-    details: "Скидка по студенческой социальной карте москвича, а также выгодные комбо и перекусы в отделе кулинарии.",
-    address: "ул. Менжинского, 27",
-    lat: 55.86988, lng: 37.65712,
-    who: ["vuz", "college"],
-    url: "https://myspar.ru"
+    url: "https://mgnl.ru"
   },
   {
-    name: "SPAR на Изумрудной",
+    name: "Магнолия — Арбат",
     category: "shop",
     discount: "−10%",
-    details: "Скидка по карте москвича студента на готовую кулинарию, выпечку и кофе.",
-    address: "Изумрудная ул., 3, стр. 1",
-    lat: 55.86985, lng: 37.67881,
+    details: "Скидка по карте студента на кассе в дневное время.",
+    address: "ул. Арбат, 25/36",
+    lat: 55.7498, lng: 37.5925,
     who: ["vuz", "college"],
-    url: "https://myspar.ru"
-  },
-  {
-    name: "SPAR — Тверская",
-    category: "shop",
-    discount: "−10%",
-    details: "Скидка по социальной карте москвича и комбо-обеды для учащихся.",
-    address: "ул. Тверская, 15",
-    lat: 55.7629, lng: 37.6068,
-    who: ["vuz", "college"],
-    url: "https://myspar.ru"
-  },
-  {
-    name: "SPAR — Земляной Вал",
-    category: "shop",
-    discount: "−10%",
-    details: "Скидка по студенческой карте в кулинарии.",
-    address: "ул. Земляной Вал, 27, стр. 1",
-    lat: 55.7592, lng: 37.6578,
-    who: ["vuz", "college"],
-    url: "https://myspar.ru"
+    url: "https://mgnl.ru"
   },
 
   // ---------- Еда ----------
