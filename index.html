@@ -11,15 +11,13 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css">
 <style>
-/* Схема: слева панель с поиском и списком мест как перечень станций, справа серая карта с метками-станциями в цветах линий метро.
-   Карточка места — билет с отрывной линией и печатью скидки. На телефоне панель становится нижней шторкой. */
 :root {
   --paper: #f4f4f1;
   --surface: #ffffff;
   --ink: #17181a;
   --muted: #676a72;
   --line: #e2e2dd;
-  --stamp: #3341a6;      /* синие чернила печати */
+  --stamp: #3341a6;
   --fav: #d6336c;
   --ok: #1d7f37;
   --warn: #b85600;
@@ -97,7 +95,7 @@ button { cursor: pointer; }
   border: 0; border-radius: 50%; background: var(--line); display: grid; place-items: center; color: var(--ink);
 }
 
-/* Категории — как значки линий */
+/* Категории */
 .lines { display: flex; flex-wrap: wrap; gap: 6px; }
 .ln {
   display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px 6px 8px; flex: none;
@@ -135,6 +133,15 @@ button { cursor: pointer; }
 .qb.loading .spin { display: inline-block; }
 .qb.loading svg { display: none; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* Плавающая кнопка для телефонов */
+.floating-add {
+  display: none;
+  position: absolute; right: 16px; bottom: 64px; z-index: 1000;
+  background: var(--ink); color: var(--surface); border: 0;
+  border-radius: 999px; padding: 12px 18px; font-weight: 700; font-size: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.25); align-items: center; gap: 8px;
+}
 
 /* Расширенные фильтры */
 .filters { display: grid; gap: 14px; padding: 14px; border-radius: 12px; background: var(--paper); }
@@ -177,7 +184,7 @@ button { cursor: pointer; }
 .sortwrap select:hover { color: var(--ink); }
 .sortwrap svg { position: absolute; right: 2px; pointer-events: none; color: var(--muted); }
 
-/* Список — как перечень станций на линии */
+/* Список */
 .list { list-style: none; margin: 0; padding: 6px 0 12px; overflow-y: auto; flex: 1; min-height: 0; overscroll-behavior: contain; }
 .item {
   width: 100%; display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; column-gap: 12px; align-items: center;
@@ -246,7 +253,6 @@ li:last-child .item::before { bottom: 50%; }
 .leaflet-marker-icon:hover .st span { visibility: visible; }
 .me { width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #2f6bff; border: 3px solid #fff; box-shadow: 0 0 0 6px rgba(47,107,255,.25), 0 1px 4px rgba(0,0,0,.4); }
 
-/* Подсказка для первого визита */
 .hint {
   position: absolute; z-index: 999; left: 50%; top: 20px; transform: translateX(-50%);
   display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 16px; border-radius: 12px;
@@ -306,7 +312,6 @@ li:last-child .item::before { bottom: 50%; }
 }
 .bring svg { flex: none; color: var(--stamp); }
 
-/* Срок действия — перегон между двумя станциями */
 .term { display: grid; gap: 8px; }
 .term-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
 .status { font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px; border: 1.5px solid currentColor; }
@@ -413,6 +418,9 @@ li:last-child .item::before { bottom: 50%; }
   .actions .btn.primary { flex: 1 1 auto; }
   .hint { top: 12px; left: 12px; right: 64px; transform: none; max-width: none; width: auto; }
   .leaflet-top.leaflet-right { top: env(safe-area-inset-top, 0px); }
+  
+  /* Показываем плавающую кнопку на телефонах */
+  .floating-add { display: inline-flex; }
 }
 @media (max-width: 380px) {
   .deal { grid-template-columns: 96px minmax(0, 1fr); }
@@ -488,6 +496,12 @@ li:last-child .item::before { bottom: 50%; }
   <div id="map" aria-label="Карта организаций со студенческими скидками"></div>
   <div class="hint" id="hint" hidden><i aria-hidden="true"></i><span>Нажмите на точку, чтобы узнать скидку, адрес и срок</span><button type="button" id="hintok">Понятно</button></div>
   <article class="ticket" id="ticket" hidden aria-live="polite"></article>
+  
+  <!-- Плавающая кнопка для мобилок -->
+  <button class="floating-add" id="floatingSuggestBtn" type="button">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>Скидка
+  </button>
+
   <div class="toast" id="toast" hidden role="status"></div>
 </main>
 
@@ -503,7 +517,7 @@ li:last-child .item::before { bottom: 50%; }
     <p class="modal-sub">Знаешь классное место со скидкой по студаку? Заполни форму, и мы добавим его на карту!</p>
     <div class="f-group">
       <label class="label" for="sName">Название места *</label>
-      <input id="sName" type="text" required placeholder="Например: Кофейня Учёба">
+      <input id="sName" type="text" required placeholder="Например: Кофейня Здрасте">
     </div>
     <div class="f-row2">
       <div class="f-group">
@@ -512,19 +526,19 @@ li:last-child .item::before { bottom: 50%; }
       </div>
       <div class="f-group">
         <label class="label" for="sDisc">Размер скидки *</label>
-        <input id="sDisc" type="text" required placeholder="−20% / Бесплатно">
+        <input id="sDisc" type="text" required placeholder="Например: 15 или Бесплатно">
       </div>
     </div>
     <div class="f-group">
       <label class="label" for="sAddr">Адрес или метро *</label>
-      <input id="sAddr" type="text" required placeholder="ул. Мясницкая, 15">
+      <input id="sAddr" type="text" required placeholder="ул. Мясницкая, 15 или м. Бауманская">
     </div>
     <div class="f-group">
       <label class="label" for="sDet">Условия и ссылка</label>
-      <textarea id="sDet" rows="3" placeholder="Когда действует, нужен ли очный студак, ссылка на пост или сайт…"></textarea>
+      <textarea id="sDet" rows="3" placeholder="Когда действует, нужен ли очный студак, ссылка на заведение…"></textarea>
     </div>
     <div class="actions">
-      <button class="btn primary" type="submit">Скопировать и отправить</button>
+      <button class="btn primary" type="submit">Отправить модератору</button>
     </div>
   </form>
 </div>
@@ -697,7 +711,6 @@ li:last-child .item::before { bottom: 50%; }
     syncControls(); render(true);
   });
 
-  // Заполняем селект категорий в форме «Я нашёл скидку»
   $("sCat").innerHTML = Object.entries(CATS).map(([k, c]) => `<option value="${k}">${c.label}</option>`).join("");
 
   function segment(id, key, cast) {
@@ -738,16 +751,29 @@ li:last-child .item::before { bottom: 50%; }
 
   // ---------- Модальное окно «Я нашёл скидку» ----------
   const sModal = $("suggestModal");
-  $("suggestBtn").addEventListener("click", () => { sModal.hidden = false; $("sName").focus(); });
+  const openSuggestModal = () => { sModal.hidden = false; $("sName").focus(); };
+  $("suggestBtn").addEventListener("click", openSuggestModal);
+  $("floatingSuggestBtn").addEventListener("click", openSuggestModal);
   $("suggestClose").addEventListener("click", () => { sModal.hidden = true; });
   sModal.addEventListener("click", e => { if (e.target === sModal) sModal.hidden = true; });
+
+  // Умное форматирование скидки (превращает 15 в −15%)
+  function formatDiscountInput(raw) {
+    const s = raw.trim();
+    if (!s) return "Скидка";
+    if (/^(0|0%|бесплатно)$/i.test(s)) return "Бесплатно";
+    if (/^\d+$/.test(s)) return `−${s}%`;
+    if (/^\d+\s*%$/.test(s)) return `−${s.replace(/\s+/g, "")}`;
+    if (/^-\d+$/.test(s)) return `−${s.slice(1)}%`;
+    return s;
+  }
 
   $("suggestForm").addEventListener("submit", e => {
     e.preventDefault();
     const name = $("sName").value.trim();
     const cat = $("sCat").value;
     const catLabel = CATS[cat]?.label || cat;
-    const disc = $("sDisc").value.trim();
+    const disc = formatDiscountInput($("sDisc").value);
     const addr = $("sAddr").value.trim();
     const det = $("sDet").value.trim() || "Скидка по студенческому билету.";
 
@@ -762,9 +788,9 @@ li:last-child .item::before { bottom: 50%; }
     if (CFG.suggestTg) {
       const tgUser = CFG.suggestTg.replace(/^@/, "");
       window.open(`https://t.me/${tgUser}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
-      toast("Открываем Telegram для отправки!");
+      toast("Открываем Telegram для отправки модератору!");
     } else {
-      toast("Спасибо! Описание скидки скопировано в буфер обмена");
+      toast("Описание скидки скопировано! Укажи suggestTg в data.js для отправки в Telegram.");
     }
   });
 
