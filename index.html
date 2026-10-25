@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Студкарта Москвы</title>
-<meta name="description" content="Карта студенческих скидок в Москве: музеи, театры, кино, еда, спорт.">
+<meta name="description" content="Карта студенческих скидок в Москве: музеи, театры, кино, еда, спорт, магазины.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&family=PT+Mono&display=swap">
@@ -59,7 +59,7 @@ body {
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
 }
-button, input, select { font: inherit; color: inherit; }
+button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
 :focus-visible { outline: 2px solid var(--stamp); outline-offset: 2px; }
 .label { font: 600 11px/1 var(--f-body); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
@@ -108,7 +108,7 @@ button { cursor: pointer; }
   width: 12px; height: 12px; border-radius: 50%; background: var(--c);
   box-shadow: inset 0 0 0 3px var(--c), inset 0 0 0 5px var(--surface);
 }
-.ln[data-cat=""] i { background: conic-gradient(#0078BE 0 14%, #943E90 0 28%, #DA2128 0 43%, #F07E24 0 57%, #2DBE2C 0 71%, #8D5B2D 0 86%, #00A0E3 0); box-shadow: none; }
+.ln[data-cat=""] i { background: conic-gradient(#0078BE 0 14%, #943E90 0 28%, #DA2128 0 43%, #F07E24 0 57%, #2DBE2C 0 71%, #E83E8C 0 86%, #00A0E3 0); box-shadow: none; }
 .ln:hover { border-color: var(--muted); }
 .ln[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--surface); }
 .ln[aria-pressed="true"] i { box-shadow: inset 0 0 0 3px var(--c), inset 0 0 0 5px var(--ink); }
@@ -129,6 +129,8 @@ button { cursor: pointer; }
 .qb.fav[aria-pressed="true"] { border-color: var(--fav); color: var(--fav); }
 .qb.fav[aria-pressed="true"] em { background: var(--fav); }
 .qb.near[aria-pressed="true"] { border-color: var(--stamp); color: var(--stamp); }
+.qb.add-btn { border-color: var(--ok); color: var(--ok); }
+.qb.add-btn:hover { background: var(--ok); color: var(--surface); }
 .qb .spin { display: none; width: 12px; height: 12px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: spin .7s linear infinite; }
 .qb.loading .spin { display: inline-block; }
 .qb.loading svg { display: none; }
@@ -278,6 +280,10 @@ li:last-child .item::before { bottom: 50%; }
 .t-addr { display: flex; gap: 6px; align-items: flex-start; color: var(--muted); font-size: 14px; }
 .t-addr svg { flex: none; margin-top: 2px; }
 .t-addr b { color: var(--stamp); font-weight: 600; white-space: nowrap; }
+.t-metro { display: flex; align-items: center; gap: 7px; margin-top: 7px; font-size: 13px; color: var(--muted); }
+.t-metro[hidden] { display: none; }
+.t-metro b { color: var(--ink); font-weight: 700; }
+.t-metro .metro-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--metro-color, #999); flex: 0 0 auto; box-shadow: 0 0 0 2px var(--surface); }
 
 .perf { position: relative; height: 14px; }
 .perf::before { content: ""; position: absolute; left: 22px; right: 22px; top: 50%; border-top: 2px dashed var(--line); }
@@ -333,10 +339,34 @@ li:last-child .item::before { bottom: 50%; }
 .btn.primary:hover { opacity: .9; }
 
 .toast {
-  position: absolute; z-index: 1100; left: 50%; bottom: 28px; transform: translateX(-50%);
+  position: absolute; z-index: 1200; left: 50%; bottom: 28px; transform: translateX(-50%);
   background: var(--ink); color: var(--surface); padding: 10px 16px; border-radius: 10px; font-size: 14px; font-weight: 600;
   box-shadow: var(--shadow); max-width: calc(100% - 32px); text-align: center;
 }
+
+/* ================= Модальное окно «Я нашёл скидку» ================= */
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 1150; background: rgba(0,0,0,.45);
+  display: grid; place-items: center; padding: 16px; backdrop-filter: blur(2px);
+}
+.modal-card {
+  background: var(--surface); color: var(--ink); width: min(420px, 100%);
+  border-radius: 16px; box-shadow: var(--shadow); border-top: 6px solid var(--ok);
+  padding: 20px 22px 22px; display: grid; gap: 14px; max-height: 90dvh; overflow-y: auto;
+  animation: rise .2s cubic-bezier(.2,.8,.3,1);
+}
+.modal-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.modal-top h2 { margin: 0; font: 800 32px/.95 var(--f-display); text-transform: uppercase; }
+.modal-sub { margin: -6px 0 2px; font-size: 13.5px; color: var(--muted); }
+.f-group { display: grid; gap: 5px; }
+.f-group input, .f-group select, .f-group textarea {
+  width: 100%; padding: 10px 12px; border-radius: 8px; border: 1.5px solid var(--line);
+  background: var(--paper); font-size: 14px;
+}
+.f-group input:focus, .f-group select:focus, .f-group textarea:focus {
+  outline: none; border-color: var(--ink);
+}
+.f-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
 /* ================= Телефон ================= */
 @media (max-width: 780px) {
@@ -376,13 +406,8 @@ li:last-child .item::before { bottom: 50%; }
     left: 0; top: auto; bottom: 0; width: 100%; max-height: 74%; border-radius: 18px 18px 0 0; z-index: 1002;
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
-  .t-metro { display: flex; align-items: center; gap: 7px; margin-top: 7px; font-size: 13px; color: var(--muted); }
-.t-metro[hidden] { display: none; }
-.t-metro b { color: var(--ink); font-weight: 700; }
-.t-metro .metro-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--metro-color, #999); flex: 0 0 auto; box-shadow: 0 0 0 2px var(--surface); }
-.t-head { border-radius: 18px 18px 0 0; }
+  .t-head { border-radius: 18px 18px 0 0; padding: 14px 18px 12px; }
   .t-head h2 { font-size: 30px; margin: 10px 0 6px; }
-  .t-head { padding: 14px 18px 12px; }
   .t-body { padding: 8px 18px 18px; gap: 16px; }
   .perf::before { left: 18px; right: 18px; }
   .actions .btn.primary { flex: 1 1 auto; }
@@ -393,7 +418,7 @@ li:last-child .item::before { bottom: 50%; }
   .deal { grid-template-columns: 96px minmax(0, 1fr); }
   .stamp { width: 96px; height: 96px; }
 }
-@media (prefers-reduced-motion: reduce) { .ticket { animation: none; } .st i, .item .dot { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .ticket, .modal-card { animation: none; } .st i, .item .dot { transition: none; } }
 </style>
 </head>
 <body>
@@ -407,7 +432,7 @@ li:last-child .item::before { bottom: 50%; }
     </div>
     <label class="search">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="q" type="search" placeholder="Музей, кино, улица…" aria-label="Поиск по названию, адресу или категории" autocomplete="off" enterkeyhint="search">
+      <input id="q" type="search" placeholder="Музей, кино, магазин, улица…" aria-label="Поиск по названию, адресу или категории" autocomplete="off" enterkeyhint="search">
       <button class="clear" id="qclear" type="button" aria-label="Очистить поиск" hidden><svg width="10" height="10" viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.8"><path d="M1 1l8 8M9 1 1 9"/></svg></button>
     </label>
     <div class="lines" id="cats" role="group" aria-label="Категории"></div>
@@ -418,6 +443,8 @@ li:last-child .item::before { bottom: 50%; }
         <span class="spin" aria-hidden="true"></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg>Рядом</button>
       <button class="qb fav" id="favonly" type="button" aria-pressed="false">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>Избранное <em id="favcount"></em></button>
+      <button class="qb add-btn" id="suggestBtn" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>Я нашёл скидку</button>
     </div>
     <div class="filters" id="filters" hidden>
       <div class="frow">
@@ -464,6 +491,44 @@ li:last-child .item::before { bottom: 50%; }
   <div class="toast" id="toast" hidden role="status"></div>
 </main>
 
+<!-- Модальное окно «Я нашёл скидку» -->
+<div class="modal-backdrop" id="suggestModal" hidden>
+  <form class="modal-card" id="suggestForm">
+    <div class="modal-top">
+      <h2>Я нашёл скидку!</h2>
+      <button class="icon-btn" type="button" id="suggestClose" aria-label="Закрыть">
+        <svg width="13" height="13" viewBox="0 0 14 14" stroke="currentColor" stroke-width="2"><path d="M2 2l10 10M12 2 2 12"/></svg>
+      </button>
+    </div>
+    <p class="modal-sub">Знаешь классное место со скидкой по студаку? Заполни форму, и мы добавим его на карту!</p>
+    <div class="f-group">
+      <label class="label" for="sName">Название места *</label>
+      <input id="sName" type="text" required placeholder="Например: Кофейня Учёба">
+    </div>
+    <div class="f-row2">
+      <div class="f-group">
+        <label class="label" for="sCat">Категория</label>
+        <select id="sCat"></select>
+      </div>
+      <div class="f-group">
+        <label class="label" for="sDisc">Размер скидки *</label>
+        <input id="sDisc" type="text" required placeholder="−20% / Бесплатно">
+      </div>
+    </div>
+    <div class="f-group">
+      <label class="label" for="sAddr">Адрес или метро *</label>
+      <input id="sAddr" type="text" required placeholder="ул. Мясницкая, 15">
+    </div>
+    <div class="f-group">
+      <label class="label" for="sDet">Условия и ссылка</label>
+      <textarea id="sDet" rows="3" placeholder="Когда действует, нужен ли очный студак, ссылка на пост или сайт…"></textarea>
+    </div>
+    <div class="actions">
+      <button class="btn primary" type="submit">Скопировать и отправить</button>
+    </div>
+  </form>
+</div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
 <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.20/leaflet-maplibre-gl.js"></script>
@@ -479,7 +544,7 @@ li:last-child .item::before { bottom: 50%; }
 (function () {
   "use strict";
   const CATS = window.CATEGORIES;
-  const CFG = Object.assign({ city: "Москва", center: [55.7558, 37.6173], zoom: 12, endingSoonDays: 14, routeMode: "mt", note: "" }, window.SETTINGS);
+  const CFG = Object.assign({ city: "Москва", center: [55.7558, 37.6173], zoom: 12, endingSoonDays: 14, routeMode: "mt", note: "", suggestTg: "" }, window.SETTINGS);
   const PLACES = window.PLACES.map((p, i) => ({ ...p, id: i, who: p.who || ["vuz", "college"] }));
   const DAY = 86400000;
   const today = new Date(); today.setHours(0, 0, 0, 0);
@@ -497,7 +562,6 @@ li:last-child .item::before { bottom: 50%; }
     return t === 1 && h !== 11 ? a : t >= 2 && t <= 4 && (h < 10 || h >= 20) ? b : c; };
   const days = n => `${n} ${plural(n, "день", "дня", "дней")}`;
   const esc = s => String(s).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
-  // «−50%» → 50, «Бесплатно» → 100, рубли → null
   const percent = p => /беспл/i.test(p.discount) ? 100 : (m => m ? +m[1] : null)(p.discount.match(/(\d+)\s*%/));
   const isWord = p => !/\d/.test(p.discount);
   const store = {
@@ -531,14 +595,10 @@ li:last-child .item::before { bottom: 50%; }
   // ---------- Карта ----------
   const map = L.map("map", { zoomControl: false }).setView(CFG.center, CFG.zoom);
   L.control.zoom({ position: "topright", zoomInTitle: "Приблизить", zoomOutTitle: "Отдалить" }).addTo(map);
-  // Бесплатная векторная подложка OpenFreeMap на данных OpenStreetMap.
-  // API-ключ, регистрация и платный тариф не нужны.
-  // Leaflet продолжает управлять картой и маркерами, а MapLibre рисует подложку.
   const glLayer = L.maplibreGL({
     style: "https://tiles.openfreemap.org/styles/liberty"
   }).addTo(map);
 
-  // Метро: подложка серая, поэтому выделяем не цветом, а контрастом — тёмный кружок с «М» и подпись станции.
   function addMetroLayers() {
     const gl = glLayer.getMaplibreMap && glLayer.getMaplibreMap();
     if (!gl) return;
@@ -551,7 +611,6 @@ li:last-child .item::before { bottom: 50%; }
         const font = withFont ? withFont.layout["text-font"] : ["Noto Sans Regular"];
         if (!srcName) return;
         const isStation = ["all", ["==", ["get", "class"], "railway"], ["in", ["get", "subclass"], ["literal", ["station", "subway"]]]];
-        // линии метро под землёй/на поверхности
         gl.addLayer({ id: "metro-line", type: "line", source: srcName, "source-layer": "transportation", minzoom: 10,
           filter: ["==", ["get", "subclass"], "subway"],
           paint: { "line-color": "#111", "line-width": ["interpolate", ["linear"], ["zoom"], 10, 1, 15, 3], "line-opacity": .55, "line-dasharray": [2, 1.5] } });
@@ -565,7 +624,7 @@ li:last-child .item::before { bottom: 50%; }
           layout: { "text-field": ["coalesce", ["get", "name:ru"], ["get", "name"]], "text-font": font,
                     "text-size": ["interpolate", ["linear"], ["zoom"], 12.5, 11, 17, 14], "text-anchor": "top", "text-offset": [0, 1.1], "text-max-width": 8 },
           paint: { "text-color": "#111", "text-halo-color": "#fff", "text-halo-width": 2 } });
-      } catch (e) { /* подложка работает и без метро */ }
+      } catch (e) {}
     };
     if (gl.isStyleLoaded()) apply(); else gl.once("load", apply);
     gl.on("styledata", () => { if (gl.isStyleLoaded()) apply(); });
@@ -589,23 +648,21 @@ li:last-child .item::before { bottom: 50%; }
   const markers = {};
   PLACES.forEach(p => {
     const st = status(p);
+    const catColor = CATS[p.category] ? CATS[p.category].color : "#0078BE";
     const icon = L.divIcon({
       className: "st-icon", iconSize: [0, 0],
-      html: `<div class="st ${st.past ? "past" : ""}" style="--c:${CATS[p.category].color}"><i></i><span>${esc(p.discount)}</span></div>`
+      html: `<div class="st ${st.past ? "past" : ""}" style="--c:${catColor}"><i></i><span>${esc(p.discount)}</span></div>`
     });
     markers[p.id] = L.marker([p.lat, p.lng], { icon, title: `${p.name}: ${p.discount}`, alt: p.name, riseOnHover: true })
       .on("click", () => open(p.id, false));
   });
   let meMarker = null;
 
-  // Подписи со скидками: показываем все, что не налезают друг на друга (большие скидки в приоритете)
   let labelRaf = 0;
   function layoutLabels() {
     cancelAnimationFrame(labelRaf);
     labelRaf = requestAnimationFrame(() => {
-      // точки всех меток — препятствия для подписей
       const placed = [];
-      // кнопки карты и подсказка тоже не должны закрывать подписи
       document.querySelectorAll(".leaflet-top .leaflet-control, #hint:not([hidden])").forEach(el => placed.push({ id: -1, r: el.getBoundingClientRect() }));
       visibleList.forEach(p => { const d = markers[p.id].getElement()?.querySelector(".st i"); if (d) placed.push({ id: p.id, r: d.getBoundingClientRect() }); });
       const order = visibleList.slice().sort((a, b) =>
@@ -629,7 +686,7 @@ li:last-child .item::before { bottom: 50%; }
   }
   map.on("zoomend", layoutLabels);
 
-  // ---------- Фильтры ----------
+  // ---------- Фильтры и Категории ----------
   const catsEl = $("cats");
   catsEl.innerHTML = `<button class="ln" type="button" data-cat="" aria-pressed="true"><i></i>Все</button>` +
     Object.entries(CATS).map(([k, c]) => `<button class="ln" type="button" data-cat="${k}" aria-pressed="false" style="--c:${c.color}"><i></i>${c.label}</button>`).join("");
@@ -639,6 +696,9 @@ li:last-child .item::before { bottom: 50%; }
     if (!k) state.cats.clear(); else state.cats.has(k) ? state.cats.delete(k) : state.cats.add(k);
     syncControls(); render(true);
   });
+
+  // Заполняем селект категорий в форме «Я нашёл скидку»
+  $("sCat").innerHTML = Object.entries(CATS).map(([k, c]) => `<option value="${k}">${c.label}</option>`).join("");
 
   function segment(id, key, cast) {
     $(id).addEventListener("click", e => {
@@ -676,6 +736,38 @@ li:last-child .item::before { bottom: 50%; }
     $("list").scrollTop = 0;
   });
 
+  // ---------- Модальное окно «Я нашёл скидку» ----------
+  const sModal = $("suggestModal");
+  $("suggestBtn").addEventListener("click", () => { sModal.hidden = false; $("sName").focus(); });
+  $("suggestClose").addEventListener("click", () => { sModal.hidden = true; });
+  sModal.addEventListener("click", e => { if (e.target === sModal) sModal.hidden = true; });
+
+  $("suggestForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const name = $("sName").value.trim();
+    const cat = $("sCat").value;
+    const catLabel = CATS[cat]?.label || cat;
+    const disc = $("sDisc").value.trim();
+    const addr = $("sAddr").value.trim();
+    const det = $("sDet").value.trim() || "Скидка по студенческому билету.";
+
+    const msg = `🎓 Новая скидка для СтудКарты!\n\n📍 Место: ${name}\n🏷 Категория: ${catLabel}\n💸 Скидка: ${disc}\n🗺 Адрес: ${addr}\nℹ️ Условия: ${det}\n\nКод для data.js:\n{\n  name: "${name}",\n  category: "${cat}",\n  discount: "${disc}",\n  details: "${det}",\n  address: "${addr}",\n  lat: 55.7558, lng: 37.6173,\n  who: ["vuz", "college"]\n}`;
+
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(msg).catch(() => {});
+    }
+    sModal.hidden = true;
+    $("suggestForm").reset();
+
+    if (CFG.suggestTg) {
+      const tgUser = CFG.suggestTg.replace(/^@/, "");
+      window.open(`https://t.me/${tgUser}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
+      toast("Открываем Telegram для отправки!");
+    } else {
+      toast("Спасибо! Описание скидки скопировано в буфер обмена");
+    }
+  });
+
   function locate(onOk, onFail) {
     const btn = $("near");
     const fail = msg => { btn.classList.remove("loading"); toast(msg); onFail && onFail(); };
@@ -710,7 +802,6 @@ li:last-child .item::before { bottom: 50%; }
     $("fcount").textContent = nf || "";
   }
 
-  // На телефоне: шторка со списком
   function expand(on) {
     $("panel").classList.toggle("collapsed", !on);
     $("countbtn").setAttribute("aria-expanded", on);
@@ -719,10 +810,7 @@ li:last-child .item::before { bottom: 50%; }
     if (!mobile.matches) return;
     const on = $("panel").classList.contains("collapsed");
     expand(on);
-    if (on) {
-      close();
-      // При открытии шторки фильтры остаются в том же состоянии.
-    }
+    if (on) close();
   });
   $("countbtn").addEventListener("click", () => {
     if (!mobile.matches) return;
@@ -738,7 +826,8 @@ li:last-child .item::before { bottom: 50%; }
     if (state.size) { const v = percent(p); if (v === null || v < state.size) return false; }
     if (state.live && !status(p).live) return false;
     if (state.q) {
-      const hay = `${p.name} ${p.address} ${p.details} ${CATS[p.category].label}`.toLowerCase().replace(/ё/g, "е");
+      const catLabel = CATS[p.category]?.label || "";
+      const hay = `${p.name} ${p.address} ${p.details} ${catLabel}`.toLowerCase().replace(/ё/g, "е");
       if (!state.q.replace(/ё/g, "е").split(/\s+/).every(w => hay.includes(w))) return false;
     }
     return true;
@@ -768,9 +857,10 @@ li:last-child .item::before { bottom: 50%; }
 
     $("list").innerHTML = n ? visibleList.map(p => {
       const st = status(p), d = distOf(p);
-      return `<li><button class="item ${st.past ? "past" : ""} ${state.sel === p.id ? "active" : ""}" type="button" data-id="${p.id}" style="--c:${CATS[p.category].color}">
+      const cat = CATS[p.category] || { label: "Другое", color: "#0078BE" };
+      return `<li><button class="item ${st.past ? "past" : ""} ${state.sel === p.id ? "active" : ""}" type="button" data-id="${p.id}" style="--c:${cat.color}">
         <span class="dot" aria-hidden="true"></span>
-        <span class="name">${esc(p.name)}${isFav(p) ? '<span class="heart" aria-label="в избранном">♥</span>' : ""}<span class="meta">${d !== null ? `<span class="dist">${fmtDist(d)}</span> · ` : ""}${esc(CATS[p.category].label)} · <span class="${st.flag ? "warn" : ""}">${st.short}</span></span></span>
+        <span class="name">${esc(p.name)}${isFav(p) ? '<span class="heart" aria-label="в избранном">♥</span>' : ""}<span class="meta">${d !== null ? `<span class="dist">${fmtDist(d)}</span> · ` : ""}${esc(cat.label)} · <span class="${st.flag ? "warn" : ""}">${st.short}</span></span></span>
         <span class="val ${isWord(p) ? "word" : ""}">${esc(p.discount)}</span></button></li>`;
     }).join("") : emptyState();
     $("reset")?.addEventListener("click", resetAll);
@@ -817,7 +907,6 @@ li:last-child .item::before { bottom: 50%; }
   const WHO = { vuz: "Студентам вузов", college: "Студентам колледжей" };
 
   function stamp(p) {
-    // Верхняя дуга идёт по часовой (текст снаружи линии), нижняя — против (текст внутри), чтобы обе читались слева направо
     return `<svg class="stamp" viewBox="0 0 120 120" role="img" aria-label="Скидка ${esc(p.discount)}">
       <defs>
         <path id="arcT${p.id}" d="M 17,60 A 43,43 0 0 1 103,60"/>
@@ -832,7 +921,6 @@ li:last-child .item::before { bottom: 50%; }
       <text class="big" x="60" y="61" text-anchor="middle" dominant-baseline="central" font-size="34">${esc(p.discount)}</text>
     </svg>`;
   }
-  // Подгоняем размер числа в печати под внутренний круг
   function fitStamp() {
     const t = ticket.querySelector(".stamp .big"); if (!t) return;
     let fs = 34; t.setAttribute("font-size", fs);
@@ -841,7 +929,7 @@ li:last-child .item::before { bottom: 50%; }
   document.fonts?.ready.then(fitStamp);
 
   function open(id, fly) {
-    const p = PLACES[id], c = CATS[p.category], st = status(p), d = distOf(p);
+    const p = PLACES[id], c = CATS[p.category] || { label: "Другое", color: "#0078BE" }, st = status(p), d = distOf(p);
     const from = p.from ? parse(p.from) : null, to = p.to ? parse(p.to) : null;
     const prog = from && to ? Math.max(0, Math.min(100, (today - from) / (to - from) * 100)) : 0;
     state.sel = id;
@@ -905,7 +993,7 @@ li:last-child .item::before { bottom: 50%; }
     const setMetro = () => {
       if (!metroEl || state.sel !== id) return;
       const nearest = window.getNearestMetro ? window.getNearestMetro(p.lat, p.lng) : null;
-      if (!nearest) return; // не получилось — строку просто не показываем
+      if (!nearest) return;
       const [st, meters] = nearest;
       metroEl.style.setProperty("--metro-color", st.lineColor || "#999");
       metroEl.querySelector("b").textContent = `${st.name} · ${meters >= 1000 ? (meters / 1000).toFixed(1).replace(".", ",") + " км" : Math.round(meters) + " м"}`;
@@ -921,13 +1009,11 @@ li:last-child .item::before { bottom: 50%; }
 
     if (mobile.matches) { expand(false); $("filters").hidden = true; $("ftoggle").setAttribute("aria-expanded", false); }
     if (!fly && mobile.matches) {
-      // на телефоне поднимаем метку над билетом
       const pt = map.latLngToContainerPoint([p.lat, p.lng]);
       const top = map.getSize().y - ticket.offsetHeight - 40;
       if (pt.y > top) map.panBy([0, pt.y - top]);
     }
     if (!fly && !mobile.matches) {
-      // если метку закрывает билет — сдвигаем карту
       const pt = map.latLngToContainerPoint([p.lat, p.lng]);
       const edge = ticket.offsetLeft + ticket.offsetWidth + 40;
       if (pt.x < edge) map.panBy([pt.x - edge, 0]);
@@ -983,18 +1069,16 @@ li:last-child .item::before { bottom: 50%; }
     else fallback();
   }
 
-  // ---------- Подсказка ----------
   function hideHint() { if (!$("hint").hidden) { $("hint").hidden = true; store.set("studmap:hint", 1); } }
   if (!store.get("studmap:hint", 0)) $("hint").hidden = false;
   $("hintok").addEventListener("click", hideHint);
 
   map.on("click", close);
   document.addEventListener("keydown", e => {
-    if (e.key === "Escape") close();
-    if (e.key === "/" && document.activeElement !== qEl) { e.preventDefault(); qEl.focus(); }
+    if (e.key === "Escape") { close(); sModal.hidden = true; }
+    if (e.key === "/" && document.activeElement !== qEl && sModal.hidden) { e.preventDefault(); qEl.focus(); }
   });
 
-  // Окно могло открыться свёрнутым (нулевого размера) — подстраиваем карту, когда оно появится
   new ResizeObserver(() => {
     if (!sized()) return;
     map.invalidateSize();
@@ -1002,10 +1086,6 @@ li:last-child .item::before { bottom: 50%; }
     layoutLabels();
   }).observe($("map"));
 
-  // ---------- Привязка меток к зданиям ----------
-  // Координаты в data.js иногда попадают на проезжую часть. После загрузки берём контуры зданий
-  // из тех же векторных тайлов OpenStreetMap, что рисуют карту, и «сажаем» метку на ближайшее здание.
-  // Результат запоминается в браузере, повторно тайлы не качаются. Отключить: snapToBuildings: false в data.js.
   const inRing = (x, y, ring) => {
     let c = false;
     for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
@@ -1015,7 +1095,6 @@ li:last-child .item::before { bottom: 50%; }
     return c;
   };
   const inPoly = (x, y, rings) => inRing(x, y, rings[0]) && !rings.slice(1).some(h => inRing(x, y, h));
-  // polys — массив полигонов [внешнее кольцо, дырки...] в координатах [lng, lat]. Возвращает [lat, lng] или null (двигать не нужно).
   function snapPoint(polys, lat, lng, maxM = 45) {
     const kx = 111320 * Math.cos(lat * Math.PI / 180), ky = 110574;
     const loc = polys.map(rings => rings.map(r => r.map(([x, y]) => [(x - lng) * kx, (y - lat) * ky])));
@@ -1093,7 +1172,6 @@ li:last-child .item::before { bottom: 50%; }
     store.set(KEY, cache);
   }
 
-  // Несколько организаций в одном здании: слегка раздвигаем метки, чтобы они не лежали друг на друге
   function spreadStacks() {
     const seen = new Set();
     PLACES.forEach(a => {
