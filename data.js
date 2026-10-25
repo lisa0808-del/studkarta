@@ -1,4 +1,6 @@
-// Данные организаций для карты СтудКарта.
+// Данные организаций для карты.
+// Базовые скидки проверены по источникам проекта.
+// Условия меняются: перепроверяйте источники хотя бы раз в семестр.
 
 window.SETTINGS = {
   city: "Москва",
@@ -8,7 +10,7 @@ window.SETTINGS = {
   routeMode: "mt",
   checked: "2026-10-25",
   snapToBuildings: true,
-  suggestTg: "@predlojkaMestbot", // Укажи свой ник в ТГ без @ (например: "lisa0808")
+  suggestTg: "@predlojkaMestbot", // <-- СЮДА ВПИШИ СВОЙ ЮЗЕРНЕЙМ В ТГ
   note: "Скидки проверены по сайтам организаций. Перед походом уточняйте условия по ссылке в карточке."
 };
 
@@ -106,11 +108,12 @@ window.PLACES = [
     name: "ММОМА (Московский музей современного искусства)",
     category: "museum",
     discount: "Льготный",
-    details: "Льготный билет (250 ₽) для студентов очной формы обучения РФ. В каждое третье воскресенье месяца — вход бесплатный по предварительной регистрации.",
+    details: "Льготный билет (250 ₽) для студентов очной формы обучения РФ и обладателей карт ISIC. В каждое третье воскресенье месяца — вход бесплатный по предварительной регистрации.",
     address: "ул. Петровка, 25",
     lat: 55.7656, lng: 37.6143,
     who: ["vuz", "college"],
-    url: "https://mmoma.ru"
+    url: "https://mmoma.ru",
+    source: "https://mmoma.ru/visit/"
   },
   {
     name: "Музей русского импрессионизма",
@@ -120,7 +123,8 @@ window.PLACES = [
     address: "Ленинградский просп., 15, стр. 11",
     lat: 55.7824, lng: 37.5782,
     who: ["vuz", "college"],
-    url: "https://www.rusimp.su"
+    url: "https://www.rusimp.su",
+    source: "https://www.rusimp.su/ru/visitors"
   },
   {
     name: "Дом-музей Марины Цветаевой",
@@ -130,104 +134,115 @@ window.PLACES = [
     address: "Борисоглебский пер., 6, стр. 1",
     lat: 55.7538, lng: 37.5878,
     who: ["vuz", "college"],
-    url: "https://dommuseum.ru"
+    url: "https://dommuseum.ru",
+    source: "https://dommuseum.ru/posetitelyam"
   },
   {
     name: "Государственный исторический музей (ГИМ)",
     category: "museum",
     discount: "Льготный",
-    details: "Специальный льготный тариф для студентов вузов и колледжей РФ по студенческому билету.",
+    details: "Специальный льготный тариф для студентов вузов и колледжей РФ при предъявлении студенческого билета в кассе или при покупке онлайн.",
     address: "Красная пл., 1",
     lat: 55.7553, lng: 37.6176,
     who: ["vuz", "college"],
-    url: "https://shm.ru"
+    url: "https://shm.ru",
+    source: "https://shm.ru/visit/tickets/"
   },
   {
     name: "Галерея Александра Шилова",
     category: "museum",
     discount: "Льготный",
-    details: "Льготный вход для студентов очной формы обучения по студенческому билету.",
+    details: "Льготный вход для студентов очной формы обучения по студенческому билету. Доступно участие в Московской музейной неделе.",
     address: "ул. Знаменка, 5",
     lat: 55.7495, lng: 37.6085,
     who: ["vuz", "college"],
-    url: "https://amshilov.ru"
+    url: "https://amshilov.ru",
+    source: "https://amshilov.ru/"
   },
   {
     name: "Дом культуры «ГЭС-2»",
     category: "museum",
     discount: "Бесплатно",
-    details: "Вход в здание и на большинство выставок бесплатный для всех по предварительной регистрации на сайте.",
+    details: "Вход в здание и на большинство выставок бесплатный для всех по предварительной регистрации на сайте. На кинопоказы и платные события действуют студенческие скидки.",
     address: "Болотная наб., 15",
     lat: 55.7423, lng: 37.6125,
     who: ["vuz", "college"],
-    url: "https://v-a-c.org"
+    url: "https://v-a-c.org",
+    source: "https://v-a-c.org/ges2"
   },
   {
     name: "Центр «Космонавтика и авиация» на ВДНХ",
     category: "museum",
     discount: "Льготный",
-    details: "Льготный билет (250 ₽ вместо 500 ₽) для студентов дневных отделений вузов и колледжей при предъявлении студенческого билета.",
-    address: "просп. Мира, 119, стр. 34 (ВДНХ)",
+    details: "Льготный билет (250 ₽ вместо 500 ₽) для студентов дневных отделений вузов и колледжей при предъявлении студенческого билета в кассе.",
+    address: "просп. Мира, 119, стр. 34 (ВДНХ, павильон № 34)",
     lat: 55.8351, lng: 37.6225,
     who: ["vuz", "college"],
-    url: "https://cosmos.vdnh.ru"
+    url: "https://cosmos.vdnh.ru",
+    source: "https://cosmos.vdnh.ru/visitors/"
   },
 
-  // ---------- Досуг и Развлечения ----------
+  // ---------- Досуг ----------
   {
     name: "Московский зоопарк",
     category: "fun",
     discount: "Бесплатно",
-    details: "Студенты очной формы с постоянной регистрацией в Москве — бесплатно в любой день. Без московской регистрации — бесплатно каждую третью среду месяца.",
+    details: "Студенты очной формы с постоянной регистрацией в Москве — бесплатно в любой день. Без московской регистрации — бесплатно каждую третью среду месяца. Льготные билеты выдают только в кассах.",
     address: "ул. Большая Грузинская, 1",
     lat: 55.7612, lng: 37.57854,
     who: ["vuz", "college"],
-    url: "https://moscowzoo.ru"
+    url: "https://moscowzoo.ru",
+    source: "https://moscowzoo.ru/visitors/tickets"
   },
   {
     name: "Московский планетарий",
     category: "fun",
     discount: "−10%",
-    details: "Скидка до 10% для студентов дневного отделения.",
+    details: "Скидка до 10% для студентов дневного отделения. Не действует на VIP-места, полнокупольные музыкальные шоу и концерты.",
     address: "ул. Садовая-Кудринская, 5, стр. 1",
     lat: 55.7613, lng: 37.58381,
     who: ["vuz", "college"],
-    url: "https://planetarium-moscow.ru"
+    url: "https://planetarium-moscow.ru",
+    source: "https://planetarium-moscow.ru/visitors/prices/"
   },
   {
     name: "Москвариум",
     category: "fun",
     discount: "Льготный",
-    details: "Специальные студенческие тарифы на экспозицию Аквариума по студенческому билету.",
+    details: "Специальные студенческие акции и скидки на вход в Аквариум в течение учебного года по предъявлению студенческого билета в кассах.",
     address: "просп. Мира, 119, стр. 23 (ВДНХ)",
     lat: 55.8330, lng: 37.6186,
     who: ["vuz", "college"],
-    url: "https://www.moskvarium.ru"
+    url: "https://www.moskvarium.ru",
+    source: "https://www.moskvarium.ru/"
   },
   {
     name: "Устрой Дестрой",
     category: "fun",
     discount: "−15%",
-    details: "Студенческая скидка на аттракцион крушения предметов при предъявлении студенческого билета.",
+    details: "Студенческая скидка на антистресс-аттракционы и крушение предметов при предъявлении студенческого билета. Уточняйте при бронировании.",
     address: "Лубянский пр., 5, стр. 1",
     lat: 55.7576, lng: 37.6305,
-    who: ["vuz", "college"]
+    who: ["vuz", "college"],
+    url: "https://ustroydestroy.ru",
+    source: "https://ustroydestroy.ru/"
   },
   {
     name: "Парк «Зарядье»",
     category: "fun",
     discount: "−20%",
-    details: "Льготные билеты студентам очной формы на медиакомплексы («Полёт») и выставки.",
+    details: "Льготные билеты и скидка до 20% студентам очной формы обучения на медиакомплексы («Полёт», «Машина времени»), выставки и ледяную пещеру.",
     address: "ул. Варварка, 6, стр. 1",
     lat: 55.7515, lng: 37.6288,
     who: ["vuz", "college"],
-    url: "https://www.zaryadyepark.ru"
+    url: "https://www.zaryadyepark.ru",
+    source: "https://www.zaryadyepark.ru/services/"
   },
   {
     name: "Клуб мафии Mafia VIP",
     category: "fun",
     discount: "−20%",
-    details: "Скидка для студентов на игровые вечера в мафию при предъявлении студенческого билета.",
+    details: "Скидка для студентов на игровые вечера в мафию при предъявлении студенческого билета. Требуется предварительная запись.",
     address: "ул. Малая Ордынка, 25",
     lat: 55.7368, lng: 37.6251,
     who: ["vuz", "college"]
@@ -236,11 +251,72 @@ window.PLACES = [
     name: "Альпака Парк",
     category: "fun",
     discount: "Льготный",
-    details: "Льготный входной билет для студентов очной формы обучения.",
+    details: "Льготный входной билет для студентов очной формы при предъявлении студенческого билета на кассе.",
     address: "ул. Крылатская, 18",
     lat: 55.7645, lng: 37.4265,
     who: ["vuz", "college"],
-    url: "https://alpacapark.ru"
+    url: "https://alpacapark.ru",
+    source: "https://alpacapark.ru/"
+  },
+  {
+    name: "Ква-ква-парк",
+    category: "fun",
+    discount: "2190 ₽",
+    details: "Студенческий тариф — 2190 ₽ за 4 часа вместо 3290 ₽. Льгота действует круглый год; нужен студенческий билет.",
+    address: "Мытищи, Коммунистическая, 1, ТРЦ XL",
+    lat: 55.891797, lng: 37.748833,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "YouPlay",
+    category: "fun",
+    discount: "499 ₽",
+    details: "Ночной студенческий тариф с 22:00 до 06:00: 7 часов на ПК, час на приставке и 30 минут VR за 499 ₽. Нужен студенческий.",
+    address: "Щелковское ш., 79, корп. 1",
+    lat: 55.81113, lng: 37.80769,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Квесты «Нелогика»",
+    category: "fun",
+    discount: "−20%",
+    details: "Скидка 20% студентам по будням при предварительном онлайн-бронировании. Студенческий предъявляется на месте.",
+    address: "Подсосенский пер., 3, корп. 1",
+    lat: 55.7589, lng: 37.6444,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Боулинг «The Би/Ба/Бо»",
+    category: "fun",
+    discount: "−50%",
+    details: "Скидка 50% студентам на боулинг по понедельникам–пятницам до 18:00; по воскресеньям — 25%. Бронирование обязательно.",
+    address: "Карманицкий пер., 9",
+    lat: 55.7483, lng: 37.5833,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Картинг Race Place",
+    category: "fun",
+    discount: "−20%",
+    details: "Скидка 20% студентам с 19:00 до 20:00 на стандартные 10-минутные заезды, мини-гонки и марафоны. День скидки зависит от площадки.",
+    address: "Алтуфьевское ш., 1 км, влад. 3, стр. 1, ТРЦ «Весна»",
+    lat: 55.905, lng: 37.588,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Бильярд на «Фабрике»",
+    category: "fun",
+    discount: "−40%",
+    details: "Скидка 40% студентам по будням до 18:00, по пятницам — до 16:00. Стол рекомендуется бронировать заранее.",
+    address: "Ткацкая, 5, стр. 7",
+    lat: 55.7833, lng: 37.7416,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
   },
   {
     name: "Парк аттракционов «Остров мечты»",
@@ -249,43 +325,8 @@ window.PLACES = [
     details: "По средам и четвергам студенческий билет стоит 2000 ₽ вместо 2800 ₽.",
     address: "просп. Андропова, 1",
     lat: 55.695063, lng: 37.678959,
-    who: ["vuz", "college"]
-  },
-  {
-    name: "Ква-ква-парк",
-    category: "fun",
-    discount: "2190 ₽",
-    details: "Студенческий тариф — 2190 ₽ за 4 часа вместо 3290 ₽. Льгота действует круглый год.",
-    address: "Мытищи, Коммунистическая, 1, ТРЦ XL",
-    lat: 55.891797, lng: 37.748833,
-    who: ["vuz", "college"]
-  },
-  {
-    name: "YouPlay",
-    category: "fun",
-    discount: "499 ₽",
-    details: "Ночной студенческий тариф с 22:00 до 06:00 за 499 ₽.",
-    address: "Щелковское ш., 79, корп. 1",
-    lat: 55.81113, lng: 37.80769,
-    who: ["vuz", "college"]
-  },
-  {
-    name: "Квесты «Нелогика»",
-    category: "fun",
-    discount: "−20%",
-    details: "Скидка 20% студентам по будням при предварительном онлайн-бронировании.",
-    address: "Подсосенский пер., 3, корп. 1",
-    lat: 55.7589, lng: 37.6444,
-    who: ["vuz", "college"]
-  },
-  {
-    name: "Боулинг «The Би/Ба/Бо»",
-    category: "fun",
-    discount: "−50%",
-    details: "Скидка 50% студентам на боулинг по пн–пт до 18:00; по воскресеньям — 25%.",
-    address: "Карманицкий пер., 9",
-    lat: 55.7483, lng: 37.5833,
-    who: ["vuz", "college"]
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
   },
 
   // ---------- Кино ----------
@@ -293,61 +334,164 @@ window.PLACES = [
     name: "КАРО 11 Октябрь",
     category: "cinema",
     discount: "−40%",
-    details: "Скидка 40% от стандартного билета студентам очного отделения. Подходит электронный студенческий.",
+    details: "Скидка 40% от стандартного билета студентам очного отделения — на сайте, в приложении и в кассе. Подходит электронный студенческий на Госуслугах. Не действует в залах «Премиум», на премьеры и «КАРОакции».",
     address: "ул. Новый Арбат, 24",
     lat: 55.75311, lng: 37.58765,
     who: ["vuz", "college"],
-    url: "https://karofilm.ru"
+    url: "https://karofilm.ru",
+    source: "https://karofilm.ru/news/276"
   },
   {
     name: "КАРО 7 Атриум",
     category: "cinema",
     discount: "−40%",
-    details: "Скидка 40% от стандартного билета студентам очного отделения.",
+    details: "Скидка 40% от стандартного билета студентам очного отделения. Не действует на премьерные показы, трансляции и фильмы по «КАРОакции».",
     address: "ул. Земляной Вал, 33, ТРК «Атриум»",
     lat: 55.7572, lng: 37.65933,
     who: ["vuz", "college"],
-    url: "https://karofilm.ru"
+    url: "https://karofilm.ru",
+    source: "https://karofilm.ru/news/276"
   },
   {
-    name: "Кинотеатр «Художественный»",
+    name: "КАРО Sky 17 Авиапарк",
+    category: "cinema",
+    discount: "−40%",
+    details: "Скидка 40% от стандартного билета студентам очного отделения. Не действует в залах «Премиум», на премьеры и «КАРОакции».",
+    address: "Ходынский б-р, 4, ТЦ «Авиапарк»",
+    lat: 55.78997, lng: 37.53102,
+    who: ["vuz", "college"],
+    url: "https://karofilm.ru",
+    source: "https://karofilm.ru/news/276"
+  },
+  {
+    name: "Москино Космос",
+    category: "cinema",
+    discount: "Льготный",
+    details: "Льготные билеты для студентов дневных отделений. Цену уточняйте в кассе.",
+    address: "пр. Мира, 109",
+    lat: 55.81869, lng: 37.63675,
+    who: ["vuz", "college"],
+    url: "https://mos-kino.ru",
+    source: "https://mos-kino.ru/cinema/moskino_kosmos/"
+  },
+  {
+    name: "Москино Сатурн",
+    category: "cinema",
+    discount: "Льготный",
+    details: "Льготные билеты для студентов дневных отделений. Цену уточняйте в кассе.",
+    address: "Снежная ул., 18",
+    lat: 55.85195, lng: 37.64754,
+    who: ["vuz", "college"],
+    url: "https://mos-kino.ru",
+    source: "https://mos-kino.ru/cinema/moskino_saturn/"
+  },
+  {
+    name: "Москино Искра",
+    category: "cinema",
+    discount: "Льготный",
+    details: "Льготные билеты для студентов дневных отделений. Цену уточняйте в кассе.",
+    address: "ул. Костякова, 10",
+    lat: 55.81453, lng: 37.57114,
+    who: ["vuz", "college"],
+    url: "https://mos-kino.ru",
+    source: "https://mos-kino.ru/cinema/moskino_iskra/"
+  },
+  {
+    name: "Киномакс — Мозаика",
+    category: "cinema",
+    discount: "−30%",
+    details: "Студенческая скидка 30% по будням с понедельника по четверг и до 16:00 в пятницу. Не действует на премьеры, VIP-залы и специальные показы. Оформляется в кассе.",
+    address: "7-я Кожуховская, 9, ТРЦ «Мозаика», 3 этаж",
+    lat: 55.710693, lng: 37.675109,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Киномакс — Пражская",
+    category: "cinema",
+    discount: "−30%",
+    details: "Студенческая скидка по условиям сети; перед покупкой уточните ограничения на конкретный сеанс.",
+    address: "Кировоградская ул., 13А",
+    lat: 55.61270, lng: 37.60500,
+    who: ["vuz", "college"],
+    url: "https://kinomax.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Синема Парк — Метрополис",
     category: "cinema",
     discount: "−20%",
-    details: "Скидка 20% студентам очной формы на утренние и дневные сеансы в будние дни при покупке в кассе.",
-    address: "Арбатская пл., 14, стр. 1",
-    lat: 55.7523, lng: 37.6012,
+    details: "Студентам предоставляется скидка 20% при покупке билета в кассе. Не действует на мультфильмы и VIP-залы.",
+    address: "Ленинградское ш., 16А, стр. 4, ТЦ «Метрополис»",
+    lat: 55.823217, lng: 37.497468,
     who: ["vuz", "college"],
-    url: "https://cinema1909.ru"
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Синема Парк — Филион",
+    category: "cinema",
+    discount: "−20%",
+    details: "Студенческая скидка по условиям сети; актуальные ограничения уточняйте перед покупкой.",
+    address: "Багратионовский пр., 5, ТРЦ «Филион»",
+    lat: 55.74080, lng: 37.50340,
+    who: ["vuz", "college"],
+    url: "https://kinoteatr.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Синема Парк — МЕГА Тёплый Стан",
+    category: "cinema",
+    discount: "−20%",
+    details: "Студенческая скидка по условиям сети; актуальные ограничения уточняйте перед покупкой.",
+    address: "Калужское ш., 21, МЕГА Тёплый Стан",
+    lat: 55.61920, lng: 37.49200,
+    who: ["vuz", "college"],
+    url: "https://kinoteatr.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
   },
   {
     name: "Синема Стар — Ереван Плаза",
     category: "cinema",
     discount: "Льготный",
-    details: "Студенческий тариф по будням (с понедельника по среду) по студенческому билету.",
+    details: "Студенческий тариф по будням (с понедельника по среду) при предъявлении студенческого билета в кассе кинотеатра.",
     address: "ул. Большая Тульская, 13, ТРЦ «Ереван Плаза»",
     lat: 55.7099, lng: 37.6225,
     who: ["vuz", "college"],
-    url: "https://cinemastar.ru"
+    url: "https://cinemastar.ru",
+    source: "https://cinemastar.ru/"
   },
   {
     name: "Люксор — Весна",
     category: "cinema",
     discount: "Льготный",
-    details: "Специальные цены на билеты в кино для студентов очной формы в будни.",
-    address: "Алтуфьевское ш., 1-й км, вл3с1",
+    details: "Специальные цены на билеты в кино для студентов очной формы обучения в будние дни по студенческому билету.",
+    address: "Алтуфьевское ш., 1-й километр, вл3с1, ТРЦ «Весна»",
     lat: 55.9048, lng: 37.5875,
     who: ["vuz", "college"],
-    url: "https://luxorfilm.ru"
+    url: "https://luxorfilm.ru",
+    source: "https://luxorfilm.ru/"
+  },
+  {
+    name: "Кинотеатр «Художественный»",
+    category: "cinema",
+    discount: "−20%",
+    details: "Скидка 20% студентам очной формы на утренние и дневные сеансы в будние дни при покупке в кассе кинотеатра.",
+    address: "Арбатская пл., 14, стр. 1",
+    lat: 55.7523, lng: 37.6012,
+    who: ["vuz", "college"],
+    url: "https://cinema1909.ru",
+    source: "https://cinema1909.ru/"
   },
   {
     name: "Мираж Синема — Европолис",
     category: "cinema",
     discount: "Льготный",
     details: "Льготный студенческий тариф по будням при предъявлении оригинала студенческого билета.",
-    address: "просп. Мира, 211, корп. 2",
+    address: "просп. Мира, 211, корп. 2, ТРК «Европолис»",
     lat: 55.8455, lng: 37.6625,
     who: ["vuz", "college"],
-    url: "https://mirage.ru"
+    url: "https://mirage.ru",
+    source: "https://mirage.ru/"
   },
 
   // ---------- Театры ----------
@@ -355,31 +499,34 @@ window.PLACES = [
     name: "Театр им. Вл. Маяковского",
     category: "theatre",
     discount: "Льготный",
-    details: "Билеты по льготной цене для студентов — в кассе театра за час до начала спектакля при наличии мест.",
+    details: "Билеты по льготной цене для студентов вузов и колледжей — в кассе театра за час до начала спектакля, если остались свободные места.",
     address: "ул. Большая Никитская, 19/13",
     lat: 55.75682, lng: 37.60182,
     who: ["vuz", "college"],
-    url: "https://www.mayakovsky.ru"
+    url: "https://www.mayakovsky.ru",
+    source: "https://www.mayakovsky.ru/about/spec/"
   },
   {
     name: "Театр МОСТ",
     category: "theatre",
     discount: "−20%",
-    details: "Скидка 20% круглый год для студентов вузов очной формы по студенческому билету.",
+    details: "Скидка 20% круглый год для студентов вузов очной формы по студенческому билету. На один спектакль продаётся ограниченное число льготных билетов.",
     address: "ул. Большая Садовая, 6",
     lat: 55.76619, lng: 37.59199,
     who: ["vuz"],
-    url: "https://teatrmost.ru"
+    url: "https://teatrmost.ru",
+    source: "https://teatrmost.ru/discounts/"
   },
   {
     name: "Большой театр",
     category: "theatre",
     discount: "Льготный",
-    details: "Программа «Большой — студентам»: специальные льготные билеты для студентов дневных отделений вузов РФ.",
+    details: "Программа «Большой — студентам»: специальные льготные билеты для студентов дневных отделений российских вузов по студенческому билету.",
     address: "Театральная пл., 1",
     lat: 55.7601, lng: 37.6186,
     who: ["vuz"],
-    url: "https://bolshoi.ru"
+    url: "https://bolshoi.ru",
+    source: "https://bolshoi.ru/visit/buying-procedure/"
   },
 
   // ---------- Спорт ----------
@@ -387,101 +534,685 @@ window.PLACES = [
     name: "Бассейны «Лужники»",
     category: "sport",
     discount: "−50%",
-    details: "Льготный тариф 600 ₽ вместо 1 190 ₽ в бассейны и термы. С 10:00 до 15:59 по студенческому очной формы.",
+    details: "Льготный тариф 600 ₽ вместо 1 190 ₽: 120 минут в плавательных бассейнах и термах. Продаётся в кассах с 10:00 до 15:59 по студенческому очной формы.",
     address: "ул. Лужники, 24, стр. 4",
     lat: 55.71308, lng: 37.55844,
     who: ["vuz", "college"],
-    url: "https://aqua.luzhniki.ru"
+    url: "https://aqua.luzhniki.ru",
+    source: "https://aqua.luzhniki.ru/tarify/"
   },
   {
-    name: "SMSTRETCHING — Пятницкая",
+    name: "Фитнес-клуб «Мореон»",
+    category: "sport",
+    discount: "−30%",
+    details: "Студентам предоставляется скидка 30% на клубные карты. Итоговую стоимость нужно уточнять при оформлении.",
+    address: "Голубинская, 16",
+    lat: 55.597246, lng: 37.527184,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "СпортЛэнд",
+    category: "sport",
+    discount: "−50%",
+    details: "Студенты получают скидку 50% на вступительный взнос. Условия абонемента и актуальную цену необходимо уточнить перед оформлением.",
+    address: "Кленовый б-р, 23",
+    lat: 55.6759, lng: 37.6815,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Студия йоги «Чакра»",
+    category: "sport",
+    discount: "−30%",
+    details: "Разовое посещение для студентов дешевле на 30%, абонемент — на 15%.",
+    address: "Мясницкая, 24/7, стр. 3",
+    lat: 55.7625, lng: 37.6355,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Студия танцев «ЛисоБорье»",
     category: "sport",
     discount: "−20%",
-    details: "Студенческая скидка 20% на абонементы при предъявлении студенческого билета.",
+    details: "Скидка 20% студентам на групповые абонементы.",
+    address: "Бауманская, 53, стр. 2",
+    lat: 55.7677, lng: 37.6799,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "SMSTRETCHING",
+    category: "sport",
+    discount: "−20%",
+    details: "Студенческая скидка 20% на абонементы при предъявлении студенческого билета администратору студии.",
     address: "ул. Пятницкая, 71/5, стр. 2",
     lat: 55.7318, lng: 37.6285,
     who: ["vuz", "college"],
-    url: "https://smstretching.ru"
+    url: "https://smstretching.ru",
+    source: "https://smstretching.ru/"
   },
   {
-    name: "DDX Fitness — Атриум",
+    name: "Танцевальная студия MDC NRG",
+    category: "sport",
+    discount: "−15%",
+    details: "Скидка для студентов на покупку абонементов при предъявлении действующего студенческого билета.",
+    address: "ул. Бутырский Вал, 68/70, стр. 1",
+    lat: 55.7885, lng: 37.5862,
+    who: ["vuz", "college"],
+    url: "https://mdcnrg.ru",
+    source: "https://mdcnrg.ru/"
+  },
+  {
+    name: "DDX Fitness",
     category: "sport",
     discount: "Льготный",
-    details: "Специальные молодёжные акции на вступительный взнос и фитнес-тарифы.",
-    address: "ул. Земляной Вал, 33",
+    details: "Специальные условия и акции на вступительный взнос для студентов и молодёжи.",
+    address: "ул. Земляной Вал, 33, ТРК «Атриум»",
     lat: 55.7575, lng: 37.6590,
     who: ["vuz", "college"],
-    url: "https://ddxfitness.ru"
+    url: "https://ddxfitness.ru",
+    source: "https://ddxfitness.ru/"
   },
   {
-    name: "DDX Fitness — Савёловская",
+    name: "HOT STUDIO",
     category: "sport",
-    discount: "Льготный",
-    details: "Специальные молодёжные условия при предъявлении студенческого билета.",
-    address: "Сущёвский Вал, 5, стр. 1",
-    lat: 55.7938, lng: 37.5924,
-    who: ["vuz", "college"],
-    url: "https://ddxfitness.ru"
-  },
-  {
-    name: "DDX Fitness — Щука",
-    category: "sport",
-    discount: "Льготный",
-    details: "Скидки на абонементы и регистрацию в фитнес-клуб.",
-    address: "ул. Щукинская, 42, ТРК «Щука»",
-    lat: 55.8095, lng: 37.4645,
-    who: ["vuz", "college"],
-    url: "https://ddxfitness.ru"
+    discount: "−20%",
+    details: "Скидка студентам на горячую йогу, пилатес и стретчинг по студенческому билету.",
+    address: "ул. Малая Бронная, 16",
+    lat: 55.7615, lng: 37.5945,
+    who: ["vuz", "college"]
   },
   {
     name: "ФК «Динамо-Москва» (ВТБ Арена)",
     category: "sport",
     discount: "−30%",
-    details: "Скидки студентам на домашние матчи клуба по студенческому билету.",
+    details: "Скидки студентам на домашние матчи клуба по студенческому билету или промокоду партнёрских программ вузов.",
     address: "Ленинградский просп., 36",
     lat: 55.7915, lng: 37.5605,
     who: ["vuz", "college"],
-    url: "https://fcdm.ru"
+    url: "https://fcdm.ru",
+    source: "https://fcdm.ru/"
   },
+  {
+    name: "Московская лига плавания",
+    category: "sport",
+    discount: "−15%",
+    details: "Льготные условия на тренировки по плаванию и участие в заплывах для студентов.",
+    address: "ул. Автозаводская, 23А, корп. 4",
+    lat: 55.7012, lng: 37.6415,
+    who: ["vuz", "college"],
+    url: "https://swimleague.ru"
+  },
+  {
+    name: "Велошоп",
+    category: "sport",
+    discount: "−10%",
+    details: "Скидка студентам на прокат, сервис и аксессуары для велосипедов при предъявлении студенческого билета.",
+    address: "ул. Сокольнический Вал, 1, стр. 1",
+    lat: 55.7892, lng: 37.6765,
+    who: ["vuz", "college"]
+  },
+  {
+    name: "PRIME SNOWBOARDS",
+    category: "sport",
+    discount: "−15%",
+    details: "Студенческая скидка на прокат и ски-сервис сноубордов и горных лыж по студенческому билету.",
+    address: "ул. Электролитная, 1Б",
+    lat: 55.6695, lng: 37.6165,
+    who: ["vuz", "college"]
+  },
+  {
+    name: "Студия фитнеса SEKTSIA",
+    category: "sport",
+    discount: "−20%",
+    details: "Скидка 20% для студентов на пакеты тренировок при предъявлении студенческого на ресепшене.",
+    address: "ул. Рочдельская, 15, стр. 16",
+    lat: 55.7558, lng: 37.5625,
+    who: ["vuz", "college"],
+    url: "https://sektsia.ru"
+  },
+  {
+    name: "Батутный центр Do a Flip (doeflip)",
+    category: "sport",
+    discount: "−20%",
+    details: "Скидка для студентов на свободные прыжки и групповые занятия на батутах в будние дни.",
+    address: "ул. Дубининская, 71",
+    lat: 55.7155, lng: 37.6335,
+    who: ["vuz", "college"]
+  },
+
+  // ---------- Сетевые точки: Spirit Fitness (Москва) ----------
   {
     name: "Spirit Fitness — Савёловская",
     category: "sport",
     discount: "Льготный",
-    details: "Студенческие условия Spirit Fitness. Уточняйте в клубе.",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
     address: "Двинцев, вл. 3, БЦ Stone Савеловская",
     lat: 55.81290, lng: 37.58840,
     who: ["vuz", "college"],
-    url: "https://spiritfit.ru/clubs/"
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Юго-Восточная",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Ферганская ул., 17, ТЦ «Ассортида»",
+    lat: 55.70890, lng: 37.81900,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Нижегородская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Рязанский просп., 2, к. 2",
+    lat: 55.73270, lng: 37.74250,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Автозаводская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Ленинская Слобода, 26, стр. 2, ТРЦ «Глобал Молл»",
+    lat: 55.72880, lng: 37.66090,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Аминьевская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Очаковское ш., 3А/8, ТЦ ОМА",
+    lat: 55.70080, lng: 37.47390,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Технопарк",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "просп. Андропова, 8, ТРЦ «Мегаполис»",
+    lat: 55.69590, lng: 37.66480,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Алтуфьево",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Алтуфьевское ш., 24, к. 1, ТЦ «Улей»",
+    lat: 55.86250, lng: 37.58780,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Прокшино",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "ул. Николо-Хованская, 7с1, ТЦ «Сиеста»",
+    lat: 55.58980, lng: 37.44650,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Гагаринский",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "ул. Вавилова, 3, ТРЦ «Гагаринский»",
+    lat: 55.70670, lng: 37.58720,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Рассказовка",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "ул. Корнея Чуковского, 2, ТЦ «Сказка»",
+    lat: 55.63350, lng: 37.34350,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Севастопольский",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Севастопольский пр-т, 28, корп. 2",
+    lat: 55.66470, lng: 37.57830,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
   },
   {
     name: "Spirit Fitness — Федерация",
     category: "sport",
     discount: "Льготный",
-    details: "Студенческий тариф в башне Федерация.",
-    address: "Пресненская наб., 12",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Пресненская наб., 12, Москва-Сити, башня «Федерация»",
     lat: 55.74980, lng: 37.53970,
     who: ["vuz", "college"],
-    url: "https://spiritfit.ru/clubs/"
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Войковская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Старопетровский пр., 1, стр. 2, ТЦ Baby Store",
+    lat: 55.82650, lng: 37.50040,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Марьина Роща",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Шереметьевская ул., 6, корп. 1",
+    lat: 55.79680, lng: 37.61620,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Беляево",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "ул. Миклухо-Маклая, 18, к. 2, ТЦ «Беляево»",
+    lat: 55.64490, lng: 37.51940,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
   },
   {
     name: "Spirit Fitness — Юго-Западная",
     category: "sport",
     discount: "Льготный",
-    details: "Студенческий тариф в ТЦ Avenue Southwest.",
-    address: "просп. Вернадского, 86А",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "просп. Вернадского, 86А, ТЦ Avenue Southwest",
     lat: 55.66390, lng: 37.48300,
     who: ["vuz", "college"],
-    url: "https://spiritfit.ru/clubs/"
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Каширское шоссе",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Каширское ш., 80, ТЦ «Борисовский»",
+    lat: 55.63280, lng: 37.72910,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Ясенево",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Ясногорская ул., 7А, ТЦ «Этажи»",
+    lat: 55.60090, lng: 37.53380,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Рогожский вал",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Рогожский вал, 10",
+    lat: 55.74640, lng: 37.67850,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Щукинская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "ул. Авиационная, 66",
+    lat: 55.82470, lng: 37.46650,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Крылатское",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Осенний б-р, 12, ТЦ «Крылатский»",
+    lat: 55.75680, lng: 37.41180,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Рязанский проспект",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Рязанский просп., 30, к. 2",
+    lat: 55.72590, lng: 37.77740,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Дежнёва",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "пр-д Дежнёва, 23, ТЦ «Вавилон-92»",
+    lat: 55.87900, lng: 37.63570,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Крымская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Большая Черёмушкинская ул., 1, ТРЦ «РИО»",
+    lat: 55.70070, lng: 37.58480,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Марьино",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Люблинская ул., 169, к. 2, ТРЦ «Мариэль»",
+    lat: 55.65250, lng: 37.74870,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Некрасовка",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Рождественская ул., 20, ТРЦ «Краски»",
+    lat: 55.70330, lng: 37.93300,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Селигерская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Дмитровское ш., 85",
+    lat: 55.86280, lng: 37.54770,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Раменки",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Мичуринский просп., 27, ТЦ «Тиара»",
+    lat: 55.69450, lng: 37.50090,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Семёновская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Семёновская пл., 1, ТЦ «Семёновский»",
+    lat: 55.78250, lng: 37.71800,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Чертановская",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "пр-т Балаклавский, 16А",
+    lat: 55.64170, lng: 37.60380,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
+  },
+  {
+    name: "Spirit Fitness — Строгино",
+    category: "sport",
+    discount: "Льготный",
+    details: "Студенческие условия Spirit Fitness. Перед посещением проверьте актуальный тариф и условия для студентов на сайте сети.",
+    address: "Строгинский б-р, 1, ТЦ «Дарья»",
+    lat: 55.80460, lng: 37.40170,
+    who: ["vuz", "college"],
+    url: "https://spiritfit.ru/clubs/",
+    source: "https://spiritfit.ru/clubs/"
   },
 
-  // ---------- Сетевые Магазины (shop) ----------
+  // ---------- Магазины (Категория shop) ----------
   {
-    name: "SPAR — Земляной Вал",
+    name: "Леонардо — Авиапарк",
     category: "shop",
     discount: "−10%",
-    details: "Скидка по социальной карте студента и специальные студенческие комбо на готовую кулинарию и кофе.",
+    details: "По понедельникам с 10:00 до 13:00 студенты могут получить скидку 10% на весь чек при предъявлении студенческого билета. Карта постоянного покупателя может давать отдельную скидку.",
+    address: "Ходынский б-р, 4, ТРЦ «Авиапарк»",
+    lat: 55.790231, lng: 37.531289,
+    who: ["vuz", "college"],
+    url: "https://leonardo.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Леонардо — Европейский",
+    category: "shop",
+    discount: "−10%",
+    details: "Студенческая скидка по условиям акции сети (по понедельникам с 10:00 до 13:00).",
+    address: "пл. Киевского Вокзала, 2, ТРЦ «Европейский»",
+    lat: 55.74450, lng: 37.56630,
+    who: ["vuz", "college"],
+    url: "https://leonardo.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Читай-город — МДМ",
+    category: "shop",
+    discount: "−15%",
+    details: "Постоянная скидка 15% студентам на большую часть книг, кроме новинок, и на канцелярию. Перед покупкой уточните условия в конкретном магазине.",
+    address: "Комсомольский просп., 28, МДМ",
+    lat: 55.726882, lng: 37.579654,
+    who: ["vuz", "college"],
+    url: "https://www.chitai-gorod.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Читай-город — Охотный Ряд",
+    category: "shop",
+    discount: "−15%",
+    details: "Студенческая скидка; условия могут отличаться для отдельных товаров.",
+    address: "Манежная пл., 1, стр. 2, ТЦ «Охотный Ряд»",
+    lat: 55.75520, lng: 37.61330,
+    who: ["vuz", "college"],
+    url: "https://www.chitai-gorod.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Читай-город — Европейский",
+    category: "shop",
+    discount: "−15%",
+    details: "Студенческая скидка; условия могут отличаться для отдельных товаров.",
+    address: "пл. Киевского Вокзала, 2, ТРЦ «Европейский»",
+    lat: 55.74450, lng: 37.56630,
+    who: ["vuz", "college"],
+    url: "https://www.chitai-gorod.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Улыбка радуги — Таганская",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка 10% студентам на средства гигиены, уходовую и декоративную косметику в розничных магазинах по будням после 15:00. Скидка может суммироваться с другими акциями.",
+    address: "Таганская, 31/22",
+    lat: 55.739748, lng: 37.670681,
+    who: ["vuz", "college"],
+    url: "https://www.r-ulybka.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Улыбка радуги — проспект Мира",
+    category: "shop",
+    discount: "−10%",
+    details: "Студенческая скидка по условиям акции сети.",
+    address: "пр-т Мира, 78А",
+    lat: 55.78200, lng: 37.62580,
+    who: ["vuz", "college"],
+    url: "https://www.r-ulybka.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Улыбка радуги — Дубнинская",
+    category: "shop",
+    discount: "−10%",
+    details: "Студенческая скидка по условиям акции сети.",
+    address: "Дубнинская ул., 10, корп. 1",
+    lat: 55.87500, lng: 37.57450,
+    who: ["vuz", "college"],
+    url: "https://www.r-ulybka.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "U Forma",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка 10% учащимся на все товары магазина медицинской формы.",
+    address: "ул. Вавилова, 6",
+    lat: 55.708, lng: 37.5879,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Московский Дом Книги",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка до 10% студентам на учебную литературу, канцтовары и книги при предъявлении студенческого билета или карты москвича.",
+    address: "ул. Новый Арбат, 8",
+    lat: 55.7525, lng: 37.5962,
+    who: ["vuz", "college"],
+    url: "https://mdk-arbat.ru",
+    source: "https://mdk-arbat.ru/"
+  },
+  {
+    name: "Копи.ру (Копирка)",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка 10% студентам на распечатку, копирование, брошюровку курсовых и дипломных работ по студенческому билету.",
+    address: "ул. Покровка, 1/13/6, стр. 2",
+    lat: 55.7575, lng: 37.6395,
+    who: ["vuz", "college"],
+    url: "https://kopirka.ru",
+    source: "https://kopirka.ru/"
+  },
+  {
+    name: "Аптеки Столицы",
+    category: "shop",
+    discount: "−5%",
+    details: "Скидка по социальной карте студента (карте москвича) в государственной сети аптек.",
+    address: "просп. Вернадского, 39",
+    lat: 55.6765, lng: 37.5065,
+    who: ["vuz", "college"]
+  },
+  {
+    name: "Дикси",
+    category: "shop",
+    discount: "−5%",
+    details: "Социальная скидка при предъявлении социальной карты студента / карты москвича в утренние и дневные часы по условиям сети.",
+    address: "ул. Большая Полянка, 30",
+    lat: 55.7355, lng: 37.6195,
+    who: ["vuz", "college"],
+    url: "https://dixy.ru"
+  },
+  {
+    name: "Мясницкий ряд",
+    category: "shop",
+    discount: "−7%",
+    details: "Скидка студентам по социальной карте москвича в фирменных магазинах сети.",
+    address: "ул. Маросейка, 6-8, стр. 1",
+    lat: 55.7572, lng: 37.6368,
+    who: ["vuz", "college"],
+    url: "https://kolbasa.ru"
+  },
+  {
+    name: "Магнолия",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка по карте москвича (социальной карте студента) в дневные часы на основной ассортимент.",
+    address: "ул. Пятницкая, 22",
+    lat: 55.7418, lng: 37.6285,
+    who: ["vuz", "college"],
+    url: "https://mgnl.ru"
+  },
+  {
+    name: "SPAR (Евроспар)",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка по социальной карте студента и специальные студенческие комбо на готовую еду и кофе в кулинарии.",
     address: "ул. Земляной Вал, 27, стр. 1",
     lat: 55.7592, lng: 37.6578,
+    who: ["vuz", "college"],
+    url: "https://myspar.ru"
+  },
+  // ---------- Магазины SPAR ----------
+  {
+    name: "EUROSPAR на Менжинского",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка по студенческой социальной карте москвича, а также выгодные комбо и перекусы в отделе кулинарии.",
+    address: "ул. Менжинского, 27",
+    lat: 55.86988, lng: 37.65712,
+    who: ["vuz", "college"],
+    url: "https://myspar.ru"
+  },
+  {
+    name: "SPAR на Изумрудной",
+    category: "shop",
+    discount: "−10%",
+    details: "Скидка по карте москвича студента на готовую кулинарию, выпечку и кофе.",
+    address: "Изумрудная ул., 3, стр. 1",
+    lat: 55.86985, lng: 37.67881,
     who: ["vuz", "college"],
     url: "https://myspar.ru"
   },
@@ -489,190 +1220,30 @@ window.PLACES = [
     name: "SPAR — Тверская",
     category: "shop",
     discount: "−10%",
-    details: "Скидка по социальной карте москвича (студента) и комбо-обеды для учащихся.",
+    details: "Скидка по социальной карте москвича и комбо-обеды для учащихся.",
     address: "ул. Тверская, 15",
     lat: 55.7629, lng: 37.6068,
     who: ["vuz", "college"],
     url: "https://myspar.ru"
   },
   {
-    name: "SPAR — Проспект Мира",
+    name: "SPAR — Земляной Вал",
     category: "shop",
     discount: "−10%",
-    details: "Скидка по карте москвича, выгодные перекусы и кофе со скидкой.",
-    address: "просп. Мира, 40",
-    lat: 55.7801, lng: 37.6338,
+    details: "Скидка по студенческой карте в кулинарии.",
+    address: "ул. Земляной Вал, 27, стр. 1",
+    lat: 55.7592, lng: 37.6578,
     who: ["vuz", "college"],
     url: "https://myspar.ru"
-  },
-  {
-    name: "SPAR — Бауманская",
-    category: "shop",
-    discount: "−10%",
-    details: "Скидка по студенческой карте москвича на продукцию кафе и кулинарии.",
-    address: "ул. Бауманская, 32, стр. 2",
-    lat: 55.7725, lng: 37.6782,
-    who: ["vuz", "college"],
-    url: "https://myspar.ru"
-  },
-  {
-    name: "SPAR — Ленинский проспект",
-    category: "shop",
-    discount: "−10%",
-    details: "Скидка по студенческой социальной карте в утренние и дневные часы.",
-    address: "Ленинский просп., 34/1",
-    lat: 55.7121, lng: 37.5852,
-    who: ["vuz", "college"],
-    url: "https://myspar.ru"
-  },
-  {
-    name: "Магнолия — Пятницкая",
-    category: "shop",
-    discount: "−10%",
-    details: "Скидка по социальной карте студента в дневные часы (с 09:00 до 17:00).",
-    address: "ул. Пятницкая, 22",
-    lat: 55.7418, lng: 37.6285,
-    who: ["vuz", "college"],
-    url: "https://mgnl.ru"
-  },
-  {
-    name: "Магнолия — Новослободская",
-    category: "shop",
-    discount: "−10%",
-    details: "Скидка по студенческой социальной карте москвича.",
-    address: "ул. Новослободская, 36/1",
-    lat: 55.7842, lng: 37.5985,
-    who: ["vuz", "college"],
-    url: "https://mgnl.ru"
-  },
-  {
-    name: "Магнолия — Арбат",
-    category: "shop",
-    discount: "−10%",
-    details: "Скидка по карте студента на кассе в дневное время.",
-    address: "ул. Арбат, 25/36",
-    lat: 55.7498, lng: 37.5925,
-    who: ["vuz", "college"],
-    url: "https://mgnl.ru"
-  },
-  {
-    name: "Дикси — Большая Полянка",
-    category: "shop",
-    discount: "−5%",
-    details: "Социальная скидка студентам по карте москвича с 08:00 до 13:00.",
-    address: "ул. Большая Полянка, 30",
-    lat: 55.7355, lng: 37.6195,
-    who: ["vuz", "college"],
-    url: "https://dixy.ru"
-  },
-  {
-    name: "Дикси — Мясницкая",
-    category: "shop",
-    discount: "−5%",
-    details: "Скидка 5% студентам по будням в первой половине дня при предъявлении карты москвича.",
-    address: "ул. Мясницкая, 22, стр. 1",
-    lat: 55.7628, lng: 37.6358,
-    who: ["vuz", "college"],
-    url: "https://dixy.ru"
-  },
-  {
-    name: "Мясницкий ряд — Маросейка",
-    category: "shop",
-    discount: "−7%",
-    details: "Скидка по карте москвича (социальной карте студента).",
-    address: "ул. Маросейка, 6-8, стр. 1",
-    lat: 55.7572, lng: 37.6368,
-    who: ["vuz", "college"],
-    url: "https://kolbasa.ru"
-  },
-  {
-    name: "Мясницкий ряд — Таганская",
-    category: "shop",
-    discount: "−7%",
-    details: "Скидка 7% студентам по карте москвича.",
-    address: "ул. Таганская, 1, стр. 1",
-    lat: 55.7411, lng: 37.6542,
-    who: ["vuz", "college"],
-    url: "https://kolbasa.ru"
-  },
-  {
-    name: "Копи.ру (Копирка) — Покровка",
-    category: "shop",
-    discount: "−10%",
-    details: "Скидка 10% студентам на печать чертежей, курсовых, дипломов и копирование по студенческому.",
-    address: "ул. Покровка, 1/13/6, стр. 2",
-    lat: 55.7575, lng: 37.6395,
-    who: ["vuz", "college"],
-    url: "https://kopirka.ru"
-  },
-  {
-    name: "Копи.ру (Копирка) — Бауманская",
-    category: "shop",
-    discount: "−10%",
-    details: "Скидка студентам 10% на распечатку и переплёт.",
-    address: "ул. Бауманская, 33/2, стр. 1",
-    lat: 55.7721, lng: 37.6788,
-    who: ["vuz", "college"],
-    url: "https://kopirka.ru"
-  },
-  {
-    name: "Московский Дом Книги на Арбате",
-    category: "shop",
-    discount: "−10%",
-    details: "Скидка до 10% студентам на учебники, канцтовары и художественную литературу по студенческому.",
-    address: "ул. Новый Арбат, 8",
-    lat: 55.7525, lng: 37.5962,
-    who: ["vuz", "college"],
-    url: "https://mdk-arbat.ru"
-  },
-  {
-    name: "Леонардо — Авиапарк",
-    category: "shop",
-    discount: "−10%",
-    details: "По понедельникам с 10:00 до 13:00 скидка 10% по студенческому билету.",
-    address: "Ходынский б-р, 4, ТРЦ «Авиапарк»",
-    lat: 55.790231, lng: 37.531289,
-    who: ["vuz", "college"],
-    url: "https://leonardo.ru/"
-  },
-  {
-    name: "Леонардо — Европейский",
-    category: "shop",
-    discount: "−10%",
-    details: "По понедельникам с 10:00 до 13:00 скидка 10% по студенческому билету.",
-    address: "пл. Киевского Вокзала, 2",
-    lat: 55.74450, lng: 37.56630,
-    who: ["vuz", "college"],
-    url: "https://leonardo.ru/"
-  },
-  {
-    name: "Читай-город — Охотный Ряд",
-    category: "shop",
-    discount: "−15%",
-    details: "Постоянная студенческая скидка 15% на книги и канцелярию.",
-    address: "Манежная пл., 1, стр. 2",
-    lat: 55.75520, lng: 37.61330,
-    who: ["vuz", "college"],
-    url: "https://www.chitai-gorod.ru/"
-  },
-  {
-    name: "Улыбка радуги — Таганская",
-    category: "shop",
-    discount: "−10%",
-    details: "Скидка 10% студентам в розничных магазинах по будням после 15:00.",
-    address: "Таганская, 31/22",
-    lat: 55.739748, lng: 37.670681,
-    who: ["vuz", "college"],
-    url: "https://www.r-ulybka.ru/"
   },
 
-  // ---------- Кофе и Еда ----------
+  // ---------- Еда ----------
   {
-    name: "Кофейня ROCKETS",
+    name: "Кофейня ROCKETS (Rockets Concept Store)",
     category: "food",
     discount: "−15%",
-    details: "Скидка 15% для студентов на спешелти кофе и десерты по студенческому билету.",
-    address: "ул. Валовая, 35",
+    details: "Скидка 15% для студентов на кофейные напитки и меню при предъявлении студенческого билета на кассе.",
+    address: "ул. Валовая, 35, БЦ Wall Street",
     lat: 55.7299, lng: 37.6295,
     who: ["vuz", "college"],
     url: "https://rockets.coffee"
@@ -681,7 +1252,7 @@ window.PLACES = [
     name: "COSMIC LATTE",
     category: "food",
     discount: "−15%",
-    details: "Скидка 15% на всё меню по студенческому билету.",
+    details: "Студенческая скидка на все напитки и десерты при предъявлении студенческого билета на кассе.",
     address: "ул. Яузская, 1/15, стр. 3",
     lat: 55.7501, lng: 37.6416,
     who: ["vuz", "college"]
@@ -690,26 +1261,54 @@ window.PLACES = [
     name: "Кофейня «Вспышка»",
     category: "food",
     discount: "−15%",
-    details: "Скидка студентам на кофе и выпечку при предъявлении студенческого билета.",
+    details: "Скидка студентам на спешелти кофе и выпечку при показе студенческого билета.",
     address: "ул. Большая Дмитровка, 32, стр. 1",
     lat: 55.7645, lng: 37.6115,
     who: ["vuz", "college"]
   },
   {
-    name: "Пиццерия Maestrello — Покровка",
+    name: "Необистро Geraldine",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка для студентов по будням в дневные часы при предъявлении студенческого билета.",
+    address: "ул. Остоженка, 27, корп. 2",
+    lat: 55.7405, lng: 37.5985,
+    who: ["vuz", "college"],
+    url: "https://geraldine.ru"
+  },
+  {
+    name: "Пиццерия Maestrello",
     category: "food",
     discount: "−15%",
-    details: "Скидка 15% на всю римскую пиццу по студенческому билету.",
+    details: "Студенческая скидка 15% на пиццу и напитки при предъявлении студенческого билета на кассе.",
     address: "Покровский б-р, 6/20, стр. 1",
     lat: 55.7556, lng: 37.6458,
     who: ["vuz", "college"],
     url: "https://maestrello.pizza"
   },
   {
+    name: "Гастрокофейня Grado",
+    category: "food",
+    discount: "−15%",
+    details: "Скидка 15% студентам на меню кухни и бара по студенческому билету.",
+    address: "ул. Малая Пироговская, 8",
+    lat: 55.7295, lng: 37.5715,
+    who: ["vuz", "college"]
+  },
+  {
+    name: "CHANG",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% студентам на азиатское меню по будням при предъявлении студенческого билета.",
+    address: "ул. Мясницкая, 13, стр. 3",
+    lat: 55.7618, lng: 37.6322,
+    who: ["vuz", "college"]
+  },
+  {
     name: "Бургерная KETCH UP",
     category: "food",
     discount: "−20%",
-    details: "Скидка 20% студентам на всё меню кухни в будние дни.",
+    details: "Скидка 20% студентам на основное меню в будние дни по студенческому билету.",
     address: "ул. Кузнецкий Мост, 6/3, стр. 3",
     lat: 55.7615, lng: 37.6175,
     who: ["vuz", "college"],
@@ -719,7 +1318,7 @@ window.PLACES = [
     name: "Бар ZIONIST",
     category: "food",
     discount: "−20%",
-    details: "Студенческая скидка 20% по студенческому билету.",
+    details: "Студенческая скидка 20% на меню и напитки по студенческому билету (18+).",
     address: "ул. Покровка, 2/1, стр. 1",
     lat: 55.7571, lng: 37.6382,
     who: ["vuz", "college"]
@@ -728,7 +1327,7 @@ window.PLACES = [
     name: "Кофейня «Здрасте»",
     category: "food",
     discount: "−15%",
-    details: "Скидка 15% студентам на кофе и бранчи.",
+    details: "Скидка 15% студентам на кофе и бранчи при предъявлении студенческого билета.",
     address: "ул. Бауманская, 11, стр. 8",
     lat: 55.7745, lng: 37.6765,
     who: ["vuz", "college"],
@@ -738,81 +1337,463 @@ window.PLACES = [
     name: "IPPO",
     category: "food",
     discount: "−15%",
-    details: "Скидка 15% на рамены и японское меню по будням.",
+    details: "Студенческая скидка 15% на японскую кухню и рамены по студенческому билету в будние дни.",
     address: "ул. Маросейка, 9/2, стр. 1",
     lat: 55.7574, lng: 37.6375,
-    who: ["vuz", "college"]
-  },
-  {
-    name: "Ra’men — Бауманская",
-    category: "food",
-    discount: "−30%",
-    details: "Скидка 30% студентам по будням с 16:00 до 18:00.",
-    address: "Бауманская, 56/17, стр. 1",
-    lat: 55.76886, lng: 37.67912,
     who: ["vuz", "college"]
   },
   {
     name: "Кафе «Му-Му» на Смоленской",
     category: "food",
     discount: "−20%",
-    details: "Скидка 20% по студенческому билету, зачётке или при оплате картой москвича.",
-    address: "Карманицкий пер., 9",
+    details: "Скидка 20% по студенческому билету, зачётке или при оплате картой москвича. Не действует на алкоголь, завтраки, комплексные обеды и акционные блюда.",
+    address: "Карманицкий пер., 9, 2-й этаж",
     lat: 55.74829, lng: 37.58358,
     who: ["vuz", "college"],
     from: "2026-01-25", to: "2026-12-31",
-    url: "https://www.cafemumu.ru"
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
   },
   {
     name: "Кафе «Му-Му» на Бауманской",
     category: "food",
     discount: "−20%",
-    details: "Скидка 20% по студенческому билету.",
+    details: "Скидка 20% по студенческому билету, зачётке или при оплате картой москвича. Не действует на алкоголь, завтраки, комплексные обеды и акционные блюда.",
     address: "Бауманская ул., 35/1",
     lat: 55.77169, lng: 37.67905,
     who: ["vuz", "college"],
     from: "2026-01-25", to: "2026-12-31",
-    url: "https://www.cafemumu.ru"
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
   },
   {
     name: "Кафе «Му-Му» на Третьяковской",
     category: "food",
     discount: "−20%",
-    details: "Скидка 20% по студенческому билету.",
+    details: "Скидка 20% по студенческому билету, зачётке или при оплате картой москвича. Не действует на алкоголь, завтраки, комплексные обеды и акционные блюда.",
     address: "Климентовский пер., 10, стр. 1",
     lat: 55.74101, lng: 37.62778,
     who: ["vuz", "college"],
     from: "2026-01-25", to: "2026-12-31",
-    url: "https://www.cafemumu.ru"
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ на Комсомольском проспекте",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% студентам на основное меню по студенческому билету, зачётке или карте москвича. Не действует на специальные акции, завтраки и комплексные обеды.",
+    address: "Комсомольский просп., 26",
+    lat: 55.726882, lng: 37.579654,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Молодёжь",
+    category: "food",
+    discount: "−40%",
+    details: "Студенческая скидка 40% на бургеры с мраморной говядиной. Дополнительные предложения могут меняться вместе с афишей заведения.",
+    address: "Сущёвская ул., 21, стр. 8",
+    lat: 55.781914, lng: 37.599696,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Сыто-пьяно",
+    category: "food",
+    discount: "−25%",
+    details: "Студентам предоставляется скидка 25% на меню. Перед визитом рекомендуется уточнить актуальные условия.",
+    address: "Комсомольский просп., 28, МДМ",
+    lat: 55.726882, lng: 37.579654,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Met Tea",
+    category: "food",
+    discount: "−10%",
+    details: "Скидка 10% студентам при предъявлении студенческого на кассе.",
+    address: "ул. Никольская, 10/2, стр. 2Б",
+    lat: 55.7592, lng: 37.6255,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Ёрш",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% студентам по будням на меню, кроме ланчей и специальных предложений.",
+    address: "ул. Перерва, 58",
+    lat: 55.66317, lng: 37.76126,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Ёрш — Космонавтов",
+    category: "food",
+    discount: "−20%",
+    details: "Студенческая скидка по условиям подборки «Афиша Daily»; перед визитом уточните, действует ли акция в конкретном ресторане.",
+    address: "ул. Космонавтов, 15",
+    lat: 55.81780, lng: 37.63980,
+    who: ["vuz", "college"],
+    url: "https://yersh.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Тануки",
+    category: "food",
+    discount: "−20%",
+    details: "По будням с открытия до 18:00 — скидка 20% при заказе от 990 ₽. Действует не во всех ресторанах сети; условия лучше уточнить заранее.",
+    address: "Каширское ш., 46, корп. 1",
+    lat: 55.647929, lng: 37.664833,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Tanuki — Пятницкая",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка по условиям сети; перед посещением проверьте актуальные условия для студентов.",
+    address: "ул. Пятницкая, 53",
+    lat: 55.74150, lng: 37.62690,
+    who: ["vuz", "college"],
+    url: "https://tanukifamily.ru/",
+    source: "https://tanukifamily.ru/"
+  },
+  {
+    name: "Tanuki — Большая Якиманка",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка по условиям сети; перед посещением проверьте актуальные условия для студентов.",
+    address: "ул. Большая Якиманка, 58/2",
+    lat: 55.73330, lng: 37.59650,
+    who: ["vuz", "college"],
+    url: "https://tanukifamily.ru/",
+    source: "https://tanukifamily.ru/"
+  },
+  {
+    name: "Практика кофе",
+    category: "food",
+    discount: "−10%",
+    details: "Круглый год действует скидка 10% студентам.",
+    address: "Ломоносовский просп., 29, корп. 1, стр. 2",
+    lat: 55.7034, lng: 37.51583,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "Ra’men",
+    category: "food",
+    discount: "−30%",
+    details: "Скидка 30% студентам по будням с 16:00 до 18:00.",
+    address: "Бауманская, 56/17, стр. 1",
+    lat: 55.76886, lng: 37.67912,
+    who: ["vuz", "college"],
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "МУ-МУ на Добрынинской",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "ул. Коровий Вал, 1",
+    lat: 55.72966, lng: 37.62314,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ на Семёновской",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "Семёновская пл., 1, ТЦ «Семёновский»",
+    lat: 55.78302, lng: 37.71908,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ в Сокольниках",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "Сокольническая пл., 9",
+    lat: 55.79, lng: 37.6808,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ на Марксистской",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "Таганская ул., 3, ТЦ «Таганский пассаж»",
+    lat: 55.7412, lng: 37.6587,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ на Арбатской",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "ул. Арбат, 4, стр. 1",
+    lat: 55.75205, lng: 37.59855,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ на Охотном Ряду",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "Манежная пл., 1, стр. 2, ТЦ «Охотный Ряд»",
+    lat: 55.7558, lng: 37.6171,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ у Речного вокзала",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "Фестивальная ул., 2Б, ТЦ «Речной»",
+    lat: 55.855083, lng: 37.478091,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ на Щёлковской",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "9-я Парковая ул., 61А, стр. 1",
+    lat: 55.8102, lng: 37.799,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ на Тёплом Стане",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "Профсоюзная ул., 129А, ТЦ «Принц Плаза»",
+    lat: 55.61813, lng: 37.507484,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ на Юго-Западной",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "ул. Покрышкина, 4, ТЦ «Звёздочка»",
+    lat: 55.665081, lng: 37.481496,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ в Марьино",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "Люблинская ул., 169, корп. 2",
+    lat: 55.649063, lng: 37.744944,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ на Мясницкой",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "Мясницкая ул., 14/2",
+    lat: 55.7646, lng: 37.6336,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ на Большой Дмитровке",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "Большая Дмитровка ул., 9, стр. 1",
+    lat: 55.7612, lng: 37.6135,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ на площади Европы",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "пл. Европы, 1А, у Киевского вокзала",
+    lat: 55.7444, lng: 37.5662,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ на Ленинградском проспекте",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "Ленинградский просп., 62А, ТЦ «Аэропорт»",
+    lat: 55.8022, lng: 37.5345,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ на Яблочкова",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "ул. Яблочкова, 19Г",
+    lat: 55.8197, lng: 37.5853,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
+  },
+  {
+    name: "МУ-МУ на проспекте Мира",
+    category: "food",
+    discount: "−20%",
+    details: "Скидка 20% на основной ассортимент блюд и напитков при предъявлении действующего студенческого билета или зачётной книжки либо при оплате картой москвича. На доставку в приложении МУ-МУ используется промокод STUDENT20.",
+    address: "просп. Мира, 114",
+    lat: 55.7962, lng: 37.637,
+    who: ["vuz", "college"],
+    from: "2026-01-25", to: "2026-12-31",
+    url: "https://www.cafemumu.ru",
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
   },
   {
     name: "#FARШ — Никольская",
     category: "food",
     discount: "−20%",
-    details: "Постоянная студенческая скидка 20% по студаку.",
+    details: "Постоянная студенческая скидка 20%. Для участия нужно отправить фото первой страницы студенческого билета и свой номер телефона на student_farsh@farshburger.ru.",
     address: "Никольская ул., 12",
     lat: 55.75950, lng: 37.62530,
     who: ["vuz", "college"],
-    url: "https://farshburger.ru/"
+    url: "https://farshburger.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
   },
   {
     name: "#FARШ — Большая Серпуховская",
     category: "food",
     discount: "−20%",
-    details: "Постоянная студенческая скидка 20% по студаку.",
+    details: "Постоянная студенческая скидка 20%. Для участия нужно отправить фото первой страницы студенческого билета и свой номер телефона на student_farsh@farshburger.ru.",
     address: "Большая Серпуховская ул., 17с1",
     lat: 55.7232, lng: 37.6242,
     who: ["vuz", "college"],
-    url: "https://farshburger.ru/"
+    url: "https://farshburger.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "#FARШ — Грузинский Вал",
+    category: "food",
+    discount: "−20%",
+    details: "Постоянная студенческая скидка 20%. Для участия нужно отправить фото первой страницы студенческого билета и свой номер телефона на student_farsh@farshburger.ru.",
+    address: "Грузинский Вал ул., 26с1",
+    lat: 55.771, lng: 37.5837,
+    who: ["vuz", "college"],
+    url: "https://farshburger.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
   },
   {
     name: "#FARШ — Атриум",
     category: "food",
     discount: "−20%",
-    details: "Постоянная студенческая скидка 20% по студаку.",
+    details: "Постоянная студенческая скидка 20%. Для участия нужно отправить фото первой страницы студенческого билета и свой номер телефона на student_farsh@farshburger.ru.",
     address: "Земляной Вал ул., 33, ТЦ «Атриум»",
     lat: 55.7587, lng: 37.6595,
     who: ["vuz", "college"],
-    url: "https://farshburger.ru/"
+    url: "https://farshburger.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "#FARШ — Кунцево Плаза",
+    category: "food",
+    discount: "−20%",
+    details: "Постоянная студенческая скидка 20%. Для участия нужно отправить фото первой страницы студенческого билета и свой номер телефона на student_farsh@farshburger.ru.",
+    address: "Ярцевская ул., 19, ТРЦ «Кунцево Плаза»",
+    lat: 55.7388, lng: 37.4135,
+    who: ["vuz", "college"],
+    url: "https://farshburger.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "#FARШ — Охотный Ряд",
+    category: "food",
+    discount: "−20%",
+    details: "Постоянная студенческая скидка 20%. Для участия нужно отправить фото первой страницы студенческого билета и свой номер телефона на student_farsh@farshburger.ru.",
+    address: "Манежная пл., 1с2, ТЦ «Охотный Ряд»",
+    lat: 55.7559, lng: 37.617,
+    who: ["vuz", "college"],
+    url: "https://farshburger.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "#FARШ — бульвар Энтузиастов",
+    category: "food",
+    discount: "−20%",
+    details: "Постоянная студенческая скидка 20%. Для участия нужно отправить фото первой страницы студенческого билета и свой номер телефона на student_farsh@farshburger.ru.",
+    address: "бульвар Энтузиастов, 2, БЦ Golden Gate",
+    lat: 55.7476, lng: 37.6768,
+    who: ["vuz", "college"],
+    url: "https://farshburger.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "#FARШ — Райкин Плаза",
+    category: "food",
+    discount: "−20%",
+    details: "Постоянная студенческая скидка 20%. Для участия нужно отправить фото первой страницы студенческого билета и свой номер телефона на student_farsh@farshburger.ru.",
+    address: "Шереметьевская ул., 6к1, ТРЦ «Райкин Плаза»",
+    lat: 55.795, lng: 37.6182,
+    who: ["vuz", "college"],
+    url: "https://farshburger.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+  },
+  {
+    name: "#FARШ — Комсомольский",
+    category: "food",
+    discount: "−20%",
+    details: "Постоянная студенческая скидка 20%. Для участия нужно отправить фото первой страницы студенческого билета и свой номер телефона на student_farsh@farshburger.ru.",
+    address: "Комсомольский просп., 24с1",
+    lat: 55.7274, lng: 37.5815,
+    who: ["vuz", "college"],
+    url: "https://farshburger.ru/",
+    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
   }
 ];
