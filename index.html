@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Студкарта Москвы</title>
 <meta name="description" content="Карта студенческих скидок в Москве: музеи, театры, кино, еда, спорт, магазины.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&family=PT+Mono&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <style>
 :root {
   --paper: #f4f4f1;
@@ -63,7 +62,7 @@ button { cursor: pointer; }
 :focus-visible { outline: 2px solid var(--stamp); outline-offset: 2px; }
 .label { font: 600 11px/1 var(--f-body); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
 
-/* Панель */
+/* ================= Панель ================= */
 .panel {
   display: flex; flex-direction: column; min-height: 0; min-width: 0;
   background: var(--surface); border-right: 1px solid var(--line); z-index: 2;
@@ -84,7 +83,7 @@ button { cursor: pointer; }
 .search { position: relative; display: block; }
 .search input {
   width: 100%; padding: 12px 40px 12px 42px; border-radius: 10px;
-  border: 1.5px solid var(--line); background: var(--paper); font-size: 16px; transition: border-color .15s;
+  border: 1.5px solid var(--line); background: var(--paper); font-size: 15px; transition: border-color .15s;
   -webkit-appearance: none; appearance: none;
 }
 .search input::-webkit-search-cancel-button { display: none; }
@@ -96,6 +95,7 @@ button { cursor: pointer; }
   border: 0; border-radius: 50%; background: var(--line); display: grid; place-items: center; color: var(--ink);
 }
 
+/* Категории */
 .lines { display: flex; flex-wrap: wrap; gap: 6px; }
 .ln {
   display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px 6px 8px; flex: none;
@@ -111,6 +111,7 @@ button { cursor: pointer; }
 .ln[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--surface); }
 .ln[aria-pressed="true"] i { box-shadow: inset 0 0 0 3px var(--c), inset 0 0 0 5px var(--ink); }
 
+/* Быстрые кнопки */
 .quick { display: flex; flex-wrap: wrap; gap: 6px; }
 .qb {
   display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 8px;
@@ -142,7 +143,7 @@ button { cursor: pointer; }
   box-shadow: 0 4px 16px rgba(0,0,0,.25); align-items: center; gap: 8px;
 }
 
-/* Фильтры */
+/* Расширенные фильтры */
 .filters { display: grid; gap: 14px; padding: 14px; border-radius: 12px; background: var(--paper); }
 .frow { display: grid; gap: 7px; }
 .seg { display: flex; border: 1.5px solid var(--line); border-radius: 10px; padding: 3px; gap: 3px; background: var(--surface); }
@@ -212,7 +213,7 @@ li:last-child .item::before { bottom: 50%; }
 .empty button { margin-top: 14px; border: 1.5px solid var(--ink); background: none; border-radius: 8px; padding: 8px 14px; font-weight: 600; }
 .note { padding: 12px 24px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); }
 
-/* Карта */
+/* ================= Карта ================= */
 .mapwrap { position: relative; min-width: 0; }
 #map { position: absolute; inset: 0; background: var(--paper); }
 .leaflet-container { font-family: var(--f-body); background: var(--paper); }
@@ -252,29 +253,6 @@ li:last-child .item::before { bottom: 50%; }
 .leaflet-marker-icon:hover .st span { visibility: visible; }
 .me { width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #2f6bff; border: 3px solid #fff; box-shadow: 0 0 0 6px rgba(47,107,255,.25), 0 1px 4px rgba(0,0,0,.4); }
 
-/* Кластерная круглая точка при отдалении */
-.custom-cluster-icon {
-  background: none;
-  border: none;
-}
-.cluster-bubble {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--surface);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font: 800 15px/1 var(--f-display);
-  border: 3px solid var(--surface);
-  box-shadow: 0 2px 8px rgba(0,0,0,.3);
-  transition: transform .15s;
-}
-.cluster-bubble:hover {
-  transform: scale(1.1);
-}
-
 .hint {
   position: absolute; z-index: 999; left: 50%; top: 20px; transform: translateX(-50%);
   display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 16px; border-radius: 12px;
@@ -284,7 +262,7 @@ li:last-child .item::before { bottom: 50%; }
 .hint i { width: 14px; height: 14px; border-radius: 50%; border: 4px solid #0078BE; background: #fff; flex: none; }
 .hint button { border: 0; border-radius: 8px; background: color-mix(in srgb, var(--surface) 18%, transparent); color: var(--surface); padding: 6px 10px; font-size: 13px; font-weight: 600; white-space: nowrap; }
 
-/* Билет */
+/* ================= Билет ================= */
 .ticket {
   position: absolute; z-index: 1000; left: 24px; top: 24px; width: min(380px, calc(100% - 48px));
   max-height: calc(100% - 48px); overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
@@ -371,7 +349,7 @@ li:last-child .item::before { bottom: 50%; }
   box-shadow: var(--shadow); max-width: calc(100% - 32px); text-align: center;
 }
 
-/* Модальное окно (шрифт строго 16px для предотвращения автозума iOS/Android) */
+/* ================= Модальное окно «Я нашёл скидку» ================= */
 .modal-backdrop {
   position: fixed; inset: 0; z-index: 1150; background: rgba(0,0,0,.45);
   display: grid; place-items: center; padding: 16px; backdrop-filter: blur(2px);
@@ -388,14 +366,14 @@ li:last-child .item::before { bottom: 50%; }
 .f-group { display: grid; gap: 5px; }
 .f-group input, .f-group select, .f-group textarea {
   width: 100%; padding: 10px 12px; border-radius: 8px; border: 1.5px solid var(--line);
-  background: var(--paper); font-size: 16px !important; -webkit-text-size-adjust: 100%;
+  background: var(--paper); font-size: 14px;
 }
 .f-group input:focus, .f-group select:focus, .f-group textarea:focus {
   outline: none; border-color: var(--ink);
 }
 .f-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-/* Мобильный вид */
+/* ================= Телефон ================= */
 @media (max-width: 780px) {
   body { grid-template-columns: minmax(0, 1fr); }
   .mapwrap, .panel { grid-row: 1; grid-column: 1; }
@@ -440,6 +418,8 @@ li:last-child .item::before { bottom: 50%; }
   .actions .btn.primary { flex: 1 1 auto; }
   .hint { top: 12px; left: 12px; right: 64px; transform: none; max-width: none; width: auto; }
   .leaflet-top.leaflet-right { top: env(safe-area-inset-top, 0px); }
+  
+  /* Показываем плавающую кнопку на телефонах */
   .floating-add { display: inline-flex; }
 }
 @media (max-width: 380px) {
@@ -517,6 +497,7 @@ li:last-child .item::before { bottom: 50%; }
   <div class="hint" id="hint" hidden><i aria-hidden="true"></i><span>Нажмите на точку, чтобы узнать скидку, адрес и срок</span><button type="button" id="hintok">Понятно</button></div>
   <article class="ticket" id="ticket" hidden aria-live="polite"></article>
   
+  <!-- Плавающая кнопка для мобилок -->
   <button class="floating-add" id="floatingSuggestBtn" type="button">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>Скидка
   </button>
@@ -536,7 +517,7 @@ li:last-child .item::before { bottom: 50%; }
     <p class="modal-sub">Знаешь классное место со скидкой по студаку? Заполни форму, и мы добавим его на карту!</p>
     <div class="f-group">
       <label class="label" for="sName">Название места *</label>
-      <input id="sName" type="text" required placeholder="Например: SPAR или Кофейня">
+      <input id="sName" type="text" required placeholder="Например: Кофейня Здрасте">
     </div>
     <div class="f-row2">
       <div class="f-group">
@@ -550,7 +531,7 @@ li:last-child .item::before { bottom: 50%; }
     </div>
     <div class="f-group">
       <label class="label" for="sAddr">Адрес или метро *</label>
-      <input id="sAddr" type="text" required placeholder="ул. Тверская, 15 или м. Охотный Ряд">
+      <input id="sAddr" type="text" required placeholder="ул. Мясницкая, 15 или м. Бауманская">
     </div>
     <div class="f-group">
       <label class="label" for="sDet">Условия и ссылка</label>
@@ -563,7 +544,6 @@ li:last-child .item::before { bottom: 50%; }
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
 <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.20/leaflet-maplibre-gl.js"></script>
 <script src="data.js"></script>
@@ -626,7 +606,7 @@ li:last-child .item::before { bottom: 50%; }
   const isFav = p => favs.has(p.name);
   const distOf = p => state.me ? distKm(state.me, p) : null;
 
-  // ---------- Карта и Кластеризация ----------
+  // ---------- Карта ----------
   const map = L.map("map", { zoomControl: false }).setView(CFG.center, CFG.zoom);
   L.control.zoom({ position: "topright", zoomInTitle: "Приблизить", zoomOutTitle: "Отдалить" }).addTo(map);
   const glLayer = L.maplibreGL({
@@ -679,22 +659,6 @@ li:last-child .item::before { bottom: 50%; }
   });
   map.addControl(new FitControl());
 
-  // Кластеризация: при отдалении точки объединяются в один аккуратный кружок с числом мест
-  const clusterGroup = L.markerClusterGroup({
-    showCoverageOnHover: false,
-    maxClusterRadius: 45,
-    spiderfyOnMaxZoom: true,
-    disableClusteringAtZoom: 15,
-    iconCreateFunction: function(cluster) {
-      const count = cluster.getChildCount();
-      return L.divIcon({
-        html: `<div class="cluster-bubble"><span>${count}</span></div>`,
-        className: 'custom-cluster-icon',
-        iconSize: [36, 36]
-      });
-    }
-  }).addTo(map);
-
   const markers = {};
   PLACES.forEach(p => {
     const st = status(p);
@@ -708,25 +672,17 @@ li:last-child .item::before { bottom: 50%; }
   });
   let meMarker = null;
 
-  // Безопасное выравнивание подписей (не падает, если точка скрыта в кластере)
   let labelRaf = 0;
   function layoutLabels() {
     cancelAnimationFrame(labelRaf);
     labelRaf = requestAnimationFrame(() => {
       const placed = [];
       document.querySelectorAll(".leaflet-top .leaflet-control, #hint:not([hidden])").forEach(el => placed.push({ id: -1, r: el.getBoundingClientRect() }));
-      visibleList.forEach(p => {
-        const el = markers[p.id]?.getElement();
-        if (!el) return;
-        const d = el.querySelector(".st i");
-        if (d) placed.push({ id: p.id, r: d.getBoundingClientRect() });
-      });
+      visibleList.forEach(p => { const d = markers[p.id].getElement()?.querySelector(".st i"); if (d) placed.push({ id: p.id, r: d.getBoundingClientRect() }); });
       const order = visibleList.slice().sort((a, b) =>
         (b.id === state.sel) - (a.id === state.sel) || (percent(b) ?? 15) - (percent(a) ?? 15));
       order.forEach(p => {
-        const markerEl = markers[p.id]?.getElement();
-        if (!markerEl) return;
-        const span = markerEl.querySelector(".st span");
+        const span = markers[p.id].getElement()?.querySelector(".st span");
         if (!span) return;
         const st = span.parentNode;
         const box = map.getContainer().getBoundingClientRect();
@@ -743,7 +699,6 @@ li:last-child .item::before { bottom: 50%; }
     });
   }
   map.on("zoomend", layoutLabels);
-  clusterGroup.on("animationend", layoutLabels);
 
   // ---------- Фильтры и Категории ----------
   const catsEl = $("cats");
@@ -796,12 +751,13 @@ li:last-child .item::before { bottom: 50%; }
 
   // ---------- Модальное окно «Я нашёл скидку» ----------
   const sModal = $("suggestModal");
-  const openSuggestModal = () => { sModal.hidden = false; };
+  const openSuggestModal = () => { sModal.hidden = false; $("sName").focus(); };
   $("suggestBtn").addEventListener("click", openSuggestModal);
   $("floatingSuggestBtn").addEventListener("click", openSuggestModal);
   $("suggestClose").addEventListener("click", () => { sModal.hidden = true; });
   sModal.addEventListener("click", e => { if (e.target === sModal) sModal.hidden = true; });
 
+  // Умное форматирование скидки (превращает 15 в −15%)
   function formatDiscountInput(raw) {
     const s = raw.trim();
     if (!s) return "Скидка";
@@ -832,9 +788,9 @@ li:last-child .item::before { bottom: 50%; }
     if (CFG.suggestTg) {
       const tgUser = CFG.suggestTg.replace(/^@/, "");
       window.open(`https://t.me/${tgUser}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
-      toast("Открываем диалог в Telegram для отправки!");
+      toast("Открываем Telegram для отправки модератору!");
     } else {
-      toast("Описание скидки скопировано! Укажите suggestTg в data.js для Telegram.");
+      toast("Описание скидки скопировано! Укажи suggestTg в data.js для отправки в Telegram.");
     }
   });
 
@@ -846,11 +802,11 @@ li:last-child .item::before { bottom: 50%; }
     navigator.geolocation.getCurrentPosition(pos => {
       btn.classList.remove("loading");
       state.me = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-      if (distKm(state.me, { lat: CFG.center[0], lng: CFG.center[1] }) > 60) toast("Вы далеко от города на карте");
+      if (distKm(state.me, { lat: CFG.center[0], lng: CFG.center[1] }) > 60) toast("Вы далеко от города на карте — расстояния будут большими");
       meMarker?.remove();
       meMarker = L.marker([state.me.lat, state.me.lng], { icon: L.divIcon({ className: "", html: '<div class="me"></div>', iconSize: [0, 0] }), interactive: false, keyboard: false, zIndexOffset: -100 }).addTo(map);
       onOk();
-    }, err => fail(err.code === 1 ? "Разрешите доступ к геопозиции в настройках" : "Не удалось определить геопозицию"),
+    }, err => fail(err.code === 1 ? "Разрешите доступ к геопозиции в настройках браузера" : "Не получилось определить, где вы. Попробуйте ещё раз"),
     { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
   }
   function fitNear() {
@@ -918,14 +874,8 @@ li:last-child .item::before { bottom: 50%; }
   let visibleList = [];
   function render(refit) {
     visibleList = sorted(PLACES.filter(matches));
-    
-    // Безопасное добавление маркеров в кластер одним пакетом
-    clusterGroup.clearLayers();
-    const layersToAdd = [];
-    visibleList.forEach(p => {
-      if (markers[p.id]) layersToAdd.push(markers[p.id]);
-    });
-    clusterGroup.addLayers(layersToAdd);
+    const ids = new Set(visibleList.map(p => p.id));
+    PLACES.forEach(p => ids.has(p.id) ? markers[p.id].addTo(map) : markers[p.id].remove());
 
     const n = visibleList.length;
     $("count").textContent = `${n} ${plural(n, "место", "места", "мест")}`;
@@ -942,9 +892,8 @@ li:last-child .item::before { bottom: 50%; }
     $("reset")?.addEventListener("click", resetAll);
 
     if (state.sel !== null) {
-      const isVisible = visibleList.some(p => p.id === state.sel);
-      if (!isVisible) close();
-      else markers[state.sel]?.getElement()?.querySelector(".st")?.classList.add("sel");
+      if (!ids.has(state.sel)) close();
+      else markers[state.sel].getElement()?.querySelector(".st")?.classList.add("sel");
     }
     if (refit) fitVisible(false);
     layoutLabels();
@@ -1012,7 +961,7 @@ li:last-child .item::before { bottom: 50%; }
     state.sel = id;
     hideHint();
     document.querySelectorAll(".st.sel").forEach(el => el.classList.remove("sel"));
-    markers[id]?.getElement()?.querySelector(".st")?.classList.add("sel");
+    markers[id].getElement()?.querySelector(".st")?.classList.add("sel");
     document.querySelectorAll(".item").forEach(el => el.classList.toggle("active", +el.dataset.id === id));
 
     ticket.style.setProperty("--c", c.color);
@@ -1085,28 +1034,23 @@ li:last-child .item::before { bottom: 50%; }
     try { history.replaceState(null, "", "#p" + (id + 1)); } catch (e) {}
 
     if (mobile.matches) { expand(false); $("filters").hidden = true; $("ftoggle").setAttribute("aria-expanded", false); }
-    
-    // Если кликнули из списка, приближаем так, чтобы точка вышла из кластера
-    if (fly && !sized()) {
-      map.setView([p.lat, p.lng], 16, { animate: false });
-      pendingFit = false;
-    } else if (fly) {
-      const z = Math.max(map.getZoom(), 16);
-      const shift = mobile.matches ? L.point(0, Math.round(ticket.offsetHeight / 2)) : L.point(-Math.min(200, map.getSize().x / 4), 0);
-      map.flyTo(map.unproject(map.project([p.lat, p.lng], z).add(shift), z), z, { duration: .6 });
-    } else if (mobile.matches) {
+    if (!fly && mobile.matches) {
       const pt = map.latLngToContainerPoint([p.lat, p.lng]);
       const top = map.getSize().y - ticket.offsetHeight - 40;
       if (pt.y > top) map.panBy([0, pt.y - top]);
-    } else {
+    }
+    if (!fly && !mobile.matches) {
       const pt = map.latLngToContainerPoint([p.lat, p.lng]);
       const edge = ticket.offsetLeft + ticket.offsetWidth + 40;
       if (pt.x < edge) map.panBy([pt.x - edge, 0]);
     }
-    setTimeout(() => {
-      markers[id]?.getElement()?.querySelector(".st")?.classList.add("sel");
-      layoutLabels();
-    }, 350);
+    if (fly && !sized()) { map.setView([p.lat, p.lng], 15, { animate: false }); pendingFit = false; }
+    else if (fly) {
+      const z = Math.max(map.getZoom(), 15);
+      const shift = mobile.matches ? L.point(0, Math.round(ticket.offsetHeight / 2)) : L.point(-Math.min(200, map.getSize().x / 4), 0);
+      map.flyTo(map.unproject(map.project([p.lat, p.lng], z).add(shift), z), z, { duration: .6 });
+    }
+    layoutLabels();
   }
 
   function close() {
@@ -1168,7 +1112,92 @@ li:last-child .item::before { bottom: 50%; }
     layoutLabels();
   }).observe($("map"));
 
-  // Раздвигаем метки в одном здании ДО их добавления в кластер
+  const inRing = (x, y, ring) => {
+    let c = false;
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const [xi, yi] = ring[i], [xj, yj] = ring[j];
+      if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c;
+    }
+    return c;
+  };
+  const inPoly = (x, y, rings) => inRing(x, y, rings[0]) && !rings.slice(1).some(h => inRing(x, y, h));
+  function snapPoint(polys, lat, lng, maxM = 45) {
+    const kx = 111320 * Math.cos(lat * Math.PI / 180), ky = 110574;
+    const loc = polys.map(rings => rings.map(r => r.map(([x, y]) => [(x - lng) * kx, (y - lat) * ky])));
+    if (loc.some(rg => inPoly(0, 0, rg))) return null;
+    let best = null;
+    loc.forEach(rg => {
+      const r = rg[0];
+      for (let i = 0; i < r.length - 1; i++) {
+        const [ax, ay] = r[i], [bx, by] = r[i + 1], dx = bx - ax, dy = by - ay, l2 = dx * dx + dy * dy;
+        const t = l2 ? Math.max(0, Math.min(1, -(ax * dx + ay * dy) / l2)) : 0;
+        const px = ax + t * dx, py = ay + t * dy, d = Math.hypot(px, py);
+        if (!best || d < best.d) best = { d, px, py, rg };
+      }
+    });
+    if (!best || best.d > maxM) return null;
+    const r = best.rg[0];
+    let a = 0, cx = 0, cy = 0;
+    for (let i = 0; i < r.length - 1; i++) {
+      const f = r[i][0] * r[i + 1][1] - r[i + 1][0] * r[i][1];
+      a += f; cx += (r[i][0] + r[i + 1][0]) * f; cy += (r[i][1] + r[i + 1][1]) * f;
+    }
+    let tx = best.px, ty = best.py;
+    if (a) {
+      cx /= 3 * a; cy /= 3 * a;
+      if (Math.abs(a) / 2 < 2500 && inPoly(cx, cy, best.rg)) { tx = cx; ty = cy; }
+      else {
+        const L = Math.hypot(cx - best.px, cy - best.py) || 1;
+        const ix = best.px + (cx - best.px) / L * 6, iy = best.py + (cy - best.py) / L * 6;
+        if (inPoly(ix, iy, best.rg)) { tx = ix; ty = iy; }
+      }
+    }
+    return [lat + ty / ky, lng + tx / kx];
+  }
+
+  async function snapToBuildings() {
+    if (CFG.snapToBuildings === false) return;
+    const KEY = "studmap:snap1", cache = store.get(KEY, {});
+    const keyOf = o => `${o.name}|${o.lat}|${o.lng}`;
+    const orig = PLACES.map(p => ({ id: p.id, name: p.name, lat: p.lat, lng: p.lng }));
+    const put = (o, v) => { if (v) { PLACES[o.id].lat = v[0]; PLACES[o.id].lng = v[1]; markers[o.id].setLatLng(v); } };
+    const todo = orig.filter(o => !(keyOf(o) in cache));
+    orig.forEach(o => { if (cache[keyOf(o)]) put(o, cache[keyOf(o)]); });
+    if (!todo.length) return;
+
+    const [{ default: Pbf }, { VectorTile }] = await Promise.all([
+      import("https://cdn.jsdelivr.net/npm/pbf@4.0.1/+esm"),
+      import("https://cdn.jsdelivr.net/npm/@mapbox/vector-tile@2.0.3/+esm")
+    ]);
+    const tj = await (await fetch("https://tiles.openfreemap.org/planet")).json();
+    const Z = 14, N = 2 ** Z, tiles = new Map();
+    const loadTile = (x, y) => {
+      const k = x + "/" + y;
+      if (!tiles.has(k)) tiles.set(k, fetch(tj.tiles[0].replace("{z}", Z).replace("{x}", x).replace("{y}", y))
+        .then(r => r.ok ? r.arrayBuffer() : null)
+        .then(buf => {
+          const out = [], layer = buf && new VectorTile(new Pbf(buf)).layers.building;
+          for (let i = 0; layer && i < layer.length; i++) {
+            const g = layer.feature(i).toGeoJSON(x, y, Z).geometry;
+            if (g.type === "Polygon") out.push(g.coordinates); else if (g.type === "MultiPolygon") out.push(...g.coordinates);
+          }
+          return out;
+        }).catch(() => []));
+      return tiles.get(k);
+    };
+    for (const o of todo) {
+      const fx = (o.lng + 180) / 360 * N, la = o.lat * Math.PI / 180;
+      const fy = (1 - Math.log(Math.tan(la) + 1 / Math.cos(la)) / Math.PI) / 2 * N;
+      const tx = Math.floor(fx), ty = Math.floor(fy), nx = fx - tx, ny = fy - ty;
+      const xs = [tx, ...(nx < .06 ? [tx - 1] : nx > .94 ? [tx + 1] : [])], ys = [ty, ...(ny < .06 ? [ty - 1] : ny > .94 ? [ty + 1] : [])];
+      const parts = await Promise.all(xs.flatMap(x => ys.map(y => loadTile(x, y))));
+      const v = snapPoint(parts.flat(), o.lat, o.lng);
+      cache[keyOf(o)] = v || 0;
+      put(o, v);
+    }
+    store.set(KEY, cache);
+  }
+
   function spreadStacks() {
     const seen = new Set();
     PLACES.forEach(a => {
@@ -1181,16 +1210,15 @@ li:last-child .item::before { bottom: 50%; }
         const ang = 2 * Math.PI * i / g.length + Math.PI / 4, r = 9;
         b.lat = c.lat + r * Math.sin(ang) / 110574;
         b.lng = c.lng + r * Math.cos(ang) / (111320 * Math.cos(c.lat * Math.PI / 180));
-        markers[b.id]?.setLatLng([b.lat, b.lng]);
+        markers[b.id].setLatLng([b.lat, b.lng]);
       });
     });
   }
+  (async () => { try { await snapToBuildings(); } catch (e) {} spreadStacks(); layoutLabels(); })();
 
   // ---------- Старт ----------
-  spreadStacks();
   render(false);
   fitVisible(false);
-
   function fromHash() {
     const m = location.hash.match(/^#p(\d+)$/);
     const p = m && PLACES[+m[1] - 1];
