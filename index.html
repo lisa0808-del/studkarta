@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, maximum-scale=1.0">
 <title>Студкарта Москвы</title>
 <meta name="description" content="Карта студенческих скидок в Москве: музеи, театры, кино, еда, спорт, магазины.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&family=PT+Mono&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
 <style>
 :root {
   --paper: #f4f4f1;
@@ -83,7 +85,7 @@ button { cursor: pointer; }
 .search { position: relative; display: block; }
 .search input {
   width: 100%; padding: 12px 40px 12px 42px; border-radius: 10px;
-  border: 1.5px solid var(--line); background: var(--paper); font-size: 15px; transition: border-color .15s;
+  border: 1.5px solid var(--line); background: var(--paper); font-size: 16px; transition: border-color .15s;
   -webkit-appearance: none; appearance: none;
 }
 .search input::-webkit-search-cancel-button { display: none; }
@@ -143,7 +145,7 @@ button { cursor: pointer; }
   box-shadow: 0 4px 16px rgba(0,0,0,.25); align-items: center; gap: 8px;
 }
 
-/* Расширенные фильтры */
+/* Фильтры */
 .filters { display: grid; gap: 14px; padding: 14px; border-radius: 12px; background: var(--paper); }
 .frow { display: grid; gap: 7px; }
 .seg { display: flex; border: 1.5px solid var(--line); border-radius: 10px; padding: 3px; gap: 3px; background: var(--surface); }
@@ -253,6 +255,19 @@ li:last-child .item::before { bottom: 50%; }
 .leaflet-marker-icon:hover .st span { visibility: visible; }
 .me { width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #2f6bff; border: 3px solid #fff; box-shadow: 0 0 0 6px rgba(47,107,255,.25), 0 1px 4px rgba(0,0,0,.4); }
 
+/* Кластеры */
+.marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
+  background-color: rgba(23, 24, 26, 0.2);
+}
+.marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
+  background-color: var(--ink);
+  color: var(--surface);
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+
 .hint {
   position: absolute; z-index: 999; left: 50%; top: 20px; transform: translateX(-50%);
   display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 16px; border-radius: 12px;
@@ -349,7 +364,7 @@ li:last-child .item::before { bottom: 50%; }
   box-shadow: var(--shadow); max-width: calc(100% - 32px); text-align: center;
 }
 
-/* ================= Модальное окно «Я нашёл скидку» ================= */
+/* ================= Модальное окно (шрифт строго 16px, чтобы не зумился экран) ================= */
 .modal-backdrop {
   position: fixed; inset: 0; z-index: 1150; background: rgba(0,0,0,.45);
   display: grid; place-items: center; padding: 16px; backdrop-filter: blur(2px);
@@ -366,7 +381,7 @@ li:last-child .item::before { bottom: 50%; }
 .f-group { display: grid; gap: 5px; }
 .f-group input, .f-group select, .f-group textarea {
   width: 100%; padding: 10px 12px; border-radius: 8px; border: 1.5px solid var(--line);
-  background: var(--paper); font-size: 14px;
+  background: var(--paper); font-size: 16px !important; -webkit-text-size-adjust: 100%;
 }
 .f-group input:focus, .f-group select:focus, .f-group textarea:focus {
   outline: none; border-color: var(--ink);
@@ -418,8 +433,6 @@ li:last-child .item::before { bottom: 50%; }
   .actions .btn.primary { flex: 1 1 auto; }
   .hint { top: 12px; left: 12px; right: 64px; transform: none; max-width: none; width: auto; }
   .leaflet-top.leaflet-right { top: env(safe-area-inset-top, 0px); }
-  
-  /* Показываем плавающую кнопку на телефонах */
   .floating-add { display: inline-flex; }
 }
 @media (max-width: 380px) {
@@ -497,7 +510,6 @@ li:last-child .item::before { bottom: 50%; }
   <div class="hint" id="hint" hidden><i aria-hidden="true"></i><span>Нажмите на точку, чтобы узнать скидку, адрес и срок</span><button type="button" id="hintok">Понятно</button></div>
   <article class="ticket" id="ticket" hidden aria-live="polite"></article>
   
-  <!-- Плавающая кнопка для мобилок -->
   <button class="floating-add" id="floatingSuggestBtn" type="button">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>Скидка
   </button>
@@ -517,7 +529,7 @@ li:last-child .item::before { bottom: 50%; }
     <p class="modal-sub">Знаешь классное место со скидкой по студаку? Заполни форму, и мы добавим его на карту!</p>
     <div class="f-group">
       <label class="label" for="sName">Название места *</label>
-      <input id="sName" type="text" required placeholder="Например: Кофейня Здрасте">
+      <input id="sName" type="text" required placeholder="Например: SPAR или Кофейня">
     </div>
     <div class="f-row2">
       <div class="f-group">
@@ -531,7 +543,7 @@ li:last-child .item::before { bottom: 50%; }
     </div>
     <div class="f-group">
       <label class="label" for="sAddr">Адрес или метро *</label>
-      <input id="sAddr" type="text" required placeholder="ул. Мясницкая, 15 или м. Бауманская">
+      <input id="sAddr" type="text" required placeholder="ул. Тверская, 15 или м. Охотный Ряд">
     </div>
     <div class="f-group">
       <label class="label" for="sDet">Условия и ссылка</label>
@@ -544,6 +556,7 @@ li:last-child .item::before { bottom: 50%; }
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
 <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.20/leaflet-maplibre-gl.js"></script>
 <script src="data.js"></script>
@@ -606,7 +619,7 @@ li:last-child .item::before { bottom: 50%; }
   const isFav = p => favs.has(p.name);
   const distOf = p => state.me ? distKm(state.me, p) : null;
 
-  // ---------- Карта ----------
+  // ---------- Карта и Кластеризация ----------
   const map = L.map("map", { zoomControl: false }).setView(CFG.center, CFG.zoom);
   L.control.zoom({ position: "topright", zoomInTitle: "Приблизить", zoomOutTitle: "Отдалить" }).addTo(map);
   const glLayer = L.maplibreGL({
@@ -658,6 +671,14 @@ li:last-child .item::before { bottom: 50%; }
     }
   });
   map.addControl(new FitControl());
+
+  // Создаём кластерную группу Leaflet
+  const clusterGroup = L.markerClusterGroup({
+    showCoverageOnHover: false,
+    maxClusterRadius: 40,
+    spiderfyOnMaxZoom: true,
+    disableClusteringAtZoom: 16
+  }).addTo(map);
 
   const markers = {};
   PLACES.forEach(p => {
@@ -751,13 +772,12 @@ li:last-child .item::before { bottom: 50%; }
 
   // ---------- Модальное окно «Я нашёл скидку» ----------
   const sModal = $("suggestModal");
-  const openSuggestModal = () => { sModal.hidden = false; $("sName").focus(); };
+  const openSuggestModal = () => { sModal.hidden = false; };
   $("suggestBtn").addEventListener("click", openSuggestModal);
   $("floatingSuggestBtn").addEventListener("click", openSuggestModal);
   $("suggestClose").addEventListener("click", () => { sModal.hidden = true; });
   sModal.addEventListener("click", e => { if (e.target === sModal) sModal.hidden = true; });
 
-  // Умное форматирование скидки (превращает 15 в −15%)
   function formatDiscountInput(raw) {
     const s = raw.trim();
     if (!s) return "Скидка";
@@ -788,9 +808,9 @@ li:last-child .item::before { bottom: 50%; }
     if (CFG.suggestTg) {
       const tgUser = CFG.suggestTg.replace(/^@/, "");
       window.open(`https://t.me/${tgUser}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
-      toast("Открываем Telegram для отправки модератору!");
+      toast("Открываем диалог в Telegram для отправки!");
     } else {
-      toast("Описание скидки скопировано! Укажи suggestTg в data.js для отправки в Telegram.");
+      toast("Описание скидки скопировано! Укажите suggestTg в data.js для Telegram.");
     }
   });
 
@@ -802,11 +822,11 @@ li:last-child .item::before { bottom: 50%; }
     navigator.geolocation.getCurrentPosition(pos => {
       btn.classList.remove("loading");
       state.me = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-      if (distKm(state.me, { lat: CFG.center[0], lng: CFG.center[1] }) > 60) toast("Вы далеко от города на карте — расстояния будут большими");
+      if (distKm(state.me, { lat: CFG.center[0], lng: CFG.center[1] }) > 60) toast("Вы далеко от города на карте");
       meMarker?.remove();
       meMarker = L.marker([state.me.lat, state.me.lng], { icon: L.divIcon({ className: "", html: '<div class="me"></div>', iconSize: [0, 0] }), interactive: false, keyboard: false, zIndexOffset: -100 }).addTo(map);
       onOk();
-    }, err => fail(err.code === 1 ? "Разрешите доступ к геопозиции в настройках браузера" : "Не получилось определить, где вы. Попробуйте ещё раз"),
+    }, err => fail(err.code === 1 ? "Разрешите доступ к геопозиции в настройках" : "Не удалось определить геопозицию"),
     { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
   }
   function fitNear() {
@@ -874,8 +894,10 @@ li:last-child .item::before { bottom: 50%; }
   let visibleList = [];
   function render(refit) {
     visibleList = sorted(PLACES.filter(matches));
-    const ids = new Set(visibleList.map(p => p.id));
-    PLACES.forEach(p => ids.has(p.id) ? markers[p.id].addTo(map) : markers[p.id].remove());
+    
+    // Очищаем кластеры и добавляем только видимые маркеры
+    clusterGroup.clearLayers();
+    visibleList.forEach(p => clusterGroup.addLayer(markers[p.id]));
 
     const n = visibleList.length;
     $("count").textContent = `${n} ${plural(n, "место", "места", "мест")}`;
@@ -892,7 +914,8 @@ li:last-child .item::before { bottom: 50%; }
     $("reset")?.addEventListener("click", resetAll);
 
     if (state.sel !== null) {
-      if (!ids.has(state.sel)) close();
+      const isVisible = visibleList.some(p => p.id === state.sel);
+      if (!isVisible) close();
       else markers[state.sel].getElement()?.querySelector(".st")?.classList.add("sel");
     }
     if (refit) fitVisible(false);
