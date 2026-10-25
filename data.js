@@ -8,7 +8,7 @@ window.SETTINGS = {
   routeMode: "mt",
   checked: "2026-10-25",
   snapToBuildings: true,
-  suggestTg: "", // Укажи свой ник в ТГ без @ (например: "lisa0808")
+  suggestTg: "@predlojkaMestbot", // Укажи свой ник в ТГ без @ (например: "lisa0808")
   note: "Скидки проверены по сайтам организаций. Перед походом уточняйте условия по ссылке в карточке."
 };
 
