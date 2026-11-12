@@ -245,7 +245,7 @@ window.PLACES = [
     details: "Скидка для студентов на игровые вечера в мафию при предъявлении студенческого билета. Требуется предварительная запись.",
     address: "ул. Малая Ордынка, 25",
     lat: 55.7368, lng: 37.6251,
-    who: ["vuz", "college"]
+    who: ["vuz", "college"],
     url: "https://vipclubmafia.ru/"
   },
   {
@@ -450,6 +450,7 @@ window.PLACES = [
     who: ["vuz", "college"],
     url: "https://kinoteatr.ru/",
     source: "https://kinoteatr.ru/actions/student20/"
+  },
   {
     name: "Синема Стар — Ереван Плаза",
     category: "cinema",
@@ -1057,7 +1058,7 @@ window.PLACES = [
     address: "Комсомольский просп., 28, МДМ",
     lat: 55.726882, lng: 37.579654,
     who: ["vuz", "college"],
-    url: "https://www.chitai-gorod.ru/",
+    url: "https://www.chitai-gorod.ru/"
   },
   {
     name: "Читай-город — Охотный Ряд",
@@ -1067,7 +1068,7 @@ window.PLACES = [
     address: "Манежная пл., 1, стр. 2, ТЦ «Охотный Ряд»",
     lat: 55.75520, lng: 37.61330,
     who: ["vuz", "college"],
-    url: "https://www.chitai-gorod.ru/",
+    url: "https://www.chitai-gorod.ru/"
   },
   {
     name: "Читай-город — Европейский",
@@ -1077,7 +1078,7 @@ window.PLACES = [
     address: "пл. Киевского Вокзала, 2, ТРЦ «Европейский»",
     lat: 55.74450, lng: 37.56630,
     who: ["vuz", "college"],
-    url: "https://www.chitai-gorod.ru/",
+    url: "https://www.chitai-gorod.ru/"
   },
   {
     name: "Улыбка радуги — Таганская",
@@ -1151,7 +1152,7 @@ window.PLACES = [
     details: "Скидка по социальной карте студента (карте москвича) в государственной сети аптек.",
     address: "просп. Вернадского, 39",
     lat: 55.6765, lng: 37.5065,
-    who: ["vuz", "college"]
+    who: ["vuz", "college"],
     url: "https://aptekamos.ru/magaziny/seti/apteki-stolicy-232/apteki/na-karte?sale=1"
   },
   {
@@ -1213,7 +1214,7 @@ window.PLACES = [
     details: "Студенческая скидка на все напитки и десерты при предъявлении студенческого билета на кассе.",
     address: "ул. Яузская, 1/15, стр. 3",
     lat: 55.7501, lng: 37.6416,
-    who: ["vuz", "college"]
+    who: ["vuz", "college"],
     url: "https://cosmiclatte.coffee/?ysclid=mw0y1jp131386629411"
   },
   {
@@ -1223,7 +1224,7 @@ window.PLACES = [
     details: "Скидка студентам на спешелти кофе и выпечку при показе студенческого билета.",
     address: "ул. Большая Дмитровка, 32, стр. 1",
     lat: 55.7645, lng: 37.6115,
-    who: ["vuz", "college"]
+    who: ["vuz", "college"],
     url: "https://vspyshka-rest.ru/"
   },
   {
@@ -1253,7 +1254,7 @@ window.PLACES = [
     details: "Скидка 15% студентам на меню кухни и бара по студенческому билету.",
     address: "ул. Малая Пироговская, 8",
     lat: 55.7295, lng: 37.5715,
-    who: ["vuz", "college"]
+    who: ["vuz", "college"],
     url: "https://gradocafe.clients.site/"
   },
   {
@@ -1263,7 +1264,7 @@ window.PLACES = [
     details: "Скидка 20% студентам на азиатское меню по будням при предъявлении студенческого билета.",
     address: "ул. Мясницкая, 13, стр. 3",
     lat: 55.7618, lng: 37.6322,
-    who: ["vuz", "college"]
+    who: ["vuz", "college"],
     source: "https://t.me/changcafe/1299"
   },
   {
@@ -1283,8 +1284,8 @@ window.PLACES = [
     details: "Студенческая скидка 20% на меню и напитки по студенческому билету (18+).",
     address: "ул. Покровка, 2/1, стр. 1",
     lat: 55.7571, lng: 37.6382,
-    who: ["vuz", "college"]
-    source:"https://zionist.bar/#sales"
+    who: ["vuz", "college"],
+    source: "https://zionist.bar/#sales"
   },
   {
     name: "Кофейня «Здрасте»",
