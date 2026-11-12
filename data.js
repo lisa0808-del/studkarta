@@ -174,7 +174,7 @@ window.PLACES = [
     name: "Центр «Космонавтика и авиация» на ВДНХ",
     category: "museum",
     discount: "Льготный",
-    details: "Льготный билет (250 ₽ вместо 500 ₽) для студентов дневных отделений вузов и колледжей при предъявлении студенческого билета в кассе.",
+    details: "Льготный билет (350 ₽ вместо 700 ₽) для студентов дневных отделений вузов и колледжей при предъявлении студенческого билета в кассе.",
     address: "просп. Мира, 119, стр. 34 (ВДНХ, павильон № 34)",
     lat: 55.8351, lng: 37.6225,
     who: ["vuz", "college"],
@@ -246,6 +246,7 @@ window.PLACES = [
     address: "ул. Малая Ордынка, 25",
     lat: 55.7368, lng: 37.6251,
     who: ["vuz", "college"]
+    url: "https://vipclubmafia.ru/"
   },
   {
     name: "Альпака Парк",
@@ -404,7 +405,7 @@ window.PLACES = [
     address: "7-я Кожуховская, 9, ТРЦ «Мозаика», 3 этаж",
     lat: 55.710693, lng: 37.675109,
     who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://kinomax.ru/discounts/privilege-tickets"
   },
   {
     name: "Киномакс — Пражская",
@@ -415,7 +416,7 @@ window.PLACES = [
     lat: 55.61270, lng: 37.60500,
     who: ["vuz", "college"],
     url: "https://kinomax.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://kinomax.ru/discounts/privilege-tickets"
   },
   {
     name: "Синема Парк — Метрополис",
@@ -425,7 +426,8 @@ window.PLACES = [
     address: "Ленинградское ш., 16А, стр. 4, ТЦ «Метрополис»",
     lat: 55.823217, lng: 37.497468,
     who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    url: "https://kinoteatr.ru/",
+    source: "https://kinoteatr.ru/actions/student20/"
   },
   {
     name: "Синема Парк — Филион",
@@ -436,7 +438,7 @@ window.PLACES = [
     lat: 55.74080, lng: 37.50340,
     who: ["vuz", "college"],
     url: "https://kinoteatr.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://kinoteatr.ru/actions/student20/"
   },
   {
     name: "Синема Парк — МЕГА Тёплый Стан",
@@ -447,8 +449,7 @@ window.PLACES = [
     lat: 55.61920, lng: 37.49200,
     who: ["vuz", "college"],
     url: "https://kinoteatr.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
-  },
+    source: "https://kinoteatr.ru/actions/student20/"
   {
     name: "Синема Стар — Ереван Плаза",
     category: "cinema",
@@ -549,7 +550,7 @@ window.PLACES = [
     address: "Голубинская, 16",
     lat: 55.597246, lng: 37.527184,
     who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://fitness.more-on.ru/aktsii/skidka-30-na-klubnye-karty-dlya-studentov/"
   },
   {
     name: "СпортЛэнд",
@@ -559,7 +560,7 @@ window.PLACES = [
     address: "Кленовый б-р, 23",
     lat: 55.6759, lng: 37.6815,
     who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://slandclub.ru/akczii/"
   },
   {
     name: "Студия йоги «Чакра»",
@@ -569,7 +570,7 @@ window.PLACES = [
     address: "Мясницкая, 24/7, стр. 3",
     lat: 55.7625, lng: 37.6355,
     who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://www.chakrasadhana.ru/ceni"
   },
   {
     name: "Студия танцев «ЛисоБорье»",
@@ -579,7 +580,7 @@ window.PLACES = [
     address: "Бауманская, 53, стр. 2",
     lat: 55.7677, lng: 37.6799,
     who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://lisoborie.ru/price"
   },
   {
     name: "SMSTRETCHING",
@@ -1035,7 +1036,7 @@ window.PLACES = [
     lat: 55.790231, lng: 37.531289,
     who: ["vuz", "college"],
     url: "https://leonardo.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://leonardo.ru/"
   },
   {
     name: "Леонардо — Европейский",
@@ -1046,7 +1047,7 @@ window.PLACES = [
     lat: 55.74450, lng: 37.56630,
     who: ["vuz", "college"],
     url: "https://leonardo.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://leonardo.ru/"
   },
   {
     name: "Читай-город — МДМ",
@@ -1057,7 +1058,6 @@ window.PLACES = [
     lat: 55.726882, lng: 37.579654,
     who: ["vuz", "college"],
     url: "https://www.chitai-gorod.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
   },
   {
     name: "Читай-город — Охотный Ряд",
@@ -1068,7 +1068,6 @@ window.PLACES = [
     lat: 55.75520, lng: 37.61330,
     who: ["vuz", "college"],
     url: "https://www.chitai-gorod.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
   },
   {
     name: "Читай-город — Европейский",
@@ -1079,7 +1078,6 @@ window.PLACES = [
     lat: 55.74450, lng: 37.56630,
     who: ["vuz", "college"],
     url: "https://www.chitai-gorod.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
   },
   {
     name: "Улыбка радуги — Таганская",
@@ -1090,7 +1088,7 @@ window.PLACES = [
     lat: 55.739748, lng: 37.670681,
     who: ["vuz", "college"],
     url: "https://www.r-ulybka.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://www.r-ulybka.ru/sale/special/510509/"
   },
   {
     name: "Улыбка радуги — проспект Мира",
@@ -1101,7 +1099,7 @@ window.PLACES = [
     lat: 55.78200, lng: 37.62580,
     who: ["vuz", "college"],
     url: "https://www.r-ulybka.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://www.r-ulybka.ru/sale/special/510509/"
   },
   {
     name: "Улыбка радуги — Дубнинская",
@@ -1112,7 +1110,7 @@ window.PLACES = [
     lat: 55.87500, lng: 37.57450,
     who: ["vuz", "college"],
     url: "https://www.r-ulybka.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://www.r-ulybka.ru/sale/special/510509/"
   },
   {
     name: "U Forma",
@@ -1122,7 +1120,7 @@ window.PLACES = [
     address: "ул. Вавилова, 6",
     lat: 55.708, lng: 37.5879,
     who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://u-forma.ru/sale/skidka_10_dlya_studentov/?ysclid=mw0wsf4p72935320260"
   },
   {
     name: "Московский Дом Книги",
@@ -1154,6 +1152,7 @@ window.PLACES = [
     address: "просп. Вернадского, 39",
     lat: 55.6765, lng: 37.5065,
     who: ["vuz", "college"]
+    url: "https://aptekamos.ru/magaziny/seti/apteki-stolicy-232/apteki/na-karte?sale=1"
   },
   {
     name: "Дикси",
@@ -1215,6 +1214,7 @@ window.PLACES = [
     address: "ул. Яузская, 1/15, стр. 3",
     lat: 55.7501, lng: 37.6416,
     who: ["vuz", "college"]
+    url: "https://cosmiclatte.coffee/?ysclid=mw0y1jp131386629411"
   },
   {
     name: "Кофейня «Вспышка»",
@@ -1224,6 +1224,7 @@ window.PLACES = [
     address: "ул. Большая Дмитровка, 32, стр. 1",
     lat: 55.7645, lng: 37.6115,
     who: ["vuz", "college"]
+    url: "https://vspyshka-rest.ru/"
   },
   {
     name: "Необистро Geraldine",
@@ -1253,6 +1254,7 @@ window.PLACES = [
     address: "ул. Малая Пироговская, 8",
     lat: 55.7295, lng: 37.5715,
     who: ["vuz", "college"]
+    url: "https://gradocafe.clients.site/"
   },
   {
     name: "CHANG",
@@ -1262,6 +1264,7 @@ window.PLACES = [
     address: "ул. Мясницкая, 13, стр. 3",
     lat: 55.7618, lng: 37.6322,
     who: ["vuz", "college"]
+    source: "https://t.me/changcafe/1299"
   },
   {
     name: "Бургерная KETCH UP",
@@ -1281,6 +1284,7 @@ window.PLACES = [
     address: "ул. Покровка, 2/1, стр. 1",
     lat: 55.7571, lng: 37.6382,
     who: ["vuz", "college"]
+    source:"https://zionist.bar/#sales"
   },
   {
     name: "Кофейня «Здрасте»",
@@ -1347,7 +1351,7 @@ window.PLACES = [
     who: ["vuz", "college"],
     from: "2026-01-25", to: "2026-12-31",
     url: "https://www.cafemumu.ru",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://www.cafemumu.ru/actions/skidka-studentam-20/"
   },
   {
     name: "Молодёжь",
@@ -1357,7 +1361,7 @@ window.PLACES = [
     address: "Сущёвская ул., 21, стр. 8",
     lat: 55.781914, lng: 37.599696,
     who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://barmolodezh.ru/skidki?ysclid=mw0yj9zzsw658685557"
   },
   {
     name: "Сыто-пьяно",
@@ -1367,7 +1371,7 @@ window.PLACES = [
     address: "Комсомольский просп., 28, МДМ",
     lat: 55.726882, lng: 37.579654,
     who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://sito-piano.ru/promo"
   },
   {
     name: "Met Tea",
@@ -1377,7 +1381,7 @@ window.PLACES = [
     address: "ул. Никольская, 10/2, стр. 2Б",
     lat: 55.7592, lng: 37.6255,
     who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://met-tea-ulitsa-kirova.clients.site/"
   },
   {
     name: "Ёрш",
@@ -1387,7 +1391,7 @@ window.PLACES = [
     address: "ул. Перерва, 58",
     lat: 55.66317, lng: 37.76126,
     who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://tanukifamily.ru/ersh/msk/?ysclid=mw0yms9sg7814146043&utm_referrer=https%3A%2F%2Fyandex.ru%2F"
   },
   {
     name: "Ёрш — Космонавтов",
@@ -1398,7 +1402,7 @@ window.PLACES = [
     lat: 55.81780, lng: 37.63980,
     who: ["vuz", "college"],
     url: "https://yersh.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://tanukifamily.ru/ersh/msk/?ysclid=mw0yms9sg7814146043&utm_referrer=https%3A%2F%2Fyandex.ru%2F"
   },
   {
     name: "Тануки",
@@ -1408,7 +1412,7 @@ window.PLACES = [
     address: "Каширское ш., 46, корп. 1",
     lat: 55.647929, lng: 37.664833,
     who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://tanukifamily.ru/"
   },
   {
     name: "Tanuki — Пятницкая",
@@ -1440,7 +1444,7 @@ window.PLACES = [
     address: "Ломоносовский просп., 29, корп. 1, стр. 2",
     lat: 55.7034, lng: 37.51583,
     who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://t.me/praktikacoffee/548"
   },
   {
     name: "Ra’men",
@@ -1450,7 +1454,7 @@ window.PLACES = [
     address: "Бауманская, 56/17, стр. 1",
     lat: 55.76886, lng: 37.67912,
     who: ["vuz", "college"],
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://ramen.moscow/"
   },
   {
     name: "МУ-МУ на Добрынинской",
@@ -1665,7 +1669,7 @@ window.PLACES = [
     lat: 55.75950, lng: 37.62530,
     who: ["vuz", "college"],
     url: "https://farshburger.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://farshburger.ru/skidka-studentam-20"
   },
   {
     name: "#FARШ — Большая Серпуховская",
@@ -1676,7 +1680,7 @@ window.PLACES = [
     lat: 55.7232, lng: 37.6242,
     who: ["vuz", "college"],
     url: "https://farshburger.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://farshburger.ru/skidka-studentam-20"
   },
   {
     name: "#FARШ — Грузинский Вал",
@@ -1687,7 +1691,7 @@ window.PLACES = [
     lat: 55.771, lng: 37.5837,
     who: ["vuz", "college"],
     url: "https://farshburger.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://farshburger.ru/skidka-studentam-20"
   },
   {
     name: "#FARШ — Атриум",
@@ -1698,7 +1702,7 @@ window.PLACES = [
     lat: 55.7587, lng: 37.6595,
     who: ["vuz", "college"],
     url: "https://farshburger.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://farshburger.ru/skidka-studentam-20"
   },
   {
     name: "#FARШ — Кунцево Плаза",
@@ -1709,7 +1713,7 @@ window.PLACES = [
     lat: 55.7388, lng: 37.4135,
     who: ["vuz", "college"],
     url: "https://farshburger.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://farshburger.ru/skidka-studentam-20"
   },
   {
     name: "#FARШ — Охотный Ряд",
@@ -1720,7 +1724,7 @@ window.PLACES = [
     lat: 55.7559, lng: 37.617,
     who: ["vuz", "college"],
     url: "https://farshburger.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://farshburger.ru/skidka-studentam-20"
   },
   {
     name: "#FARШ — бульвар Энтузиастов",
@@ -1731,7 +1735,7 @@ window.PLACES = [
     lat: 55.7476, lng: 37.6768,
     who: ["vuz", "college"],
     url: "https://farshburger.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://farshburger.ru/skidka-studentam-20"
   },
   {
     name: "#FARШ — Райкин Плаза",
@@ -1742,7 +1746,7 @@ window.PLACES = [
     lat: 55.795, lng: 37.6182,
     who: ["vuz", "college"],
     url: "https://farshburger.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://farshburger.ru/skidka-studentam-20"
   },
   {
     name: "#FARШ — Комсомольский",
@@ -1753,6 +1757,6 @@ window.PLACES = [
     lat: 55.7274, lng: 37.5815,
     who: ["vuz", "college"],
     url: "https://farshburger.ru/",
-    source: "https://daily.afisha.ru/cities/35668-delu-vremya-a-potehe-he-he-gde-poest-razvlechsya-i-sekonomit-po-studencheskoy-skidke/"
+    source: "https://farshburger.ru/skidka-studentam-20"
   }
 ];
