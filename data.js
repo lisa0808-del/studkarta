@@ -1759,5 +1759,32 @@ window.PLACES = [
     who: ["vuz", "college"],
     url: "https://farshburger.ru/",
     source: "https://farshburger.ru/skidka-studentam-20"
+  },
+  {
+  name: "Bodro coffee",
+  category: "food",
+  discount: "−10%",
+  details: "Нужен студенческий",
+  address: "Калужская площадь, 1к1 м. Октябрьская",
+  lat: 55.7558, lng: 37.6173,
+  who: ["vuz", "college"]
+  },
+  {
+  name: "French Bakery SeDelice",
+  category: "food",
+  discount: "−10%",
+  details: "Нужен студенческий",
+  address: "Профсоюзная улица, 102с1 м. Беляево",
+  lat: 55.7558, lng: 37.6173,
+  who: ["vuz", "college"]
+  },
+  {
+  name: "Правда Кофе",
+  category: "food",
+  discount: "−10%",
+  details: "Нужен студенческий, скидка распространется на се напитки, кроме фрешей. Акция действительна только в кофейнях рядом с вузами",
+  address: "Ленинский проспект 4с1А",
+  lat: 55.7558, lng: 37.6173,
+  who: ["vuz", "college"]
   }
 ];
