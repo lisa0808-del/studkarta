@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&family=PT+Mono&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <style>
 :root {
   --paper: #f4f4f1;
@@ -253,21 +252,6 @@ li:last-child .item::before { bottom: 50%; }
 .st.sel span { visibility: visible; background: #17181a; color: #fff; }
 .leaflet-marker-icon:hover .st span { visibility: visible; }
 .me { width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #2f6bff; border: 3px solid #fff; box-shadow: 0 0 0 6px rgba(47,107,255,.25), 0 1px 4px rgba(0,0,0,.4); }
-
-/* Кластеры точек */
-.cl-icon { background: none; border: 0; }
-.cl {
-  width: 100%; height: 100%; border-radius: 50%;
-  display: grid; place-items: center;
-  background: var(--ink); color: var(--surface);
-  border: 3px solid var(--surface);
-  font: 700 14px/1 var(--f-body);
-  box-shadow: 0 2px 10px rgba(0,0,0,.35);
-  transition: transform .15s ease;
-}
-.cl:hover { transform: scale(1.1); }
-.cl-md { font-size: 15px; }
-.cl-lg { font-size: 16px; background: var(--stamp); color: #fff; }
 
 .hint {
   position: absolute; z-index: 999; left: 50%; top: 20px; transform: translateX(-50%);
@@ -562,7 +546,6 @@ li:last-child .item::before { bottom: 50%; }
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
 <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.20/leaflet-maplibre-gl.js"></script>
-<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="data.js"></script>
 <script type="module">
   window.metroReady = import("https://cdn.jsdelivr.net/npm/@riaskov/metro-ru@1.0.21/+esm")
@@ -676,25 +659,6 @@ li:last-child .item::before { bottom: 50%; }
   });
   map.addControl(new FitControl());
 
-  const clusterGroup = L.markerClusterGroup({
-    maxClusterRadius: 50,
-    disableClusteringAtZoom: 16,
-    spiderfyOnMaxZoom: true,
-    showCoverageOnHover: false,
-    zoomToBoundsOnClick: true,
-    animate: true,
-    iconCreateFunction(cluster) {
-      const count = cluster.getChildCount();
-      const size = count < 10 ? "sm" : count < 50 ? "md" : "lg";
-      const px = count < 10 ? 34 : count < 50 ? 42 : 50;
-      return L.divIcon({
-        html: `<div class="cl cl-${size}">${count}</div>`,
-        className: "cl-icon",
-        iconSize: L.point(px, px)
-      });
-    }
-  }).addTo(map);
-
   const markers = {};
   PLACES.forEach(p => {
     const st = status(p);
@@ -714,8 +678,6 @@ li:last-child .item::before { bottom: 50%; }
     labelRaf = requestAnimationFrame(() => {
       const placed = [];
       document.querySelectorAll(".leaflet-top .leaflet-control, #hint:not([hidden])").forEach(el => placed.push({ id: -1, r: el.getBoundingClientRect() }));
-      document.querySelectorAll(".cl-icon").forEach(el => placed.push({ id: -1, r: el.getBoundingClientRect() }));
-      if (state.sel !== null) markers[state.sel].getElement()?.querySelector(".st")?.classList.add("sel");
       visibleList.forEach(p => { const d = markers[p.id].getElement()?.querySelector(".st i"); if (d) placed.push({ id: p.id, r: d.getBoundingClientRect() }); });
       const order = visibleList.slice().sort((a, b) =>
         (b.id === state.sel) - (a.id === state.sel) || (percent(b) ?? 15) - (percent(a) ?? 15));
@@ -736,8 +698,7 @@ li:last-child .item::before { bottom: 50%; }
       });
     });
   }
-  map.on("zoomend moveend", layoutLabels);
-  clusterGroup.on("animationend spiderfied unspiderfied", layoutLabels);
+  map.on("zoomend", layoutLabels);
 
   // ---------- Фильтры и Категории ----------
   const catsEl = $("cats");
@@ -914,8 +875,7 @@ li:last-child .item::before { bottom: 50%; }
   function render(refit) {
     visibleList = sorted(PLACES.filter(matches));
     const ids = new Set(visibleList.map(p => p.id));
-    clusterGroup.clearLayers();
-    clusterGroup.addLayers(visibleList.map(p => markers[p.id]));
+    PLACES.forEach(p => ids.has(p.id) ? markers[p.id].addTo(map) : markers[p.id].remove());
 
     const n = visibleList.length;
     $("count").textContent = `${n} ${plural(n, "место", "места", "мест")}`;
@@ -1084,9 +1044,9 @@ li:last-child .item::before { bottom: 50%; }
       const edge = ticket.offsetLeft + ticket.offsetWidth + 40;
       if (pt.x < edge) map.panBy([pt.x - edge, 0]);
     }
-    if (fly && !sized()) { map.setView([p.lat, p.lng], 16, { animate: false }); pendingFit = false; }
+    if (fly && !sized()) { map.setView([p.lat, p.lng], 15, { animate: false }); pendingFit = false; }
     else if (fly) {
-      const z = Math.max(map.getZoom(), 16);
+      const z = Math.max(map.getZoom(), 15);
       const shift = mobile.matches ? L.point(0, Math.round(ticket.offsetHeight / 2)) : L.point(-Math.min(200, map.getSize().x / 4), 0);
       map.flyTo(map.unproject(map.project([p.lat, p.lng], z).add(shift), z), z, { duration: .6 });
     }
@@ -1254,7 +1214,7 @@ li:last-child .item::before { bottom: 50%; }
       });
     });
   }
-  (async () => { try { await snapToBuildings(); } catch (e) {} spreadStacks(); render(false); })();
+  (async () => { try { await snapToBuildings(); } catch (e) {} spreadStacks(); layoutLabels(); })();
 
   // ---------- Старт ----------
   render(false);
